@@ -1,0 +1,456 @@
+/* =========================================================
+   COUCHE DE STYLE INNOVA ALPHA
+   À poser sur une maquette existante.
+
+   Ce fichier N'IMPOSE AUCUNE COULEUR et NE TOUCHE AUCUNE
+   STRUCTURE. Il n'ajoute que les gestes de la maison :
+   boutons, surtitre, accroche, compteurs, apparitions,
+   verre flouté, pied de page, WhatsApp flottant.
+
+   Tout est préfixé « ia- », jetons compris, pour qu'aucune
+   collision ne soit possible avec le CSS déjà en place.
+
+   POSE :
+     1. Charger ce fichier APRÈS ta feuille de style.
+     2. Remplir le bloc de correspondance ci-dessous.
+     3. Ajouter les classes aux éléments existants.
+        Aucun élément à déplacer, aucun à créer, sauf le
+        bouton WhatsApp et l'indicateur de défilement, qui
+        sont posés par le script.
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   1 | CORRESPONDANCE
+   Les seules lignes à modifier. Pointe chaque jeton vers TA
+   variable existante. Si tu n'as pas de variables CSS,
+   laisse tel quel : les replis héritent de tes couleurs.
+   --------------------------------------------------------- */
+
+:root{
+  /* Ta couleur d'accent. Remplace --ta-couleur-principale
+     par le nom réel de ta variable. */
+  --ia-accent:  var(--accent, #C9A24A);
+
+  /* Ta couleur de texte principale. */
+  --ia-encre:   var(--ink, #F4EBDC);
+
+  /* Ton fond de page, utilisé par les verres floutés. */
+  --ia-surface: var(--bg, #0A0703);
+
+  /* Tes filets et bordures. */
+  --ia-filet:   var(--line-soft, var(--line, rgba(201,162,74,.22)));
+
+  /* Sur une maquette à fond sombre, décommente ces deux
+     lignes, ce sont les seules à changer. */
+  /* --ia-surface: #0E0D0C; */
+  /* --ia-filet:   rgba(255,255,255,.14); */
+
+  /* ===== à partir d'ici, ne rien modifier ===== */
+
+  /* La courbe de geste de la maison. Départ rapide,
+     atterrissage long et doux. On la retrouve sur les
+     quatre sites livrés, c'est la signature de mouvement. */
+  --ia-ease:    cubic-bezier(.22,1,.36,1);
+  --ia-rebond:  cubic-bezier(.34,1.56,.64,1);
+  --ia-rond:    999px;
+}
+
+
+/* ---------------------------------------------------------
+   2 | SURTITRE
+   Le marqueur d'ouverture de la maison. Capitales,
+   interlettrage large, filet court en amorce. Il plante
+   toujours le LIEU et l'ANCIENNETÉ, séparés d'un point
+   médian : « EMANA, YAOUNDÉ · DEPUIS 2019 ».
+
+   À poser sur le petit texte déjà au-dessus de ton titre.
+   --------------------------------------------------------- */
+
+.ia-surtitre{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-size:.72rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  line-height:1.2;
+  color:var(--ia-accent);
+}
+.ia-surtitre::before{
+  content:"";
+  flex:none;
+  width:26px; height:1px;
+  background:currentColor;
+  opacity:.55;
+}
+
+
+/* ---------------------------------------------------------
+   3 | BOUTONS
+   Règle de maison : toujours par PAIRE. Un qui engage,
+   un qui laisse explorer. Jamais trois, jamais un seul.
+
+   .ia-btn sur les deux, puis --principal et --secondaire.
+   --------------------------------------------------------- */
+
+.ia-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  padding:16px 30px;
+  border:1px solid transparent;
+  border-radius:var(--ia-rond);
+  font-size:.875rem;
+  font-weight:700;
+  letter-spacing:.04em;
+  line-height:1;
+  cursor:pointer;
+  text-decoration:none;
+  transition:transform .35s var(--ia-ease),
+             box-shadow .35s var(--ia-ease),
+             border-color .3s var(--ia-ease),
+             color .3s var(--ia-ease);
+}
+
+.ia-btn--principal{
+  background:var(--ia-accent);
+  /* Le texte du bouton n'est pas forcé en blanc : sur un
+     aplat clair (doré, jaune, pastel) le blanc devient
+     illisible. Si ton accent est clair, ajoute la classe
+     .ia-btn--encre pour passer le texte en sombre. */
+  color:#FFFFFF;
+  box-shadow:0 10px 30px -12px color-mix(in srgb, var(--ia-accent) 65%, transparent);
+}
+.ia-btn--principal:hover{
+  transform:translateY(-2px);
+  box-shadow:0 18px 40px -14px color-mix(in srgb, var(--ia-accent) 75%, transparent);
+}
+.ia-btn--encre{ color:var(--ia-encre); }
+
+.ia-btn--secondaire{
+  background:transparent;
+  color:var(--ia-encre);
+  border-color:var(--ia-filet);
+}
+.ia-btn--secondaire:hover{
+  border-color:var(--ia-accent);
+  color:var(--ia-accent);
+}
+
+/* La flèche avance au survol. Micro-geste, à réserver au
+   bouton secondaire pour ne pas surcharger la paire. */
+.ia-btn .ia-fleche{
+  transition:transform .35s var(--ia-ease);
+}
+.ia-btn:hover .ia-fleche{ transform:translateX(4px); }
+
+
+/* ---------------------------------------------------------
+   4 | BOUTON ROND DE 36 PX
+   Le gabarit unique de la maison pour tout ce qui est
+   secondaire : réseaux sociaux, bascule, langue, retour
+   en haut. Toujours 36 px, toujours parfaitement rond.
+   --------------------------------------------------------- */
+
+.ia-rond36{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:none;
+  width:36px; height:36px;
+  padding:0;
+  border:1px solid var(--ia-filet);
+  border-radius:var(--ia-rond);
+  background:transparent;
+  color:var(--ia-encre);
+  cursor:pointer;
+  transition:border-color .3s var(--ia-ease),
+             color .3s var(--ia-ease),
+             transform .45s var(--ia-rebond);
+}
+.ia-rond36:hover{
+  border-color:var(--ia-accent);
+  color:var(--ia-accent);
+  transform:scale(1.08);
+}
+.ia-rond36 svg{ width:16px; height:16px; fill:currentColor; }
+
+
+/* ---------------------------------------------------------
+   5 | ACCROCHE
+   La structure de titre de la maison : deux lignes, la
+   seconde traitée différemment. Tu gardes ton balisage,
+   tu ajoutes simplement un <span class="ia-ligne2"> autour
+   de la seconde ligne.
+
+   L'entrée se joue en cascade : surtitre, ligne 1, ligne 2,
+   chapeau, boutons. Chacun 90 ms après le précédent, c'est
+   ce décalage qui donne l'impression d'une seule phrase.
+   --------------------------------------------------------- */
+
+.ia-ligne2{ color:var(--ia-accent); }
+
+.ia-hero .ia-entree{
+  opacity:0;
+  transform:translateY(16px);
+  animation:ia-monte .85s var(--ia-ease) forwards;
+}
+.ia-hero .ia-entree:nth-child(1){ animation-delay:.05s; }
+.ia-hero .ia-entree:nth-child(2){ animation-delay:.14s; }
+.ia-hero .ia-entree:nth-child(3){ animation-delay:.23s; }
+.ia-hero .ia-entree:nth-child(4){ animation-delay:.32s; }
+.ia-hero .ia-entree:nth-child(5){ animation-delay:.41s; }
+
+@keyframes ia-monte{
+  to{ opacity:1; transform:none; }
+}
+
+/* Garde-fou : si le CSS charge mais que l'animation ne se
+   déclenche pas, le contenu reste lisible au bout d'une
+   seconde et demie plutôt que de rester invisible. */
+.ia-hero .ia-entree{ animation-fill-mode:forwards; }
+
+
+/* ---------------------------------------------------------
+   6 | BANDE DE PREUVE CHIFFRÉE
+   Elle se place sous l'accroche, AVANT tout argumentaire.
+   Chez nous le chiffre arrive avant le discours.
+
+   <div class="ia-preuves">
+     <div><span class="ia-preuve__valeur" data-ia-final="270000"
+                data-ia-suffixe=" alevins">0</span>
+          <span class="ia-preuve__libelle">par cycle</span></div>
+   </div>
+   --------------------------------------------------------- */
+
+.ia-preuves{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+  gap:clamp(24px, 4vw, 56px);
+  padding-block:clamp(32px, 5vw, 52px);
+  border-block:1px solid var(--ia-filet);
+}
+
+.ia-preuve__valeur{
+  display:block;
+  font-size:clamp(32px, 5vw, 56px);
+  font-weight:800;
+  line-height:1;
+  color:var(--ia-accent);
+  font-variant-numeric:tabular-nums;
+}
+.ia-preuve__libelle{
+  display:block;
+  margin-top:8px;
+  font-size:.8rem;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  opacity:.72;
+}
+
+
+/* ---------------------------------------------------------
+   7 | APPARITION AU DÉFILEMENT
+   Règle de maison : on anime DEPUIS UN ÉTAT VISIBLE.
+   Un bloc parqué à opacity 0 en attente d'un observateur
+   laisse une page vide au premier regard, sur l'aperçu de
+   partage et sur la vignette. D'où l'opacité .001 plutôt
+   que 0, et le repli .ia-vu forcé si le script ne tourne pas.
+   --------------------------------------------------------- */
+
+.ia-apparait{
+  opacity:.001;
+  transform:translateY(18px);
+  transition:opacity .7s var(--ia-ease), transform .7s var(--ia-ease);
+  will-change:opacity, transform;
+}
+.ia-apparait.ia-vu{
+  opacity:1;
+  transform:none;
+  will-change:auto;
+}
+html.no-js .ia-apparait{ opacity:1; transform:none; }
+
+/* Décalage en cascade pour une grille de cartes. */
+.ia-cascade > *:nth-child(1){ transition-delay:0s; }
+.ia-cascade > *:nth-child(2){ transition-delay:.08s; }
+.ia-cascade > *:nth-child(3){ transition-delay:.16s; }
+.ia-cascade > *:nth-child(4){ transition-delay:.24s; }
+.ia-cascade > *:nth-child(5){ transition-delay:.32s; }
+.ia-cascade > *:nth-child(6){ transition-delay:.40s; }
+
+
+/* ---------------------------------------------------------
+   8 | CARTE QUI SE SOULÈVE
+   À poser sur tes cartes existantes. Ne change ni leur
+   fond, ni leur arrondi, ni leur contenu : seulement le
+   geste au survol.
+   --------------------------------------------------------- */
+
+.ia-leve{
+  transition:transform .45s var(--ia-ease),
+             border-color .45s var(--ia-ease),
+             box-shadow .45s var(--ia-ease);
+}
+.ia-leve:hover{
+  transform:translateY(-4px);
+  border-color:var(--ia-accent);
+}
+
+
+/* ---------------------------------------------------------
+   9 | VERRE FLOUTÉ
+   Pour la barre de navigation collante. Prend ton fond de
+   page et le rend translucide, donc ta couleur est
+   conservée, seule sa densité change.
+   --------------------------------------------------------- */
+
+.ia-verre{
+  background:color-mix(in srgb, var(--ia-surface) 72%, transparent);
+  backdrop-filter:blur(18px) saturate(1.4);
+  -webkit-backdrop-filter:blur(18px) saturate(1.4);
+  border-bottom:1px solid var(--ia-filet);
+}
+
+/* Repli pour les navigateurs sans flou : on repasse en
+   fond plein, sinon la barre devient illisible. */
+@supports not (backdrop-filter: blur(1px)){
+  .ia-verre{ background:var(--ia-surface); }
+}
+
+
+/* ---------------------------------------------------------
+   10 | PIED DE PAGE
+   Deux marqueurs de la maison : la rangée de boutons ronds
+   pour les réseaux, et les crédits CENTRÉS.
+   --------------------------------------------------------- */
+
+.ia-pied__reseaux{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:center;
+}
+
+/* Halo qui scintille en permanence sur les réseaux, dans TA
+   couleur d'accent. Décalage de 0,5 s d'une icône à l'autre,
+   ce qui fait courir une onde le long de la rangée. */
+.ia-pied__reseaux .ia-rond36{
+  animation:ia-halo 3.2s ease-in-out infinite;
+}
+.ia-pied__reseaux .ia-rond36:nth-child(2){ animation-delay:.5s; }
+.ia-pied__reseaux .ia-rond36:nth-child(3){ animation-delay:1s; }
+.ia-pied__reseaux .ia-rond36:nth-child(4){ animation-delay:1.5s; }
+.ia-pied__reseaux .ia-rond36:hover{ animation:none; }
+
+@keyframes ia-halo{
+  0%, 100%{ box-shadow:0 0 12px -4px color-mix(in srgb, var(--ia-accent) 55%, transparent); }
+  50%     { box-shadow:0 0 26px -2px color-mix(in srgb, var(--ia-accent) 85%, transparent); }
+}
+
+.ia-pied__credits{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:center;
+  gap:6px 14px;
+  text-align:center;
+  font-size:.8rem;
+  opacity:.72;
+}
+
+
+/* ---------------------------------------------------------
+   11 | WHATSAPP FLOTTANT
+   Posé par le script. Le canal de conversion de la maison.
+   Reste au-dessus du pied de page, jamais sur du contenu.
+   --------------------------------------------------------- */
+
+.ia-wa{
+  position:fixed;
+  right:20px; bottom:20px;
+  z-index:80;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:54px; height:54px;
+  border-radius:var(--ia-rond);
+  background:#25D366;
+  color:#FFFFFF;
+  box-shadow:0 12px 30px -10px rgba(37,211,102,.6);
+  transition:transform .45s var(--ia-rebond), box-shadow .35s var(--ia-ease);
+}
+.ia-wa:hover{
+  transform:scale(1.07);
+  box-shadow:0 18px 40px -12px rgba(37,211,102,.75);
+}
+.ia-wa svg{ width:27px; height:27px; fill:currentColor; }
+
+
+/* ---------------------------------------------------------
+   12 | INDICATEUR DE DÉFILEMENT
+   Le rail vertical à gauche, posé par le script. Masqué
+   sous 900 px, comme sur tous les sites de la maison.
+   --------------------------------------------------------- */
+
+.ia-rail{
+  position:fixed;
+  left:24px; top:50%;
+  transform:translateY(-50%);
+  z-index:40;
+  width:2px; height:120px;
+  border-radius:var(--ia-rond);
+  background:var(--ia-filet);
+  overflow:hidden;
+}
+.ia-rail__jauge{
+  display:block;
+  width:100%; height:0%;
+  background:var(--ia-accent);
+  transition:height .12s linear;
+}
+@media (max-width: 900px){
+  .ia-rail{ display:none; }
+}
+
+
+/* ---------------------------------------------------------
+   13 | ACCESSIBILITÉ ET MOBILE
+   --------------------------------------------------------- */
+
+.ia-btn:focus-visible,
+.ia-rond36:focus-visible,
+.ia-wa:focus-visible{
+  outline:2px solid var(--ia-accent);
+  outline-offset:3px;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .ia-apparait,
+  .ia-hero .ia-entree{
+    opacity:1 !important;
+    transform:none !important;
+    animation:none !important;
+    transition:none !important;
+  }
+  .ia-pied__reseaux .ia-rond36{ animation:none; }
+  .ia-btn, .ia-rond36, .ia-leve, .ia-wa{ transition:none; }
+}
+
+@media (max-width: 760px){
+  .ia-preuves{ grid-template-columns:repeat(2, 1fr); }
+  .ia-btn{ width:100%; justify-content:center; }
+  .ia-wa{ right:16px; bottom:16px; width:50px; height:50px; }
+  /* Mobile : cibles tactiles confortables */
+  footer a{ display:inline-flex; align-items:center; min-height:40px; }
+  button[role="radio"][aria-label]{ min-width:34px; min-height:34px; }
+  input, select, textarea{ font-size:16px !important; } /* évite le zoom auto iOS */
+  .ia-hero h1{ overflow-wrap:anywhere; }
+  section{ scroll-margin-top:76px !important; }
+}
+@media (hover: none){
+  .ia-leve:hover{ transform:none; }
+}

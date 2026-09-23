@@ -1,0 +1,12 @@
+# Fichiers de travail, jamais utilises par le site.
+# uploads/ contient des images tierces recuperees sur les reseaux sociaux,
+# des captures d'ecran et des envois WhatsApp bruts : rien de tout cela
+# n'a vocation a etre publie sur un depot public.
+uploads/
+a-supprimer/
+
+# Etat interne de l'editeur
+.image-slots.state.json
+.thumbnail
+
+.DS_Store

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Carte Fidélité — The Famous, Bastos Yaoundé</title>
+<meta name="description" content="Créez votre carte fidélité The Famous et profitez d'avantages exclusifs à l'institut, au spa et à la salle de sport." />
+<meta name="theme-color" content="#1a1511" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="The Famous" />
+<meta property="og:title" content="Carte Fidélité — The Famous, Bastos Yaoundé" />
+<meta property="og:description" content="Créez votre carte fidélité The Famous et profitez d'avantages exclusifs à l'institut, au spa et à la salle de sport." />
+<meta property="og:image" content="assets/institut-salle.jpg" />
+<meta property="og:locale" content="fr_FR" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/png" href="assets/logo-bronze.png" />
+<link rel="apple-touch-icon" href="assets/logo-bronze.png" />
+<link rel="manifest" href="manifest.json" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="The Famous" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Anton&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{--bg:#0A0703;--surface:#1B1008;--surface-2:#241609;--surface-3:#2E1D0E;--surface-alt:#120B05;--surface-form:#150D06;--ink:#F4EBDC;--ink-2:#E8DCC8;--ink-3:#C2AE96;--ink-4:#9C8467;--faint:#6E5C47;--accent:#C9A24A;--accent-light:#E4CE92;--accent-strong:#E4CE92;--accent-dim:#8E6E2C;--danger:#E8A08A;--btn-ink:#1B1008;--line:rgba(201,162,74,.28);--line-soft:rgba(201,162,74,.18);--line-strong:rgba(201,162,74,.5);--nav-bg:rgba(10,7,3,.94);--hero-a:#E4CE92;--hero-b:#C9A24A;--hero-c:#8E6E2C;--logo-dark:block;--logo-light:none;color-scheme:dark;}
+  :root[data-theme="light"]{--bg:#FAF5EC;--surface:#FFFDF8;--surface-2:#FFFFFF;--surface-3:#F1E8D8;--surface-alt:#F4ECDE;--surface-form:#FFFFFF;--ink:#1E1409;--ink-2:#3B2B1A;--ink-3:#6A5842;--ink-4:#6F5B43;--faint:#7A6650;--accent:#7A5A12;--accent-light:#8A6A1C;--accent-strong:#6B4E12;--accent-dim:#6E5A28;--danger:#A33B12;--btn-ink:#FFF8E9;--line:rgba(122,90,18,.30);--line-soft:rgba(122,90,18,.16);--line-strong:rgba(122,90,18,.5);--nav-bg:rgba(250,245,236,.94);--hero-a:#A8822F;--hero-b:#7A5A12;--hero-c:#4E3608;--logo-dark:none;--logo-light:block;color-scheme:light;}
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Jost', system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: var(--accent); text-decoration: none; transition: color .2s ease, background .2s ease, opacity .2s ease; }
+  a:hover { color: var(--accent-strong); }
+  ::selection { background: var(--accent); color: var(--surface); }
+  .fam-champ { transition: transform .25s cubic-bezier(.3,1.4,.5,1), border-color .25s ease, box-shadow .25s ease !important; }
+  .fam-champ:hover { border-color: var(--line-strong, var(--accent)) !important; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent); transform: translateY(-1px); }
+  .fam-champ:focus, .fam-champ:focus-within { outline: none; border-color: var(--accent) !important; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent), 0 0 20px color-mix(in srgb, var(--accent) 20%, transparent); }
+  span.fam-champ:focus-within select, span.fam-champ select:focus { outline: none; }
+  @media (prefers-reduced-motion: reduce) { .fam-champ:hover { transform: none !important; } }
+  section.ia-hero::after { content: ""; position: absolute; bottom: 0; left: 0; width: 38%; height: 2px; z-index: 3; pointer-events: none; background: linear-gradient(90deg, transparent, rgba(228,206,146,.15) 20%, #FFF3D1 50%, rgba(228,206,146,.15) 80%, transparent); filter: drop-shadow(0 0 6px rgba(228,206,146,.9)); animation: famLigne 5.5s cubic-bezier(.45,0,.3,1) infinite; }
+  section.ia-hero::after { animation-delay: -2.7s; }
+  :root[data-theme="light"] section.ia-hero::after { height: 2px; background: linear-gradient(90deg, transparent, rgba(122,90,18,.25) 20%, #A8822F 50%, rgba(122,90,18,.25) 80%, transparent); filter: drop-shadow(0 0 5px rgba(168,130,47,.75)); }
+  @keyframes famLigne { 0% { transform: translateX(-100%); opacity: 0; } 12% { opacity: 1; } 70% { opacity: 1; } 85%, 100% { transform: translateX(270%); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { section.ia-hero::after { animation: none; opacity: 0; } }
+  .fam-carte { box-shadow: 0 10px 30px rgba(0,0,0,.28), 0 0 26px color-mix(in srgb, var(--accent) 16%, transparent); }
+  .fam-carte:hover { border-color: var(--accent) !important; box-shadow: 0 18px 44px rgba(0,0,0,.35), 0 0 42px color-mix(in srgb, var(--accent) 34%, transparent), 0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent); }
+  @keyframes famRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+</style>
+<script>try{var t=localStorage.getItem('famous_theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
+<link rel="stylesheet" href="couche-innova.css" />
+<script src="./couche-innova.js"></script>
+</helmet>
+
+<div style="width:100%;overflow:hidden">
+<dc-import name="Nav" hint-size="100%,0px"></dc-import>
+
+<section class="ia-hero" style="position:relative;overflow:clip;background:var(--bg);border-bottom:1px solid var(--line-soft);padding:calc(clamp(44px,6vw,80px) + 76px) clamp(16px,4vw,32px) clamp(52px,7vw,96px)">
+  <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;-webkit-mask-image:radial-gradient(ellipse 90% 85% at 50% 40%,#000 45%,transparent 100%);mask-image:radial-gradient(ellipse 90% 85% at 50% 40%,#000 45%,transparent 100%)"><x-import component-from-global-scope="fam-vip-lumiere" from="./vip-lumiere.js" color="#C9A24A" density="1" hint-size="100%,100%" style="position:absolute;top:0;left:0;width:100%;height:100%"></x-import></div>
+  <div style="position:relative;max-width:1100px;margin:0 auto">
+    <div style="text-align:center;max-width:640px;margin:0 auto;animation:famRise .6s ease both">
+      <div class="ia-entree" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:16px">
+        <span style="width:30px;height:1px;background:var(--accent)"></span>
+        <span style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent)">Espace Fidélité</span>
+        <span style="width:30px;height:1px;background:var(--accent)"></span>
+      </div>
+      <h1 class="ia-entree" style="margin:0;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(36px,5.6vw,62px);line-height:1.05;color:var(--ink)">Votre Pass VIP</h1>
+      <p class="ia-entree" style="margin:16px 0 0;font-size:clamp(15px,1.4vw,18px);line-height:1.65;font-weight:300;color:var(--ink-3);text-wrap:pretty">Un code unique à présenter à l'accueil. Chaque passage est comptabilisé, chaque 10<sup>e</sup> soin est offert.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(20px,3vw,34px);margin-top:clamp(32px,5vw,52px);align-items:start">
+      <div class="ia-leve ia-apparait fam-carte" style="padding:clamp(22px,3vw,32px);background:var(--surface-form);border:1px solid var(--line);border-radius:8px">
+        <h2 style="margin:0 0 20px;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)">Inscription gratuite</h2>
+        <label style="display:block;margin-bottom:16px">
+          <span style="display:block;margin-bottom:7px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-4)">Nom complet</span>
+          <input class="fam-champ" type="text" ref="{{ nameRef }}" autocomplete="name" maxlength="40" onInput="{{ onNameInput }}" placeholder="Ex. Aïcha Mballa" style="width:100%;padding:14px 16px;background:var(--bg);border:1px solid var(--line);border-radius:6px;color:var(--ink);font-size:15px;font-weight:300;outline:none" />
+        <span style="display:flex;justify-content:space-between;gap:10px;margin-top:7px;font-size:11px;font-weight:300;color:var(--ink-4)"><span>Sur la carte : {{ namePreview }}</span><span style="font-variant-numeric:tabular-nums">{{ nameCount }}/40</span></span>
+        </label>
+        <label style="display:block;margin-bottom:8px">
+          <span style="display:block;margin-bottom:7px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-4)">Téléphone</span>
+          <span style="display:flex;gap:8px">
+            <span class="fam-champ" style="position:relative;flex:0 0 auto;display:flex;align-items:center;border:1px solid var(--line);border-radius:6px;background:var(--bg)">
+              <select aria-label="Indicatif pays" value="{{ ccCode }}" onChange="{{ onCc }}" style="appearance:none;-webkit-appearance:none;height:100%;padding:14px 34px 14px 14px;background:transparent;border:none;outline:none;color:var(--ink);font-family:'Jost',sans-serif;font-size:15px;font-weight:400;cursor:pointer">
+                <option value="CM">CM +237</option>
+                <option value="GA">GA +241</option>
+                <option value="CG">CG +242</option>
+                <option value="CD">CD +243</option>
+                <option value="GQ">GQ +240</option>
+                <option value="TD">TD +235</option>
+                <option value="CF">CF +236</option>
+                <option value="NG">NG +234</option>
+                <option value="CI">CI +225</option>
+                <option value="SN">SN +221</option>
+                <option value="FR">FR +33</option>
+                <option value="BE">BE +32</option>
+                <option value="CH">CH +41</option>
+                <option value="GB">GB +44</option>
+                <option value="US">US +1</option>
+                <option value="CA">CA +1</option>
+              </select>
+              <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute;right:12px;pointer-events:none;color:var(--accent)"><path d="M6 9l6 6 6-6"></path></svg>
+            </span>
+            <input class="fam-champ" type="tel" inputmode="numeric" autocomplete="tel-national" ref="{{ phoneRef }}" value="{{ phoneFmt }}" onChange="{{ onPhone }}" placeholder="{{ phonePh }}" style="flex:1 1 auto;min-width:0;width:100%;padding:14px 16px;background:var(--bg);border:1px solid var(--line);border-radius:6px;color:var(--ink);font-size:15px;font-weight:300;outline:none;font-variant-numeric:tabular-nums;letter-spacing:.04em" />
+          </span>
+          <span style="display:flex;align-items:center;gap:6px;margin-top:7px;font-size:11px;font-weight:300;color:var(--ink-4)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.5 3.5A11 11 0 0 0 3.2 17.1L2 22l5-1.3A11 11 0 0 0 20.5 3.5z"></path></svg>Numéro WhatsApp · {{ phoneFull }}</span>
+        </label>
+        <sc-if value="{{ formError }}" hint-placeholder-val="{{ false }}">
+          <p style="margin:10px 0 0;font-size:13px;color:var(--danger)">{{ formError }}</p>
+        </sc-if>
+        <button type="button" onClick="{{ createPass }}" style="width:100%;margin-top:20px;padding:16px;border:1px solid rgba(255,255,255,.34);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),linear-gradient(100deg,var(--accent-light),var(--accent));color:var(--btn-ink);font-family:'Jost',sans-serif;font-size:14px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),inset 0 -6px 14px rgba(255,255,255,.07),0 6px 18px rgba(0,0,0,.18);backdrop-filter:blur(12px) saturate(1.7);-webkit-backdrop-filter:blur(12px) saturate(1.7)" style-hover="filter:brightness(1.08)">Générer mon Pass VIP</button>
+        <p style="margin:16px 0 0;font-size:12px;line-height:1.55;font-weight:300;color:var(--faint)">Votre pass est enregistré sur cet appareil uniquement. Présentez-le à l'accueil pour créditer vos passages.</p>
+        <sc-if value="{{ hasMember }}" hint-placeholder-val="{{ false }}">
+          <button type="button" onClick="{{ resetPass }}" style="width:100%;margin-top:12px;padding:13px;border:1px solid var(--line);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),rgba(255,255,255,.07);color:var(--ink-4);font-family:'Jost',sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),inset 0 -6px 14px rgba(255,255,255,.07),0 6px 18px rgba(0,0,0,.18);backdrop-filter:blur(12px) saturate(1.7);-webkit-backdrop-filter:blur(12px) saturate(1.7)" style-hover="border-color:var(--accent);color:var(--accent)">Réinitialiser la carte</button>
+        </sc-if>
+      </div>
+
+      <div style="align-self:center;justify-self:center;width:100%;max-width:540px;display:flex;flex-direction:column;align-items:center;gap:18px">
+        <div style="width:100%;container-type:inline-size;perspective:1200px">
+          <div ref="{{ tiltRef }}" onPointerMove="{{ tiltMove }}" onPointerEnter="{{ tiltEnter }}" onPointerLeave="{{ tiltLeave }}" style="position:relative;transform-style:preserve-3d;will-change:transform;transition:transform 420ms cubic-bezier(.22,1,.36,1);transform:rotateX(0deg) rotateY(0deg) scale(1)">
+          <div onClick="{{ cFlip }}" title="Cliquer pour retourner la carte" style="position:relative;width:100%;aspect-ratio:85/55;cursor:pointer;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.3,.9,.3,1);transform:rotateY({{ cDeg }});--c1:{{ c.c1 }};--c2:{{ c.c2 }};--ci:{{ c.ci }};--ci2:{{ c.ci2 }};--cm:{{ c.cm }};--ca:{{ c.ca }};--cas:{{ c.cas }};--cl:{{ c.cl }};--cls:{{ c.cls }};--clsoft:{{ c.clsoft }}">
+        <div style="position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:grid;grid-template-rows:auto 1fr auto;padding:6.5cqw 7cqw 5.5cqw;border-radius:4.5cqw;overflow:hidden;background:linear-gradient(150deg,var(--c1),var(--c2) 65%);border:1px solid var(--cls);box-shadow:0 24px 60px rgba(0,0,0,.35),inset 0 1px 1px rgba(255,255,255,.18)">
+          <div aria-hidden="true" style="position:absolute;inset:0;border-radius:inherit;overflow:hidden;opacity:.6;pointer-events:none"><x-import component-from-global-scope="fam-dither" from="./fam-dither.js" back="{{ c.c2 }}" front="{{ c.c1 }}" speed="0.35" px="0.6" scale="1.6" hint-size="100%,100%" style="position:absolute;top:0;left:0;width:100%;height:100%"></x-import></div>
+          <div aria-hidden="true" style="position:absolute;top:-22cqw;right:-18cqw;width:62cqw;height:62cqw;background:radial-gradient(circle,var(--clsoft),transparent 70%);pointer-events:none"></div>
+          <div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.08) 45%,transparent 60%);pointer-events:none"></div>
+          <div style="position:relative;display:flex;justify-content:space-between;align-items:flex-start;gap:3cqw">
+            <div>
+              <img src="assets/logo.png" alt="The Famous" style="height:7.5cqw;width:auto;display:{{ cLogoDark }}" /><img src="assets/logo-bronze.png" alt="" style="height:7.5cqw;width:auto;display:{{ cLogoLight }}" />
+              <p style="margin:2cqw 0 0;font-size:max(9px,2cqw);letter-spacing:.24em;text-transform:uppercase;color:var(--ca)">Carte de fidélité</p>
+            </div>
+            <span style="padding:1.2cqw 2.6cqw;border:1px solid var(--ca);border-radius:999px;font-size:max(9px,2cqw);letter-spacing:.16em;text-transform:uppercase;color:var(--cas);white-space:nowrap">Membre VIP</span>
+          </div>
+          <div style="position:relative;display:flex;align-items:center;justify-content:space-between;gap:4cqw;min-height:0">
+            <div style="min-width:0;display:flex;flex-direction:column;gap:1.6cqw">
+              <p style="margin:0;font-family:'Cormorant Garamond',serif;font-size:max(18px,6.2cqw);font-weight:600;line-height:1.05;color:var(--ci);overflow-wrap:anywhere">{{ memberName }}</p>
+              <p style="margin:0;font-size:max(11px,2.7cqw);font-weight:300;color:var(--ci2)">{{ memberPhone }}</p>
+              <p style="margin:0;font-size:max(11px,2.9cqw);font-variant-numeric:tabular-nums;letter-spacing:.12em;color:var(--ca)">{{ memberId }}</p>
+            </div>
+            <div style="flex:0 0 auto;padding:1.6cqw;background:#F8F2E6;border-radius:2cqw">
+              <canvas ref="{{ qrRef }}" width="540" height="540" style="display:block;width:22cqw;height:22cqw;image-rendering:pixelated"></canvas>
+            </div>
+          </div>
+          <div style="position:relative;display:flex;justify-content:space-between;gap:3cqw;padding-top:2.4cqw;border-top:1px solid var(--cl)">
+            <span style="font-size:max(9px,1.9cqw);letter-spacing:.14em;text-transform:uppercase;color:var(--cm);white-space:nowrap">{{ memberStatus }}</span>
+            <span style="font-size:max(9px,1.9cqw);letter-spacing:.14em;text-transform:uppercase;color:var(--cm);white-space:nowrap">Bastos · Yaoundé</span>
+          </div>
+        </div>
+          <div aria-hidden="{{ cBackHidden }}" style="position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:rotateY(180deg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.6cqw;padding:6cqw;border-radius:4.5cqw;overflow:hidden;background:radial-gradient(120% 90% at 50% 0%,var(--c1),var(--c2) 70%);border:1px solid var(--cls);box-shadow:0 24px 60px rgba(0,0,0,.35),inset 0 1px 1px rgba(255,255,255,.18)">
+          <div aria-hidden="true" style="position:absolute;inset:0;border-radius:inherit;overflow:hidden;opacity:.55;pointer-events:none"><x-import component-from-global-scope="fam-dither" from="./fam-dither.js" back="{{ c.c2 }}" front="{{ c.c1 }}" speed="0.35" px="0.6" scale="1.6" hint-size="100%,100%" style="position:absolute;top:0;left:0;width:100%;height:100%"></x-import></div>
+            <div aria-hidden="true" style="position:absolute;inset:4cqw;border:1px solid var(--clsoft);border-radius:3cqw;pointer-events:none"></div>
+            <div aria-hidden="true" style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0 2.4cqw,rgba(255,255,255,.025) 2.4cqw 2.8cqw);pointer-events:none"></div>
+            <img loading="lazy" decoding="async" src="assets/logo.png" alt="The Famous" style="position:relative;height:17cqw;width:auto;display:{{ cLogoDark }}" /><img loading="lazy" decoding="async" src="assets/logo-bronze.png" alt="" style="position:relative;height:17cqw;width:auto;display:{{ cLogoLight }}" />
+            <span style="position:relative;width:14cqw;height:1px;background:var(--ca)"></span>
+            <p style="position:relative;margin:0;font-size:max(9px,2.2cqw);letter-spacing:.34em;text-transform:uppercase;color:var(--ca)">Carte de fidélité VIP</p>
+            <p style="position:relative;margin:0;text-align:center;font-size:max(9px,1.9cqw);letter-spacing:.14em;text-transform:uppercase;color:var(--cm)">Immeuble Bastos Building · Yaoundé<br />+237 6 89 67 29 32</p>
+          </div>
+          </div>
+          <div aria-hidden="true" ref="{{ glareRef }}" style="position:absolute;inset:0;border-radius:4.5cqw;pointer-events:none;z-index:5"></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px 22px">
+          <div role="radiogroup" aria-label="Face de la carte" style="position:relative;display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;width:max-content;padding:5px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.03)),var(--surface-2);border:1px solid var(--line);box-shadow:inset 0 1px 1px rgba(255,255,255,.35)">
+            <span aria-hidden="true" style="position:absolute;top:5px;bottom:5px;left:{{ cKnob }};width:calc((100% - 10px) / 2);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0) 58%),linear-gradient(100deg,#E4CE92,#C9A24A);box-shadow:0 6px 18px rgba(201,162,74,.4);transition:left .45s cubic-bezier(.3,1.35,.5,1)"></span>
+            <button type="button" role="radio" aria-checked="{{ cFrontOn }}" onClick="{{ cShowFront }}" style="position:relative;z-index:1;padding:10px 20px;border:none;border-radius:999px;background:transparent;cursor:pointer;font-family:'Jost',sans-serif;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;transition:color .3s ease;color:{{ cFrontFg }}">Recto</button>
+            <button type="button" role="radio" aria-checked="{{ cBackOn }}" onClick="{{ cShowBack }}" style="position:relative;z-index:1;padding:10px 20px;border:none;border-radius:999px;background:transparent;cursor:pointer;font-family:'Jost',sans-serif;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;transition:color .3s ease;color:{{ cBackFg }}">Couverture</button>
+          </div>
+          <div role="radiogroup" aria-label="Couleur de la carte" style="display:flex;align-items:center;gap:10px">
+            <sc-for list="{{ cThemes }}" as="th" hint-placeholder-count="6">
+              <button type="button" role="radio" aria-checked="{{ th.on }}" aria-label="{{ th.label }}" title="{{ th.label }}" onClick="{{ th.select }}" style="width:30px;height:30px;padding:0;border-radius:50%;cursor:pointer;background:{{ th.swatch }};border:2px solid {{ th.ring }};box-shadow:inset 0 1px 2px rgba(255,255,255,.4),0 0 0 {{ th.halo }} var(--accent);transition:transform .25s cubic-bezier(.3,1.4,.5,1),box-shadow .25s ease" style-hover="transform:scale(1.12)"></button>
+            </sc-for>
+          </div>
+        </div>
+        <p style="margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-4)">Couleur : {{ cThemeLabel }}</p>
+      </div>
+    </div>
+
+    <div class="ia-cascade" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:clamp(14px,2vw,20px);margin-top:clamp(28px,4vw,42px)">
+      <div class="ia-leve ia-apparait fam-carte" style="padding:clamp(20px,2.6vw,26px);background:var(--surface-form);border:1px solid var(--line-soft);border-radius:8px">
+        <p style="margin:0;font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;color:var(--accent-strong)">01</p>
+        <p style="margin:10px 0 0;font-size:14px;line-height:1.6;font-weight:300;color:var(--ink-3)">Remplissez le formulaire, votre QR code est généré instantanément.</p>
+      </div>
+      <div class="ia-leve ia-apparait fam-carte" style="padding:clamp(20px,2.6vw,26px);background:var(--surface-form);border:1px solid var(--line-soft);border-radius:8px">
+        <p style="margin:0;font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;color:var(--accent-strong)">02</p>
+        <p style="margin:10px 0 0;font-size:14px;line-height:1.6;font-weight:300;color:var(--ink-3)">Présentez-le à l'accueil à chaque visite, spa comme salle de sport.</p>
+      </div>
+      <div class="ia-leve ia-apparait fam-carte" style="padding:clamp(20px,2.6vw,26px);background:var(--surface-form);border:1px solid var(--line-soft);border-radius:8px">
+        <p style="margin:0;font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;color:var(--accent-strong)">03</p>
+        <p style="margin:10px 0 0;font-size:14px;line-height:1.6;font-weight:300;color:var(--ink-3)">Au 10<sup>e</sup> passage, votre soin est offert.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<dc-import name="Footer" salon="{{ true }}" hint-size="100%,420px"></dc-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { member: null, formError: "", cTheme: "champagne", cBack: false, cc: "CM", phone: "", nameDraft: "" };
+  COUNTRIES = [
+    ["CM", "🇨🇲", "+237", [1, 2, 2, 2, 2]], ["GA", "🇬🇦", "+241", [2, 2, 2, 2]], ["CG", "🇨🇬", "+242", [2, 3, 2, 2]], ["CD", "🇨🇩", "+243", [3, 3, 3]],
+    ["GQ", "🇬🇶", "+240", [3, 3, 3]], ["TD", "🇹🇩", "+235", [2, 2, 2, 2]], ["CF", "🇨🇫", "+236", [2, 2, 2, 2]], ["NG", "🇳🇬", "+234", [3, 3, 4]],
+    ["CI", "🇨🇮", "+225", [2, 2, 2, 2, 2]], ["SN", "🇸🇳", "+221", [2, 3, 2, 2]], ["FR", "🇫🇷", "+33", [1, 2, 2, 2, 2]], ["BE", "🇧🇪", "+32", [3, 2, 2, 2]],
+    ["CH", "🇨🇭", "+41", [2, 3, 2, 2]], ["GB", "🇬🇧", "+44", [4, 6]], ["US", "🇺🇸", "+1", [3, 3, 4]], ["CA", "🇨🇦", "+1", [3, 3, 4]]
+  ];
+  cap(w) { return w.split(/([-'])/).map(p => p.length > 1 || /\p{L}/u.test(p) ? p.charAt(0).toLocaleUpperCase("fr-FR") + p.slice(1).toLocaleLowerCase("fr-FR") : p).join(""); }
+  cardName(s) {
+    const w = s.trim().split(/\s+/).filter(Boolean).map(x => this.cap(x)), MAX = 20;
+    if (!w.length) return "";
+    const full = w.join(" "); if (full.length <= MAX) return full;
+    const two = w[0] + " " + w[w.length - 1]; if (two.length <= MAX) return two;
+    const ini = w[0] + " " + w[w.length - 1].charAt(0) + "."; if (ini.length <= MAX) return ini;
+    return w[0].slice(0, MAX - 1) + ".";
+  }
+  country() { return this.COUNTRIES.find(c => c[0] === this.state.cc) || this.COUNTRIES[0]; }
+  fmtPhone(d, g) { const out = []; let i = 0; for (const n of g) { if (i >= d.length) break; out.push(d.slice(i, i + n)); i += n; } return out.join(" "); }
+  THEMES = {
+    champagne: { label: "Champagne", swatch: "linear-gradient(135deg,#FBF4E6,#E6D3AE)", c1: "#FBF4E6", c2: "#EFE2C6", ci: "#2A1B0C", ci2: "#4A3620", cm: "#5A4630", ca: "#7A5A12", cas: "#6B4E12", cl: "rgba(122,90,18,.3)", cls: "rgba(122,90,18,.5)", clsoft: "rgba(122,90,18,.18)", dark: false },
+    or: { label: "Or & Noir", swatch: "linear-gradient(135deg,#2E1D0E,#0A0703)", c1: "#2E1D0E", c2: "#0A0703", ci: "#F4EBDC", ci2: "#E8DCC8", cm: "#9C8467", ca: "#C9A24A", cas: "#E4CE92", cl: "rgba(201,162,74,.3)", cls: "rgba(201,162,74,.55)", clsoft: "rgba(201,162,74,.2)", dark: true },
+    bronze: { label: "Bronze", swatch: "linear-gradient(135deg,#8A5A2B,#3A2210)", c1: "#8A5A2B", c2: "#3A2210", ci: "#FFF4E4", ci2: "#F2DFC4", cm: "#D9BE98", ca: "#F2D38C", cas: "#FFE7B0", cl: "rgba(242,211,140,.35)", cls: "rgba(242,211,140,.6)", clsoft: "rgba(242,211,140,.22)", dark: true },
+    rose: { label: "Rose poudré", swatch: "linear-gradient(135deg,#F3DCD6,#C99A92)", c1: "#F6E4DF", c2: "#E9CBC3", ci: "#3A1E1A", ci2: "#56302A", cm: "#5E3A33", ca: "#6A2F22", cas: "#5A2518", cl: "rgba(138,75,60,.28)", cls: "rgba(138,75,60,.5)", clsoft: "rgba(138,75,60,.18)", dark: false },
+    bordeaux: { label: "Bordeaux", swatch: "linear-gradient(135deg,#6A1B2E,#240811)", c1: "#6A1B2E", c2: "#240811", ci: "#FBEFF1", ci2: "#F0D9DE", cm: "#C99AA5", ca: "#E4CE92", cas: "#F3E2B4", cl: "rgba(228,206,146,.3)", cls: "rgba(228,206,146,.55)", clsoft: "rgba(228,206,146,.2)", dark: true },
+    gym: { label: "Noir & Lime", swatch: "linear-gradient(135deg,#1B2112,#050604)", c1: "#1B2112", c2: "#050604", ci: "#F2F5EC", ci2: "#DDE4CF", cm: "#8E9878", ca: "#CBF34A", cas: "#E2FF8C", cl: "rgba(203,243,74,.3)", cls: "rgba(203,243,74,.55)", clsoft: "rgba(203,243,74,.18)", dark: true }
+  };
+  qrRef = React.createRef();
+  tiltRef = React.createRef();
+  glareRef = React.createRef();
+  tiltEnter = () => { const el = this.tiltRef.current; if (el) el.style.transition = "transform 120ms ease-out"; };
+  tiltMove = e => {
+    const el = this.tiltRef.current; if (!el || e.pointerType === "touch") return;
+    const r = el.getBoundingClientRect(), dx = (e.clientX - r.left) / r.width - .5, dy = (e.clientY - r.top) / r.height - .5, M = 9;
+    el.style.transform = "rotateX(" + (-dy * 2 * M).toFixed(2) + "deg) rotateY(" + (dx * 2 * M).toFixed(2) + "deg) scale(1.02)";
+    if (this.glareRef.current) this.glareRef.current.style.background = "radial-gradient(38% 55% at " + ((dx + .5) * 100).toFixed(1) + "% " + ((dy + .5) * 100).toFixed(1) + "%, rgba(255,255,255,.2) 0%, rgba(255,255,255,0) 70%)";
+  };
+  tiltLeave = () => {
+    const el = this.tiltRef.current; if (!el) return;
+    el.style.transition = "transform 420ms cubic-bezier(.22,1,.36,1)"; el.style.transform = "rotateX(0deg) rotateY(0deg) scale(1)";
+    if (this.glareRef.current) this.glareRef.current.style.background = "transparent";
+  };
+  nameRef = React.createRef();
+  phoneRef = React.createRef();
+
+  componentDidMount() {
+    try { const ct = localStorage.getItem("famous_card_theme_v2"); if (ct && this.THEMES[ct]) this.setState({ cTheme: ct }); } catch (e) {}
+    try {
+      const raw = localStorage.getItem("famous_vip_member");
+      if (raw) this.setState({ member: JSON.parse(raw) });
+    } catch (e) {}
+    this.drawQR();
+  }
+
+  componentDidUpdate() { this.drawQR(); }
+
+  hash(str) { let h = 2166136261; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+
+  drawQR() {
+    const c = this.qrRef.current;
+    if (!c) return;
+    const m = this.state.member;
+    const payload = m ? "FAMOUS|" + m.id + "|" + m.name + "|" + m.phone : "FAMOUS|PASS-VIP|the__famousbeauty";
+    if (c.dataset.payload === payload) return;
+    c.dataset.payload = payload;
+
+    const ctx = c.getContext("2d");
+    const N = 29, Q = 2, S = c.width / (N + Q * 2);
+    ctx.fillStyle = "#F8F2E6";
+    ctx.fillRect(0, 0, c.width, c.height);
+
+    let seed = this.hash(payload) || 1;
+    const rnd = () => { seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5; return ((seed >>> 0) % 1000) / 1000; };
+    const reserved = (x, y) =>
+      (x < 8 && y < 8) || (x > N - 9 && y < 8) || (x < 8 && y > N - 9) ||
+      (x === 6 || y === 6) ||
+      (x >= N - 9 && x <= N - 5 && y >= N - 9 && y <= N - 5);
+
+    const dark = (x, y) => { ctx.fillRect((x + Q) * S, (y + Q) * S, S + 0.5, S + 0.5); };
+    ctx.fillStyle = "#14100A";
+
+    for (let y = 0; y < N; y++)
+      for (let x = 0; x < N; x++)
+        if (!reserved(x, y) && rnd() > 0.48) dark(x, y);
+
+    for (let i = 0; i < N; i++) if (i % 2 === 0) { dark(i, 6); dark(6, i); }
+
+    const finder = (ox, oy) => {
+      for (let y = 0; y < 7; y++)
+        for (let x = 0; x < 7; x++) {
+          const edge = x === 0 || y === 0 || x === 6 || y === 6;
+          const core = x >= 2 && x <= 4 && y >= 2 && y <= 4;
+          if (edge || core) dark(ox + x, oy + y);
+        }
+    };
+    finder(0, 0); finder(N - 7, 0); finder(0, N - 7);
+
+    for (let y = 0; y < 5; y++)
+      for (let x = 0; x < 5; x++) {
+        const edge = x === 0 || y === 0 || x === 4 || y === 4;
+        if (edge || (x === 2 && y === 2)) dark(N - 9 + x, N - 9 + y);
+      }
+  }
+
+  createPass = () => {
+    const name = ((this.nameRef.current && this.nameRef.current.value) || "").trim();
+    const raw = name.replace(/\s+/g, " ");
+    if (!/^[\p{L}' .-]+$/u.test(raw)) return this.setState({ formError: "Le nom ne doit contenir que des lettres, espaces, tirets ou apostrophes." });
+    if (raw.replace(/[^\p{L}]/gu, "").length < 2 || raw.split(" ").filter(Boolean).length < 1) return this.setState({ formError: "Merci d'indiquer votre nom complet." });
+    const co = this.country(), need = co[3].reduce((a, b) => a + b, 0), d = this.state.phone;
+    if (name.length < 2) return this.setState({ formError: "Merci d'indiquer votre nom complet." });
+    if (d.length !== need) return this.setState({ formError: "Numéro WhatsApp incomplet : " + need + " chiffres attendus après " + co[2] + "." });
+    const phone = co[2] + " " + this.fmtPhone(d, co[3]);
+    const cardName = this.cardName(raw);
+    const id = "FAM-" + String(this.hash(name + phone) % 10000).padStart(4, "0");
+    const member = { name: cardName, fullName: raw, phone, id, since: new Date().toLocaleDateString("fr-FR", { month: "long", year: "numeric" }) };
+    try { localStorage.setItem("famous_vip_member", JSON.stringify(member)); } catch (e) {}
+    this.setState({ member, formError: "" });
+  };
+
+  resetPass = () => {
+    try { localStorage.removeItem("famous_vip_member"); } catch (e) {}
+    if (this.nameRef.current) this.nameRef.current.value = "";
+    this.setState({ member: null, formError: "", phone: "", nameDraft: "" });
+  };
+
+  renderVals() {
+    const m = this.state.member;
+    return {
+      nameRef: this.nameRef,
+      phoneRef: this.phoneRef,
+      qrRef: this.qrRef,
+      tiltRef: this.tiltRef, glareRef: this.glareRef, tiltMove: this.tiltMove, tiltEnter: this.tiltEnter, tiltLeave: this.tiltLeave,
+      onNameInput: e => this.setState({ nameDraft: e.target.value, formError: "" }),
+      namePreview: this.state.nameDraft.trim() ? this.cardName(this.state.nameDraft.replace(/[^\p{L}' .-]/gu, "")) : "—",
+      nameCount: this.state.nameDraft.length,
+      ...(() => {
+        const co = this.country(), need = co[3].reduce((a, b) => a + b, 0);
+        const ph = this.fmtPhone((co[0] === "CM" ? "6" : "X") + "X".repeat(need - 1), co[3]);
+        return {
+          ccCode: co[0],
+          ccList: this.COUNTRIES.map(c => ({ code: c[0], label: c[0] + " " + c[2] })),
+          onCc: e => this.setState({ cc: e.target.value, phone: "", formError: "" }),
+          phoneFmt: this.fmtPhone(this.state.phone, co[3]),
+          phonePh: ph,
+          phoneFull: co[2] + " " + (this.state.phone ? this.fmtPhone(this.state.phone, co[3]) : ph),
+          onPhone: e => { let d = e.target.value.replace(/\D/g, ""); if (co[0] === "FR" && d[0] === "0") d = d.slice(1); this.setState({ phone: d.slice(0, need), formError: "" }); }
+        };
+      })(),
+      createPass: this.createPass,
+      resetPass: this.resetPass,
+      formError: this.state.formError,
+      hasMember: !!m,
+      memberName: m ? m.name : "Votre nom",
+      memberPhone: m ? m.phone : this.country()[2] + " — — —",
+      memberId: m ? m.id : "FAM-0000",
+      memberStatus: m ? "Membre depuis " + m.since : "Pass non activé",
+      ...(() => {
+        const key = this.THEMES[this.state.cTheme] ? this.state.cTheme : "champagne";
+        const th = this.THEMES[key], back = this.state.cBack;
+        const setTheme = k => { this.setState({ cTheme: k }); try { localStorage.setItem("famous_card_theme_v2", k); } catch (e) {} };
+        return {
+          c: th, cThemeLabel: th.label,
+          cLogoDark: th.dark ? "block" : "none", cLogoLight: th.dark ? "none" : "block",
+          cDeg: back ? "180deg" : "0deg", cBackHidden: back ? "false" : "true",
+          cFlip: () => this.setState(s => ({ cBack: !s.cBack })),
+          cShowFront: () => this.setState({ cBack: false }), cShowBack: () => this.setState({ cBack: true }),
+          cFrontOn: !back, cBackOn: back,
+          cKnob: back ? "calc(5px + (100% - 10px) / 2)" : "5px",
+          cFrontFg: back ? "var(--ink-3)" : "#1B1008", cBackFg: back ? "#1B1008" : "var(--ink-3)",
+          cThemes: Object.keys(this.THEMES).map(k => ({ label: this.THEMES[k].label, swatch: this.THEMES[k].swatch, on: k === key, ring: k === key ? "var(--surface)" : "rgba(255,255,255,.25)", halo: k === key ? "2px" : "0px", select: () => setTheme(k) }))
+        };
+      })()
+    };
+  }
+}
+
+</script>
+</body>
+</html>

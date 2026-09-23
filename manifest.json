@@ -1,0 +1,10 @@
+{
+  "name": "The Famous — Beauty · Spa · Gym",
+  "short_name": "The Famous",
+  "start_url": "Bienvenue.dc.html",
+  "display": "standalone",
+  "background_color": "#0A0703",
+  "theme_color": "#1a1511",
+  "lang": "fr",
+  "icons": [{ "src": "assets/logo-bronze.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }]
+}

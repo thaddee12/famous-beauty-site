@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<footer style="position:relative;overflow:hidden;background:var(--bg);border-top:1px solid var(--line-soft);padding:clamp(48px,6vw,80px) clamp(16px,4vw,32px) 28px;font-family:'Jost',system-ui,sans-serif">
+  <sc-if value="{{ salon }}" hint-placeholder-val="{{ false }}">
+    <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;overflow:hidden">
+      <img src="assets/institut-salle.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 55%" />
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,color-mix(in srgb,var(--bg) 82%,transparent) 0%,color-mix(in srgb,var(--bg) 90%,transparent) 55%,var(--bg) 100%)"></div>
+    </div>
+  </sc-if>
+  <div style="position:relative;max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:clamp(26px,4vw,44px)">
+    <div>
+      <a href="Bienvenue.dc.html" title="Retour au choix des univers" style="display:inline-flex;line-height:0"><img src="assets/logo.png" alt="The Famous — Beauty · Spa · Gym" style="height:48px;width:auto;display:var(--logo-dark)" /><img src="assets/logo-bronze.png" alt="" style="height:48px;width:auto;display:var(--logo-light)" /></a>
+      <p style="margin:18px 0 0;max-width:30ch;font-size:14px;line-height:1.65;font-weight:300;color:var(--ink-4)">Institut, spa et boutique beauté, à Bastos.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:20px">
+        <a href="Spa-Beaute.dc.html" style="font-size:13px">Spa &amp; Beauté</a>
+        <a href="Beauty-Shop.dc.html" style="font-size:13px">Beauty Shop</a>
+        <a href="Fidelite.dc.html" style="font-size:13px">Fidélité</a>
+        <a href="A-propos.dc.html" style="font-size:13px">À propos</a>
+        <a href="Contact.dc.html" style="font-size:13px">Contact</a>
+      </div>
+    </div>
+    <div>
+      <h4 style="margin:0 0 16px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)">Adresse</h4>
+      <p style="margin:0;font-size:14px;line-height:1.7;font-weight:300;color:var(--ink-2)">Immeuble Bastos Building<br />Rue de l'Ambassade du Japon<br />Bastos, Yaoundé — Cameroun</p>
+      <a href="https://maps.app.goo.gl/QshwX8No6V83c1vU9" target="_blank" rel="noopener" style="display:inline-block;margin-top:14px;font-size:13px;border-bottom:1px solid var(--line-strong);padding-bottom:2px">Ouvrir dans Maps</a>
+    </div>
+    <div>
+      <h4 style="margin:0 0 16px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)">Contact</h4>
+      <p style="margin:0 0 10px"><a href="tel:+237689672932" style="font-size:15px;color:var(--ink-2)">+237 6 89 67 29 32</a></p>
+      <p style="margin:0 0 10px"><a href="https://wa.me/237689672932?text=Bonjour%20The%20Famous%2C%20j%27aimerais%20avoir%20des%20informations." target="_blank" rel="noopener" style="font-size:14px">Écrire sur WhatsApp</a></p>
+      <p style="margin:0"><a href="https://instagram.com/the__famousbeauty" target="_blank" rel="noopener" style="font-size:14px">@the__famousbeauty</a></p>
+    </div>
+    <div>
+      <h4 style="margin:0 0 16px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)">Horaires</h4>
+      <p style="margin:0;font-size:14px;line-height:1.7;font-weight:300;color:var(--ink-2)">Institut &amp; Spa : 09:00 – 20:00<br />Sur rendez-vous uniquement<br />Réservation par WhatsApp</p>
+      <div class="ia-pied__reseaux" style="display:flex;flex-wrap:wrap;gap:14px;margin-top:18px">
+        <a href="https://instagram.com/the__famousbeauty" target="_blank" rel="noopener" style="font-size:13px;letter-spacing:.06em">Instagram</a>
+        <a href="https://www.tiktok.com/@the__famousbeauty" target="_blank" rel="noopener" style="font-size:13px;letter-spacing:.06em">TikTok</a>
+        <a href="https://www.facebook.com/search/top?q=the%20famous%20beauty%20spa%20gym" target="_blank" rel="noopener" style="font-size:13px;letter-spacing:.06em">Facebook</a>
+      </div>
+    </div>
+  </div>
+  <div class="ia-pied__credits" style="position:relative;max-width:1240px;margin:clamp(34px,5vw,54px) auto 0;padding-top:22px;border-top:1px solid var(--line-soft);display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px">
+    <p style="margin:0;font-size:12px;font-weight:300;color:var(--faint)">© 2026 The Famous Beauty · Spa · Gym. Tous droits réservés.</p>
+    <p style="margin:0;font-size:12px;font-weight:300;color:var(--faint)">Réservations uniquement sur rendez-vous.</p>
+  </div>
+  <a class="ia-wa" href="https://wa.me/237689672932?text=Bonjour%20The%20Famous%2C%20j%27aimerais%20avoir%20des%20informations." target="_blank" rel="noopener" aria-label="Contacter The Famous sur WhatsApp" style="position:fixed;right:clamp(14px,3vw,26px);bottom:clamp(14px,3vw,26px);z-index:70;display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),rgba(18,140,74,.86);color:#FFFFFF;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),inset 0 -6px 14px rgba(255,255,255,.07),0 10px 28px rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.34);backdrop-filter:blur(12px) saturate(1.7);-webkit-backdrop-filter:blur(12px) saturate(1.7)" style-hover="background:#25D366;transform:scale(1.06)">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.03c-.24.68-1.42 1.3-1.97 1.38-.5.07-1.13.1-1.83-.12a14.6 14.6 0 0 1-1.66-.61c-2.92-1.26-4.82-4.2-4.97-4.4-.14-.19-1.19-1.57-1.19-3 0-1.43.75-2.13 1.02-2.43.27-.3.58-.37.78-.37.19 0 .39 0 .56.01.18.01.42-.07.65.5.24.58.78 1.99.85 2.14.07.15.12.32.02.51-.1.2-.16.32-.32.5-.17.17-.35.39-.5.52-.17.17-.34.35-.15.68.2.33.87 1.43 1.87 2.32 1.14 1.02 2.11 1.34 2.41 1.49.3.15.48.12.65-.07.17-.2.75-.87.95-1.17.2-.3.4-.25.66-.15.27.1 1.7.8 2 .95.29.15.48.22.55.34.08.13.08.73-.16 1.41Z"></path></svg>
+  </a>
+</footer>
+<x-import component-from-global-scope="fam-assistant" from="./assistant.js" accent="#C9A24A" univers="beauty" hint-size="0px,0px"></x-import>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240,&quot;height&quot;:420},&quot;salon&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  renderVals() { return { salon: !!this.props.salon }; }
+}
+</script>
+</body>
+</html>
