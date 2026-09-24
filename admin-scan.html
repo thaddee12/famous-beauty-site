@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Scan fidélité — The Famous</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;600&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="./famous-api.js"></script>
+<style>
+  :root{--or:#C9A24A;--fond:#0A0703;--encre:#F4EBDC;--ligne:rgba(201,162,74,.28);
+        --doux:rgba(244,235,220,.62);--vert:#4FA96B;--rouge:#C4553F}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{min-height:100dvh;background:var(--fond);color:var(--encre);
+       font-family:'Jost',system-ui,sans-serif;font-weight:300;
+       display:flex;align-items:center;justify-content:center;padding:20px}
+  .boite{width:100%;max-width:440px}
+  .sur{display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:600;
+       letter-spacing:.18em;text-transform:uppercase;color:var(--or)}
+  .sur::before{content:"";width:24px;height:1px;background:currentColor;opacity:.6}
+  h1{margin:12px 0 6px;font-size:clamp(24px,6vw,30px);font-weight:600;line-height:1.15}
+  .doux{color:var(--doux);font-size:14px;line-height:1.6}
+  .champ{margin-top:18px}
+  label{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+        color:var(--doux);margin-bottom:7px}
+  input{width:100%;padding:14px;border:1px solid var(--ligne);border-radius:9px;
+        background:rgba(0,0,0,.3);color:var(--encre);font-family:inherit;font-size:16px}
+  button{width:100%;margin-top:14px;padding:15px;border:0;border-radius:999px;
+         background:var(--or);color:#1B1008;font-family:inherit;font-size:14px;
+         font-weight:600;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+  button.sec{background:transparent;color:var(--encre);border:1px solid var(--ligne)}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  #lecteur{margin-top:18px;border-radius:12px;overflow:hidden;border:1px solid var(--ligne)}
+  .bloc{margin-top:18px;padding:16px;border:1px solid var(--ligne);border-radius:10px;
+        background:rgba(0,0,0,.28)}
+  .bloc.ok{border-color:var(--vert)} .bloc.ko{border-color:var(--rouge)}
+  .ligne{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:6px 0}
+  .ligne span:first-child{color:var(--doux);font-size:13px}
+  .gros{font-size:34px;font-weight:600;color:var(--or);line-height:1}
+  .cache{display:none}
+  /* Fenetre de recompense */
+  .voile{position:fixed;inset:0;background:rgba(10,7,3,.94);display:flex;
+         align-items:center;justify-content:center;padding:24px;z-index:99;
+         animation:apparait .3s ease both}
+  @keyframes apparait{from{opacity:0}to{opacity:1}}
+  .prix{max-width:400px;text-align:center;padding:34px 26px;border:1px solid var(--or);
+        border-radius:16px;background:linear-gradient(180deg,rgba(201,162,74,.16),rgba(0,0,0,.4));
+        animation:monte .5s cubic-bezier(.2,1,.3,1) both}
+  @keyframes monte{from{transform:translateY(16px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+  .prix h2{font-size:26px;font-weight:600;color:var(--or);line-height:1.2;margin-bottom:10px}
+</style>
+</head>
+<body>
+<main class="boite">
+
+  <!-- 1 | verrou -->
+  <section id="verrou">
+    <p class="sur">Réservé à la réception</p>
+    <h1>Scan fidélité</h1>
+    <p class="doux">Saisissez le code d'accès pour ouvrir le scanner.</p>
+    <div class="champ">
+      <label for="mdp">Code d'accès</label>
+      <input id="mdp" type="password" autocomplete="off" inputmode="numeric">
+    </div>
+    <button id="entrer">Ouvrir le scanner</button>
+    <p class="doux" id="erreurMdp" style="margin-top:12px;color:#C4553F"></p>
+  </section>
+
+  <!-- 2 | scanner -->
+  <section id="outil" class="cache">
+    <p class="sur">Réception</p>
+    <h1>Scanner une carte</h1>
+    <p class="doux" id="etat">Placez le QR de la carte devant la caméra.</p>
+    <div id="lecteur"></div>
+    <div id="resultat"></div>
+    <button id="relancer" class="sec cache">Scanner une autre carte</button>
+  </section>
+
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  /* Le code d'acces est lisible dans ce fichier : c'est un garde-fou contre
+     un client curieux, pas une securite. La vraie protection est en base :
+     les politiques RLS interdisent toute modification directe, le compteur
+     ne bouge que par la fonction SQL. */
+  var CODE_ACCES = '2468';
+  var CLE_SESSION = 'famous_scan_ouvert';
+
+  var $ = function (id) { return document.getElementById(id); };
+  var lecteur = null;
+
+  function ouvrir() {
+    $('verrou').classList.add('cache');
+    $('outil').classList.remove('cache');
+    demarrerCamera();
+  }
+
+  try { if (sessionStorage.getItem(CLE_SESSION) === '1') ouvrir(); } catch (e) {}
+
+  $('entrer').addEventListener('click', function () {
+    if ($('mdp').value.trim() !== CODE_ACCES) {
+      $('erreurMdp').textContent = 'Code incorrect.';
+      return;
+    }
+    try { sessionStorage.setItem(CLE_SESSION, '1'); } catch (e) {}
+    ouvrir();
+  });
+  $('mdp').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('entrer').click(); });
+
+  function demarrerCamera() {
+    if (typeof Html5Qrcode === 'undefined') {
+      $('etat').textContent = 'Le module de scan n\'a pas pu être chargé. Vérifiez la connexion.';
+      return;
+    }
+    lecteur = new Html5Qrcode('lecteur');
+    lecteur.start(
+      { facingMode: 'environment' },
+      { fps: 10, qrbox: { width: 240, height: 240 } },
+      surScan,
+      function () { /* images sans QR : silence */ }
+    ).catch(function (e) {
+      $('etat').textContent = 'Caméra indisponible : ' + e +
+        ' — vérifiez l\'autorisation, et que la page est bien ouverte en HTTPS.';
+    });
+  }
+
+  function arreter() {
+    if (!lecteur) return Promise.resolve();
+    return lecteur.stop().catch(function () {});
+  }
+
+  /* Le QR de la carte contient une adresse se terminant par ?m=<uuid>.
+     On accepte aussi un UUID nu, au cas ou une carte aurait ete generee
+     autrement. */
+  function extraireId(texte) {
+    var t = String(texte || '').trim();
+    var m = t.match(/[?&]m=([0-9a-fA-F-]{8,})/);
+    if (m) return decodeURIComponent(m[1]);
+    if (/^[0-9a-fA-F-]{20,}$/.test(t)) return t;
+    return null;
+  }
+
+  var enCours = false;
+
+  function surScan(texte) {
+    if (enCours) return;
+    var id = extraireId(texte);
+    if (!id) { $('etat').textContent = 'Ce code n\'est pas une carte The Famous.'; return; }
+
+    enCours = true;
+    arreter();
+    $('etat').textContent = 'Carte lue, enregistrement du passage…';
+
+    if (!window.FAMOUS_API || !FAMOUS_API.actif) {
+      montrer('<div class="bloc ko"><p class="doux">Base non configurée. Renseignez ' +
+              '<strong>SUPABASE_URL</strong> et <strong>SUPABASE_ANON</strong> dans ' +
+              'famous-api.js.</p></div>');
+      return;
+    }
+
+    FAMOUS_API.enregistrerPassage(id).then(function (r) {
+      if (!r || !r.ok) {
+        montrer('<div class="bloc ko"><p class="doux">Échec : ' +
+                ((r && r.erreur) || 'service injoignable') + '</p></div>');
+        return;
+      }
+      var titre = [r.prenom, r.nom].filter(Boolean).join(' ') || 'Membre';
+      montrer(
+        '<div class="bloc ok">' +
+          '<div class="ligne"><span>' + echapper(titre) + '</span></div>' +
+          '<div class="ligne"><span>Passages</span><span class="gros">' + r.passages + '</span></div>' +
+        '</div>');
+      if (r.recompense) recompense(titre);
+    });
+  }
+
+  function montrer(html) {
+    $('resultat').innerHTML = html;
+    $('etat').textContent = '';
+    $('relancer').classList.remove('cache');
+  }
+
+  function echapper(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function recompense(nom) {
+    var v = document.createElement('div');
+    v.className = 'voile';
+    v.innerHTML =
+      '<div class="prix">' +
+        '<h2>RÉCOMPENSE VIP ATTEINTE</h2>' +
+        '<p class="doux">' + echapper(nom) + ' a complété ses ' + FAMOUS_API.seuil +
+        ' passages. Le compteur repart à zéro.</p>' +
+        '<button id="fermerPrix" style="margin-top:20px">Fermer</button>' +
+      '</div>';
+    document.body.appendChild(v);
+    v.querySelector('#fermerPrix').addEventListener('click', function () { v.remove(); });
+  }
+
+  $('relancer').addEventListener('click', function () {
+    enCours = false;
+    $('resultat').innerHTML = '';
+    this.classList.add('cache');
+    $('etat').textContent = 'Placez le QR de la carte devant la caméra.';
+    demarrerCamera();
+  });
+})();
+</script>
+</body>
+</html>

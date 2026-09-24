@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
+<script src="./qrcode.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="./famous-api.js"></script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -111,7 +115,7 @@
         <sc-if value="{{ formError }}" hint-placeholder-val="{{ false }}">
           <p style="margin:10px 0 0;font-size:13px;color:var(--danger)">{{ formError }}</p>
         </sc-if>
-        <button type="button" onClick="{{ createPass }}" style="width:100%;margin-top:20px;padding:16px;border:1px solid rgba(255,255,255,.34);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),linear-gradient(100deg,var(--accent-light),var(--accent));color:var(--btn-ink);font-family:'Jost',sans-serif;font-size:14px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),inset 0 -6px 14px rgba(255,255,255,.07),0 6px 18px rgba(0,0,0,.18);backdrop-filter:blur(12px) saturate(1.7);-webkit-backdrop-filter:blur(12px) saturate(1.7)" style-hover="filter:brightness(1.08)">Générer mon Pass VIP</button>
+        <button type="button" onClick="{{ createPass }}" style="width:100%;margin-top:20px;padding:16px;border:1px solid rgba(255,255,255,.34);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),linear-gradient(100deg,var(--accent-light),var(--accent));color:var(--btn-ink);font-family:'Jost',sans-serif;font-size:14px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),inset 0 -6px 14px rgba(255,255,255,.07),0 6px 18px rgba(0,0,0,.18);backdrop-filter:blur(12px) saturate(1.7);-webkit-backdrop-filter:blur(12px) saturate(1.7)" style-hover="filter:brightness(1.08)">{{ cLibelleCreer }}</button>
         <p style="margin:16px 0 0;font-size:12px;line-height:1.55;font-weight:300;color:var(--faint)">Votre pass est enregistré sur cet appareil uniquement. Présentez-le à l'accueil pour créditer vos passages.</p>
         <sc-if value="{{ hasMember }}" hint-placeholder-val="{{ false }}">
           <button type="button" onClick="{{ resetPass }}" style="width:100%;margin-top:12px;padding:13px;border:1px solid var(--line);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),rgba(255,255,255,.07);color:var(--ink-4);font-family:'Jost',sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),inset 0 -6px 14px rgba(255,255,255,.07),0 6px 18px rgba(0,0,0,.18);backdrop-filter:blur(12px) saturate(1.7);-webkit-backdrop-filter:blur(12px) saturate(1.7)" style-hover="border-color:var(--accent);color:var(--accent)">Réinitialiser la carte</button>
@@ -119,7 +123,7 @@
       </div>
 
       <div style="align-self:center;justify-self:center;width:100%;max-width:540px;display:flex;flex-direction:column;align-items:center;gap:18px">
-        <div style="width:100%;container-type:inline-size;perspective:1200px">
+        <div id="fam-carte-capture" style="width:100%;container-type:inline-size;perspective:1200px">
           <div ref="{{ tiltRef }}" onPointerMove="{{ tiltMove }}" onPointerEnter="{{ tiltEnter }}" onPointerLeave="{{ tiltLeave }}" style="position:relative;transform-style:preserve-3d;will-change:transform;transition:transform 420ms cubic-bezier(.22,1,.36,1);transform:rotateX(0deg) rotateY(0deg) scale(1)">
           <div onClick="{{ cFlip }}" title="Cliquer pour retourner la carte" style="position:relative;width:100%;aspect-ratio:85/55;cursor:pointer;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.3,.9,.3,1);transform:rotateY({{ cDeg }});--c1:{{ c.c1 }};--c2:{{ c.c2 }};--ci:{{ c.ci }};--ci2:{{ c.ci2 }};--cm:{{ c.cm }};--ca:{{ c.ca }};--cas:{{ c.cas }};--cl:{{ c.cl }};--cls:{{ c.cls }};--clsoft:{{ c.clsoft }}">
         <div style="position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:grid;grid-template-rows:auto 1fr auto;padding:6.5cqw 7cqw 5.5cqw;border-radius:4.5cqw;overflow:hidden;background:linear-gradient(150deg,var(--c1),var(--c2) 65%);border:1px solid var(--cls);box-shadow:0 24px 60px rgba(0,0,0,.35),inset 0 1px 1px rgba(255,255,255,.18)">
@@ -161,6 +165,13 @@
           <div aria-hidden="true" ref="{{ glareRef }}" style="position:absolute;inset:0;border-radius:4.5cqw;pointer-events:none;z-index:5"></div>
           </div>
         </div>
+        <sc-if value="{{ cInfoVisible }}" hint-placeholder-val="{{ false }}">
+          <p style="margin:0;padding:10px 14px;border:1px solid var(--accent);border-radius:8px;background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--ink-2);font-size:13px;font-weight:300;text-align:center">{{ cInfo }}</p>
+        </sc-if>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;width:100%;max-width:430px">
+          <button type="button" onClick="{{ exportPNG }}" disabled="{{ cExportOccupe }}" style="flex:1 1 185px;padding:14px;border:1px solid rgba(255,255,255,.34);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),linear-gradient(100deg,var(--accent-light),var(--accent));color:var(--btn-ink);font-family:'Jost',sans-serif;font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 6px 18px rgba(0,0,0,.18)" style-hover="filter:brightness(1.08)">{{ cPngLibelle }}</button>
+          <button type="button" onClick="{{ exportPDF }}" disabled="{{ cExportOccupe }}" style="flex:1 1 185px;padding:14px;border:1px solid var(--line);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,0) 58%),rgba(255,255,255,.05);color:var(--ink);font-family:'Jost',sans-serif;font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--accent);color:var(--accent)">{{ cPdfLibelle }}</button>
+        </div>
         <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px 22px">
           <div role="radiogroup" aria-label="Face de la carte" style="position:relative;display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;width:max-content;padding:5px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.03)),var(--surface-2);border:1px solid var(--line);box-shadow:inset 0 1px 1px rgba(255,255,255,.35)">
             <span aria-hidden="true" style="position:absolute;top:5px;bottom:5px;left:{{ cKnob }};width:calc((100% - 10px) / 2);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0) 58%),linear-gradient(100deg,#E4CE92,#C9A24A);box-shadow:0 6px 18px rgba(201,162,74,.4);transition:left .45s cubic-bezier(.3,1.35,.5,1)"></span>
@@ -200,7 +211,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{}">
 class Component extends DCLogic {
-  state = { member: null, formError: "", cTheme: "champagne", cBack: false, cc: "CM", phone: "", nameDraft: "" };
+  state = { member: null, formError: "", cEnCours: false, cExport: "", cInfo: "", cTheme: "champagne", cBack: false, cc: "CM", phone: "", nameDraft: "" };
   COUNTRIES = [
     ["CM", "🇨🇲", "+237", [1, 2, 2, 2, 2]], ["GA", "🇬🇦", "+241", [2, 2, 2, 2]], ["CG", "🇨🇬", "+242", [2, 3, 2, 2]], ["CD", "🇨🇩", "+243", [3, 3, 3]],
     ["GQ", "🇬🇶", "+240", [3, 3, 3]], ["TD", "🇹🇩", "+235", [2, 2, 2, 2]], ["CF", "🇨🇫", "+236", [2, 2, 2, 2]], ["NG", "🇳🇬", "+234", [3, 3, 4]],
@@ -257,50 +268,45 @@ class Component extends DCLogic {
 
   hash(str) { let h = 2166136261; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
 
+  // L'ancien rendu dessinait un motif pseudo-aleatoire qui ressemblait a un
+  // QR sans en etre un : aucun scanner ne pouvait le lire. On encode
+  // desormais une vraie adresse, avec la bibliotheque qrcode-generator.
+  qrPayload() {
+    const m = this.state.member;
+    if (!m) return null;
+    // Le QR contient l'identifiant de la carte, rien d'autre : ni nom ni
+    // telephone, qui n'ont rien a faire dans un code qu'on photographie.
+    return m.id;
+  }
+
   drawQR() {
     const c = this.qrRef.current;
     if (!c) return;
-    const m = this.state.member;
-    const payload = m ? "FAMOUS|" + m.id + "|" + m.name + "|" + m.phone : "FAMOUS|PASS-VIP|the__famousbeauty";
-    if (c.dataset.payload === payload) return;
-    c.dataset.payload = payload;
+    const payload = this.qrPayload();
+    if (c.dataset.payload === (payload || "")) return;
+    c.dataset.payload = payload || "";
 
     const ctx = c.getContext("2d");
-    const N = 29, Q = 2, S = c.width / (N + Q * 2);
     ctx.fillStyle = "#F8F2E6";
     ctx.fillRect(0, 0, c.width, c.height);
+    if (!payload || typeof qrcode !== "function") return;
 
-    let seed = this.hash(payload) || 1;
-    const rnd = () => { seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5; return ((seed >>> 0) % 1000) / 1000; };
-    const reserved = (x, y) =>
-      (x < 8 && y < 8) || (x > N - 9 && y < 8) || (x < 8 && y > N - 9) ||
-      (x === 6 || y === 6) ||
-      (x >= N - 9 && x <= N - 5 && y >= N - 9 && y <= N - 5);
+    // type 0 = la bibliotheque choisit la version minimale qui contient la
+    // donnee ; correction M, bon compromis entre densite et tolerance aux
+    // rayures sur une carte qu'on transporte.
+    let qr;
+    try {
+      qr = qrcode(0, "M");
+      qr.addData(payload);
+      qr.make();
+    } catch (e) { return; }
 
-    const dark = (x, y) => { ctx.fillRect((x + Q) * S, (y + Q) * S, S + 0.5, S + 0.5); };
+    const N = qr.getModuleCount(), Q = 2, S = c.width / (N + Q * 2);
     ctx.fillStyle = "#14100A";
-
-    for (let y = 0; y < N; y++)
-      for (let x = 0; x < N; x++)
-        if (!reserved(x, y) && rnd() > 0.48) dark(x, y);
-
-    for (let i = 0; i < N; i++) if (i % 2 === 0) { dark(i, 6); dark(6, i); }
-
-    const finder = (ox, oy) => {
-      for (let y = 0; y < 7; y++)
-        for (let x = 0; x < 7; x++) {
-          const edge = x === 0 || y === 0 || x === 6 || y === 6;
-          const core = x >= 2 && x <= 4 && y >= 2 && y <= 4;
-          if (edge || core) dark(ox + x, oy + y);
-        }
-    };
-    finder(0, 0); finder(N - 7, 0); finder(0, N - 7);
-
-    for (let y = 0; y < 5; y++)
-      for (let x = 0; x < 5; x++) {
-        const edge = x === 0 || y === 0 || x === 4 || y === 4;
-        if (edge || (x === 2 && y === 2)) dark(N - 9 + x, N - 9 + y);
-      }
+    for (let r = 0; r < N; r++)
+      for (let col = 0; col < N; col++)
+        if (qr.isDark(r, col))
+          ctx.fillRect((col + Q) * S, (r + Q) * S, S + 0.5, S + 0.5);
   }
 
   createPass = () => {
@@ -309,14 +315,102 @@ class Component extends DCLogic {
     if (!/^[\p{L}' .-]+$/u.test(raw)) return this.setState({ formError: "Le nom ne doit contenir que des lettres, espaces, tirets ou apostrophes." });
     if (raw.replace(/[^\p{L}]/gu, "").length < 2 || raw.split(" ").filter(Boolean).length < 1) return this.setState({ formError: "Merci d'indiquer votre nom complet." });
     const co = this.country(), need = co[3].reduce((a, b) => a + b, 0), d = this.state.phone;
-    if (name.length < 2) return this.setState({ formError: "Merci d'indiquer votre nom complet." });
     if (d.length !== need) return this.setState({ formError: "Numéro WhatsApp incomplet : " + need + " chiffres attendus après " + co[2] + "." });
     const phone = co[2] + " " + this.fmtPhone(d, co[3]);
     const cardName = this.cardName(raw);
-    const id = "FAM-" + String(this.hash(name + phone) % 10000).padStart(4, "0");
-    const member = { name: cardName, fullName: raw, phone, id, since: new Date().toLocaleDateString("fr-FR", { month: "long", year: "numeric" }) };
-    try { localStorage.setItem("famous_vip_member", JSON.stringify(member)); } catch (e) {}
-    this.setState({ member, formError: "" });
+
+    // La base attend un nom et un prenom separes. Le formulaire ne demande
+    // qu'un nom complet, plus simple a remplir : on coupe au premier mot.
+    const mots = raw.split(" ").filter(Boolean);
+    const prenom = mots[0];
+    const nomFamille = mots.length > 1 ? mots.slice(1).join(" ") : mots[0];
+
+    const poser = (id, passages, existait) => {
+      const member = { name: cardName, fullName: raw, prenom, nom: nomFamille, phone, id,
+                       passages: passages || 1,
+                       since: new Date().toLocaleDateString("fr-FR", { month: "long", year: "numeric" }) };
+      try { localStorage.setItem("famous_vip_member", JSON.stringify(member)); } catch (e) {}
+      this.setState({ member, formError: "", cEnCours: false,
+                      cInfo: existait ? "Vous aviez déjà une carte à ce numéro : la voici." : "" });
+    };
+
+    if (!window.FAMOUS_API || !FAMOUS_API.actif) {
+      // Base non configuree : la carte reste locale, comme avant. On
+      // n'empeche personne d'obtenir sa carte parce qu'un service manque.
+      const id = "FAM-" + String(this.hash(name + phone) % 10000).padStart(4, "0");
+      return poser(id, 1, false);
+    }
+
+    this.setState({ cEnCours: true, formError: "" });
+    FAMOUS_API.creerOuRetrouver(nomFamille, prenom, phone).then(r => {
+      if (!r || !r.ok || !r.carte) {
+        // Le service a echoue : on delivre quand meme une carte locale
+        // plutot que de renvoyer le visiteur les mains vides.
+        const id = "FAM-" + String(this.hash(name + phone) % 10000).padStart(4, "0");
+        return poser(id, 1, false);
+      }
+      poser(r.carte.id, r.carte.passages, r.existait);
+    });
+  };
+
+  /* ---- Exports ------------------------------------------------------- */
+
+  captureCarte() {
+    const el = document.getElementById("fam-carte-capture");
+    if (!el || typeof html2canvas !== "function") return Promise.resolve(null);
+
+    // html2canvas ne sait pas interpreter les transformations 3D : sans ce
+    // traitement il rendait la face ARRIERE par-dessus, en miroir, et le QR
+    // n'apparaissait nulle part. On aplatit la carte le temps de la capture
+    // et on masque la face arriere, reperee par son rotateY(180deg).
+    const style = document.createElement("style");
+    style.textContent =
+      '#fam-carte-capture, #fam-carte-capture *{' +
+      '  transform:none !important;transform-style:flat !important;' +
+      '  backface-visibility:visible !important;' +
+      '  -webkit-backface-visibility:visible !important;' +
+      '  transition:none !important;animation:none !important}' +
+      '#fam-carte-capture [style*="rotateY(180"]{display:none !important}';
+    document.head.appendChild(style);
+
+    const finir = toile => { style.remove(); return toile; };
+
+    return new Promise(res => requestAnimationFrame(() => requestAnimationFrame(() => res())))
+      .then(() => html2canvas(el, { scale: 3, backgroundColor: null, useCORS: true, logging: false }))
+      .then(finir)
+      .catch(() => { style.remove(); return null; });
+  }
+
+  nomFichier(ext) {
+    const m = this.state.member;
+    const base = (m && m.fullName ? m.fullName : "carte").replace(/[^\p{L}0-9]+/gu, "-").toLowerCase();
+    return "pass-vip-the-famous-" + base + "." + ext;
+  }
+
+  exportPNG = () => {
+    this.setState({ cExport: "png" });
+    this.captureCarte().then(toile => {
+      this.setState({ cExport: "" });
+      if (!toile) return this.setState({ formError: "L'export n'a pas pu se faire. Réessayez." });
+      const a = document.createElement("a");
+      a.href = toile.toDataURL("image/png");
+      a.download = this.nomFichier("png");
+      a.click();
+    });
+  };
+
+  exportPDF = () => {
+    this.setState({ cExport: "pdf" });
+    this.captureCarte().then(toile => {
+      this.setState({ cExport: "" });
+      const jsPDFCtor = window.jspdf && window.jspdf.jsPDF;
+      if (!toile || !jsPDFCtor) return this.setState({ formError: "L'export PDF n'a pas pu se faire. Réessayez." });
+      // Format carte bancaire, en paysage : le PDF fait la taille d'une
+      // vraie carte, pretes a imprimer si le client le souhaite.
+      const doc = new jsPDFCtor({ orientation: "landscape", unit: "mm", format: [85.6, 54] });
+      doc.addImage(toile.toDataURL("image/png"), "PNG", 0, 0, 85.6, 54, undefined, "FAST");
+      doc.save(this.nomFichier("pdf"));
+    });
   };
 
   resetPass = () => {
@@ -349,12 +443,28 @@ class Component extends DCLogic {
         };
       })(),
       createPass: this.createPass,
+      exportPNG: this.exportPNG,
+      exportPDF: this.exportPDF,
+      cEnCours: this.state.cEnCours,
+      cLibelleCreer: this.state.cEnCours ? "Création en cours…" : "Générer mon Pass VIP",
+      cInfo: this.state.cInfo || "",
+      cInfoVisible: !!this.state.cInfo,
+      cPngLibelle: this.state.cExport === "png" ? "Enregistrement…" : "Enregistrer dans les photos",
+      cPdfLibelle: this.state.cExport === "pdf" ? "Génération…" : "Télécharger en PDF",
+      cExportOccupe: !!this.state.cExport,
       resetPass: this.resetPass,
       formError: this.state.formError,
       hasMember: !!m,
       memberName: m ? m.name : "Votre nom",
       memberPhone: m ? m.phone : this.country()[2] + " — — —",
-      memberId: m ? m.id : "FAM-0000",
+      // Un UUID complet fait 36 caracteres et s'etale sur deux lignes :
+      // illisible sur une carte de luxe. On affiche son premier segment,
+      // assez distinctif pour que le personnel identifie une carte a l'oeil.
+      // Le QR, lui, porte toujours l'identifiant entier.
+      memberId: m ? (String(m.id).indexOf("-") > 0
+                      ? "N° " + String(m.id).split("-")[0].toUpperCase()
+                      : m.id)
+                  : "FAM-0000",
       memberStatus: m ? "Membre depuis " + m.since : "Pass non activé",
       ...(() => {
         const key = this.THEMES[this.state.cTheme] ? this.state.cTheme : "champagne";

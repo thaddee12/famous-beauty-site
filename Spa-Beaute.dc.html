@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
+<script src="./famous-api.js"></script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -654,12 +655,35 @@ class Component extends DCLogic {
     };
   }
 
-  state = { heroIdx: 0, pv: "tous", pOpen: {}, sGender: "femme", sCat: "massages", sSvc: 0, sPicks: [], sDay: 0, sSlot: [], sName: "", sPhone: "", sNote: "", sError: "", sDone: null };
+  state = { heroIdx: 0, pv: "tous", pOpen: {}, sGender: "femme", sCat: "massages", sSvc: 0, sPicks: [], sDay: 0, sOccupes: [], sOccupesCle: "", sSlot: [], sName: "", sPhone: "", sNote: "", sError: "", sDone: null };
   heroList = ["assets/massage-duo.jpg","assets/spa-pierres.jpg","assets/soin-visage.jpg","assets/capillaire-1.jpg","assets/onglerie-2.jpg","assets/pedicure.jpg"];
   componentDidMount() {
+    this.chargerOccupes();
     this.heroTimer = setInterval(() => this.setState(s => ({ heroIdx: (s.heroIdx + 1) % this.heroList.length })), 5000);
   }
   componentWillUnmount() { clearInterval(this.heroTimer); }
+
+  /* Lit l'agenda du client pour la journee affichee, afin de griser les
+     creneaux deja pris. Appele au chargement et a chaque changement de
+     jour. La cle evite de redemander la meme journee en boucle, puisque
+     ce cycle de vie se declenche a chaque rendu. */
+  chargerOccupes() {
+    if (!window.FAMOUS_API || !FAMOUS_API.actif) return;
+    const n = new Date();
+    const j = new Date(n.getFullYear(), n.getMonth(), n.getDate() + (this.state.sDay || 0));
+    const cle = j.getFullYear() + "-" +
+                String(j.getMonth() + 1).padStart(2, "0") + "-" +
+                String(j.getDate()).padStart(2, "0");
+    if (this._occCle === cle) return;
+    this._occCle = cle;
+    FAMOUS_API.occupes("spa", cle).then(plages => {
+      if (this._occCle !== cle) return;   // le jour a change entre-temps
+      this.setState({ sOccupes: plages });
+    });
+  }
+
+  componentDidUpdate() { this.chargerOccupes(); }
+
   spaBooking() {
     const CATS = [
       ["massages", "Massages", [["Massage 1h — offre découverte", 60, 10000], ["Massage Relaxant", 60, 30000], ["Tonique & Sportif", 60, 40000], ["Californien", 60, 35000], ["Massage Duo", 60, 55000, 2]]],
@@ -704,7 +728,12 @@ class Component extends DCLogic {
     for (let m = 9 * 60; !tooLong && m + need <= 20 * 60; m += 30) {
       const time = String(Math.floor(m / 60)).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0");
       const past = s.sDay === 0 && m <= now.getHours() * 60 + now.getMinutes();
-      const full = false;
+      // Etait laisse a false : le point d'accroche existait mais
+      // aucune source ne le remplissait. On lit desormais l'agenda.
+      const finM = m + need;
+      const finHHMM = String(Math.floor(finM / 60)).padStart(2, "0") + ":" + String(finM % 60).padStart(2, "0");
+      const full = (window.FAMOUS_API && FAMOUS_API.estOccupe)
+        ? FAMOUS_API.estOccupe(time, finHHMM, s.sOccupes) : false;
       const off = past || full, on = (s.sSlot || []).indexOf(time) >= 0;
       const endM = m + need;
       slots.push({ time, end: String(Math.floor(endM / 60)).padStart(2, "0") + ":" + String(endM % 60).padStart(2, "0"), disabled: off,

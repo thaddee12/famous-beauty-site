@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
+<script src="./famous-api.js"></script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -599,12 +600,34 @@ class Component extends DCLogic {
     };
   }
 
-  state = { heroIdx: 0, hv: null, pPromo: true, pMonthVal: 90000, bType: "cours", bPlan: "mois", bMember: "", bDay: 0, bSlot: [], bName: "", bPhone: "", bError: "", bDone: null };
+  state = { heroIdx: 0, hv: null, pPromo: true, pMonthVal: 90000, bType: "cours", bPlan: "mois", bMember: "", bDay: 0, bOccupes: [], bOccupesCle: "", bSlot: [], bName: "", bPhone: "", bError: "", bDone: null };
   heroList = ["assets/gym-hero-1.jpg", "assets/gym-hero-2.jpg", "assets/gym-hero-3.jpg"];
   componentDidMount() {
+    this.chargerOccupes();
     this.heroTimer = setInterval(() => this.setState(s => ({ heroIdx: (s.heroIdx + 1) % this.heroList.length })), 5000);
   }
   componentWillUnmount() { clearInterval(this.heroTimer); cancelAnimationFrame(this.pRaf); }
+
+  /* Lit l'agenda du client pour la journee affichee, afin de griser les
+     creneaux deja pris. La cle evite de redemander la meme journee en
+     boucle, puisque ce cycle de vie se declenche a chaque rendu. */
+  chargerOccupes() {
+    if (!window.FAMOUS_API || !FAMOUS_API.actif) return;
+    const n = new Date();
+    const j = new Date(n.getFullYear(), n.getMonth(), n.getDate() + (this.state.bDay || 0));
+    const cle = j.getFullYear() + "-" +
+                String(j.getMonth() + 1).padStart(2, "0") + "-" +
+                String(j.getDate()).padStart(2, "0");
+    if (this._occCle === cle) return;
+    this._occCle = cle;
+    FAMOUS_API.occupes("gym", cle).then(plages => {
+      if (this._occCle !== cle) return;   // le jour a change entre-temps
+      this.setState({ bOccupes: plages });
+    });
+  }
+
+  componentDidUpdate() { this.chargerOccupes(); }
+
   setPromo(on) {
     if (on === this.state.pPromo) return;
     this.setState({ pPromo: on });
@@ -642,7 +665,12 @@ class Component extends DCLogic {
     const key = day.toDateString();
     const slots = raw.map(([time, cls]) => {
       const past = s.bDay === 0 && parseInt(time, 10) <= now.getHours();
-      const full = false;
+      // Etait laisse a false : le point d'accroche existait mais
+      // aucune source ne le remplissait. On lit desormais l'agenda.
+      const finM = m + need;
+      const finHHMM = String(Math.floor(finM / 60)).padStart(2, "0") + ":" + String(finM % 60).padStart(2, "0");
+      const full = (window.FAMOUS_API && FAMOUS_API.estOccupe)
+        ? FAMOUS_API.estOccupe(time, finHHMM, s.bOccupes) : false;
       const off = past || full;
       const on = (s.bSlot || []).indexOf(time) >= 0;
       const left = s.bType === "cours" ? Math.max(1, Math.round(hash(time + key) * 12)) : 0;
