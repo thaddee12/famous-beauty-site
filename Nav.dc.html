@@ -13,6 +13,36 @@
   @keyframes famNavIn { from { opacity: 0; transform: translateY(-14px) scale(.98); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
   .fn-burger { display: none !important; }
   @media (max-width: 860px) { .fn-links { display: none !important; } .fn-burger { display: flex !important; } .fn-act { margin-left: auto; } }
+
+  /* MOBILE UNIQUEMENT. Sur telephone, le libelle « Univers Gym » est reduit a
+     zero par son max-width calcule : il ne restait qu'une fleche, qui ne dit
+     pas vers quel univers elle mene. On la remplace par le logo de l'univers
+     cible. Le bouton s'allonge pour que le logotype reste lisible, un
+     logotype de 420x120 dans un rond de 40 px ne l'est pas. */
+  @media (max-width: 700px) {
+    .fam-bascule svg { display: none !important; }
+    .fam-cible { display: block !important; }
+    .fam-bascule { padding: 8px 13px !important; }
+  }
+
+
+  /* MOBILE UNIQUEMENT. Dans le menu deroulant, les entrees d'univers se
+     noyaient parmi les liens de section. On les cible par leur adresse
+     EXACTE, sans ancre : c'est ce qui distingue un changement d'univers
+     d'un lien de section comme Gym-Fitness.dc.html#planning.
+     Or pour Beaute-Spa, vert pour Gym, avec un filet lateral.
+     Le bouton de bascule de la barre est exclu, il est deja identifie
+     par le logo de l'univers cible. */
+  @media (max-width: 700px) {
+    header a[href="Spa-Beaute.dc.html"]:not(.fam-bascule),
+    header a[href="Gym-Fitness.dc.html"]:not(.fam-bascule) {
+      border-left: 3px solid currentColor !important;
+      padding-left: 11px !important;
+      font-weight: 700 !important;
+    }
+    header a[href="Spa-Beaute.dc.html"]:not(.fam-bascule)  { color: #C9A24A !important; }
+    header a[href="Gym-Fitness.dc.html"]:not(.fam-bascule) { color: #CBF34A !important; }
+  }
 </style></helmet>
 <header style="position:fixed;top:0;left:0;right:0;z-index:60;padding:10px clamp(8px,2vw,20px) 0;pointer-events:none;font-family:'Jost',system-ui,sans-serif">
   <div style="pointer-events:auto;position:relative;overflow:hidden;max-width:1240px;margin:0 auto;padding:6px 8px 6px clamp(10px,2.4vw,22px);display:flex;flex-wrap:nowrap;align-items:center;gap:clamp(8px,1.6vw,20px);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.05)),color-mix(in srgb,var(--nav-bg) 62%,transparent);backdrop-filter:blur(18px) saturate(1.8);-webkit-backdrop-filter:blur(18px) saturate(1.8);border:1px solid rgba(255,255,255,.28);box-shadow:inset 0 1px 1px rgba(255,255,255,.55),inset 0 -8px 18px rgba(255,255,255,.04),0 12px 34px rgba(0,0,0,.28);animation:famNavIn .8s cubic-bezier(.2,.9,.3,1) both">
@@ -27,7 +57,7 @@
       <a href="Contact.dc.html" style="position:relative;flex:0 0 auto;padding:8px clamp(7px,1vw,13px);border-radius:999px;transition:background .3s ease,box-shadow .3s ease,transform .3s cubic-bezier(.3,1.4,.5,1);color:var(--ink);font-size:12px;letter-spacing:.07em;text-transform:uppercase;white-space:nowrap" style-hover="background:rgba(255,255,255,.16);box-shadow:inset 0 1px 1px rgba(255,255,255,.5),0 4px 12px rgba(0,0,0,.15);transform:translateY(-1px);color:var(--accent)">Contact</a>
     </nav>
     <div class="fn-act" style="flex:0 0 auto;display:flex;flex-wrap:nowrap;align-items:center;gap:6px">
-      <a href="Gym-Fitness.dc.html" title="Aller à l'univers Gym" style="display:inline-flex;align-items:center;justify-content:center;gap:0;padding:9px 11px;border:1px solid rgba(203,243,74,.55);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),rgba(12,14,10,.6);color:#CBF34A;font-size:12px;letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),inset 0 -6px 14px rgba(255,255,255,.07),0 6px 18px rgba(0,0,0,.18);backdrop-filter:blur(12px) saturate(1.7);-webkit-backdrop-filter:blur(12px) saturate(1.7)" style-hover="background:#CBF34A;color:#0C0E0A">
+      <a class="fam-bascule" href="Gym-Fitness.dc.html" title="Aller à l'univers Gym" style="display:inline-flex;align-items:center;justify-content:center;gap:0;padding:9px 11px;border:1px solid rgba(203,243,74,.55);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),rgba(12,14,10,.6);color:#CBF34A;font-size:12px;letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),inset 0 -6px 14px rgba(255,255,255,.07),0 6px 18px rgba(0,0,0,.18);backdrop-filter:blur(12px) saturate(1.7);-webkit-backdrop-filter:blur(12px) saturate(1.7)" style-hover="background:#CBF34A;color:#0C0E0A"><img class="fam-cible" src="assets/logo-gym.png" alt="Univers Gym" width="420" height="120" decoding="async" style="display:none;height:15px;width:auto" />
         <span style="display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:middle;max-width:clamp(0px,calc((100vw - 1120px) * 10),180px);margin-right:clamp(0px,calc((100vw - 1120px) * 10),7px)">Univers Gym</span>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h15"></path><path d="M13 6l6 6-6 6"></path></svg>
       </a>

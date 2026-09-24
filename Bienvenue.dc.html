@@ -43,25 +43,25 @@
   @keyframes famSheen { 0%,15% { transform: translateX(-120%); } 60%,100% { transform: translateX(320%); } }
   @keyframes famBarIn { from { opacity: 0; transform: translateY(24px) scale(.96); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
 
-  /* Depuis le retrait de la barre de liens, la page d'accueil ne contient
-     plus que le choix des deux univers. Sur mobile, ou les deux moities
-     s'empilent, chacune faisait min(52vh,520px) : deux fois 52 %, soit
-     104 % de l'ecran, d'ou 54 px de defilement residuel.
-     On les cale sur la hauteur reelle de l'ecran, moins les 18 px de
-     marge interieure et d'ecart (6 + 6 + 6).
-     dvh et non vh : sur mobile, vh inclut la barre du navigateur et
-     deborde toujours un peu. */
+  /* MOBILE UNIQUEMENT. La version ordinateur n'est pas modifiee.
+     Sur telephone, l'accueil ne sert qu'a choisir un univers : la barre
+     de liens et le pied de page sont masques. */
   @media (max-width: 700px) {
+    .fam-barre, .fam-pied { display: none !important; }
+
+    /* La barre masquee, il faut reprendre deux valeurs qui la
+       presupposaient, sinon il reste 54 px de defilement :
+       - les 130 px de marge basse qui reservaient sa place,
+       - le min-height de 52vh par moitie, soit 104 % de l'ecran a deux. */
+    .fam-split > div > a { padding-bottom: clamp(20px,4vw,40px) !important; }
     .fam-split { min-height: 100vh; min-height: 100dvh; }
     .fam-split > div {
       flex-basis: 100% !important;
       min-height: calc((100vh - 18px) / 2) !important;
       min-height: calc((100dvh - 18px) / 2) !important;
     }
-    /* Sur un ecran court (petits telephones), le cercle de 250 px ne tient
-       pas a deux exemplaires. On le borne aussi a la hauteur disponible,
-       pas seulement a la largeur. Sur un ecran de 844 px la valeur ne
-       change pas, c'est 250 px dans les deux cas. */
+    /* dvh et non vh : sur mobile, vh inclut la barre du navigateur.
+       Sur ecran court, deux cercles de 250 px ne tiennent pas non plus. */
     .fam-split > div > a > div:first-child {
       width:  min(clamp(250px,31vw,380px), 34vh) !important;
       height: min(clamp(250px,31vw,380px), 34vh) !important;
@@ -89,7 +89,7 @@
       </div>
       <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(24,14,6,.42),rgba(24,14,6,.8));pointer-events:none"></div>
       <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;transition:opacity .8s ease;opacity:{{ spaFx }}"><x-import component-from-global-scope="fam-spa-particles" from="./spa-particles.js" color="#E4CE92" density="1.1" hint-size="100%,100%" style="position:absolute;top:0;left:0;width:100%;height:100%"></x-import></div>
-      <a href="Spa-Beaute.dc.html" onClick="{{ goSpa }}" onPointerDown="{{ downSpa }}" onPointerUp="{{ up }}" onPointerLeave="{{ up }}" onFocus="{{ enterSpa }}" onBlur="{{ leave }}" style="position:relative;display:flex;flex-direction:column;align-items:center;gap:22px;padding:clamp(20px,4vw,40px);color:inherit;transition:opacity .6s ease,transform .6s cubic-bezier(.4,0,.2,1);opacity:{{ spaOpacity }};transform:scale({{ spaScale }})" style-hover="color:inherit">
+      <a href="Spa-Beaute.dc.html" onClick="{{ goSpa }}" onPointerDown="{{ downSpa }}" onPointerUp="{{ up }}" onPointerLeave="{{ up }}" onFocus="{{ enterSpa }}" onBlur="{{ leave }}" style="position:relative;display:flex;flex-direction:column;align-items:center;gap:22px;padding:clamp(20px,4vw,40px) clamp(20px,4vw,40px) 130px;color:inherit;transition:opacity .6s ease,transform .6s cubic-bezier(.4,0,.2,1);opacity:{{ spaOpacity }};transform:scale({{ spaScale }})" style-hover="color:inherit">
           <div style="position:relative;width:clamp(250px,31vw,380px);height:clamp(250px,31vw,380px);transition:transform .22s cubic-bezier(.3,1.5,.5,1),filter .22s ease;transform:scale({{ spaPress }});filter:brightness({{ spaPressB }})">
           <div style="position:absolute;inset:-9px;border-radius:50%;opacity:{{ spaRing }};transition:opacity .45s ease;filter:blur(1px)">
             <div style="position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,rgba(201,162,74,0) 0deg,rgba(201,162,74,0) 200deg,rgba(201,162,74,.55) 280deg,#E4CE92 335deg,#FFF6DE 350deg,rgba(201,162,74,.5) 360deg);animation:famSpin 2.8s linear infinite;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px))"></div>
@@ -114,7 +114,7 @@
       </div>
       <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,10,6,.48),rgba(8,10,6,.82));pointer-events:none"></div>
       <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;transition:opacity .8s ease;opacity:{{ gymFx }}"><x-import component-from-global-scope="fam-particles" from="./particles.js" color="#CBF34A" density="1" hint-size="100%,100%" style="position:absolute;top:0;left:0;width:100%;height:100%"></x-import></div>
-      <a href="Gym-Fitness.dc.html" onClick="{{ goGym }}" onPointerDown="{{ downGym }}" onPointerUp="{{ up }}" onPointerLeave="{{ up }}" onFocus="{{ enterGym }}" onBlur="{{ leave }}" style="position:relative;display:flex;flex-direction:column;align-items:center;gap:22px;padding:clamp(20px,4vw,40px);color:inherit;transition:opacity .6s ease,transform .6s cubic-bezier(.4,0,.2,1);opacity:{{ gymOpacity }};transform:scale({{ gymScale }})" style-hover="color:inherit">
+      <a href="Gym-Fitness.dc.html" onClick="{{ goGym }}" onPointerDown="{{ downGym }}" onPointerUp="{{ up }}" onPointerLeave="{{ up }}" onFocus="{{ enterGym }}" onBlur="{{ leave }}" style="position:relative;display:flex;flex-direction:column;align-items:center;gap:22px;padding:clamp(20px,4vw,40px) clamp(20px,4vw,40px) 130px;color:inherit;transition:opacity .6s ease,transform .6s cubic-bezier(.4,0,.2,1);opacity:{{ gymOpacity }};transform:scale({{ gymScale }})" style-hover="color:inherit">
           <div style="position:relative;width:clamp(250px,31vw,380px);height:clamp(250px,31vw,380px);transition:transform .22s cubic-bezier(.3,1.5,.5,1),filter .22s ease;transform:scale({{ gymPress }});filter:brightness({{ gymPressB }})">
           <div style="position:absolute;inset:-9px;border-radius:50%;opacity:{{ gymRing }};transition:opacity .45s ease;filter:blur(1px)">
             <div style="position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,rgba(203,243,74,0) 0deg,rgba(203,243,74,0) 200deg,rgba(203,243,74,.55) 280deg,#CBF34A 335deg,#F4FFD6 350deg,rgba(203,243,74,.5) 360deg);animation:famSpin 2.8s linear infinite;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px))"></div>
@@ -132,6 +132,18 @@
 
   </div>
 
+    <div class="fam-barre" style="position:relative;z-index:5;margin-top:-86px;padding:0 12px 18px;display:flex;justify-content:center;pointer-events:none;animation:famBarIn .9s cubic-bezier(.2,.9,.3,1) .3s both">
+    <nav class="fam-liens" aria-label="Liens rapides" style="pointer-events:auto;position:relative;max-width:100%;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:4px;padding:6px;border-radius:999px;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.06)),rgba(14,10,6,.38);backdrop-filter:blur(18px) saturate(1.8) brightness(1.05);-webkit-backdrop-filter:blur(18px) saturate(1.8) brightness(1.05);border:1px solid rgba(255,255,255,.4);box-shadow:inset 0 1px 1px rgba(255,255,255,.75),inset 0 -8px 18px rgba(255,255,255,.06),0 14px 40px rgba(0,0,0,.35)">
+      <span aria-hidden="true" style="position:absolute;top:0;bottom:0;left:0;width:40%;background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.34),rgba(255,255,255,0));filter:blur(6px);pointer-events:none;animation:famSheen 6s ease-in-out infinite"></span>
+      <a href="Beauty-Shop.dc.html" style="position:relative;display:inline-flex;align-items:center;padding:10px 16px;border-radius:999px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:#FFFFFF;text-shadow:0 1px 6px rgba(0,0,0,.45);transition:background .3s ease,box-shadow .3s ease,transform .3s cubic-bezier(.3,1.4,.5,1)" style-hover="color:#FFFFFF;background:rgba(255,255,255,.2);box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 4px 14px rgba(0,0,0,.2);transform:translateY(-2px)">Beauty Shop</a>
+      <a href="Fidelite.dc.html" style="position:relative;display:inline-flex;align-items:center;padding:10px 16px;border-radius:999px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:#FFFFFF;text-shadow:0 1px 6px rgba(0,0,0,.45);transition:background .3s ease,box-shadow .3s ease,transform .3s cubic-bezier(.3,1.4,.5,1)" style-hover="color:#FFFFFF;background:rgba(255,255,255,.2);box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 4px 14px rgba(0,0,0,.2);transform:translateY(-2px)">Carte Fidélité</a>
+      <a href="A-propos.dc.html" style="position:relative;display:inline-flex;align-items:center;padding:10px 16px;border-radius:999px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:#FFFFFF;text-shadow:0 1px 6px rgba(0,0,0,.45);transition:background .3s ease,box-shadow .3s ease,transform .3s cubic-bezier(.3,1.4,.5,1)" style-hover="color:#FFFFFF;background:rgba(255,255,255,.2);box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 4px 14px rgba(0,0,0,.2);transform:translateY(-2px)">À propos</a>
+      <a href="Contact.dc.html" style="position:relative;display:inline-flex;align-items:center;padding:10px 16px;border-radius:999px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:#FFFFFF;text-shadow:0 1px 6px rgba(0,0,0,.45);transition:background .3s ease,box-shadow .3s ease,transform .3s cubic-bezier(.3,1.4,.5,1)" style-hover="color:#FFFFFF;background:rgba(255,255,255,.2);box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 4px 14px rgba(0,0,0,.2);transform:translateY(-2px)">Contact</a>
+    </nav>
+  </div>
+  <footer class="fam-pied" style="display:flex;align-items:center;justify-content:center;min-height:56px;padding:18px clamp(16px,4vw,32px);background:var(--bg)">
+    <p class="ia-pied__credits" style="margin:0;text-align:center;font-size:12px;font-weight:300;color:var(--ink-4)">Immeuble Bastos Building · Rue de l'Ambassade du Japon · Yaoundé — © 2026 The Famous Beauty · Spa · Gym</p>
+  </footer>
 </div>
 
 </x-dc>
@@ -180,6 +192,10 @@ class Component extends DCLogic {
     };
     const spa = side("spa"), gym = side("gym");
     return {
+      // slidesReady n'etait defini que dans side() et jamais remonte ici :
+      // <sc-if value="{{ slidesReady }}"> restait faux, les 12 diapositives
+      // n'etaient jamais creees et les deux diaporamas ne tournaient pas.
+      slidesReady: true,
       spaPress: this.state.press === "spa" ? 0.92 : 1, gymPress: this.state.press === "gym" ? 0.92 : 1,
       spaPressB: this.state.press === "spa" ? 0.88 : 1, gymPressB: this.state.press === "gym" ? 0.88 : 1,
       downSpa: () => this.setState({ press: "spa" }), downGym: () => this.setState({ press: "gym" }),
