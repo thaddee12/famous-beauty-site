@@ -63,7 +63,7 @@
 
 <section class="ia-hero" style="position:relative;overflow:hidden;background:#0C0E0A;padding:calc(clamp(56px,9vw,120px) + 76px) clamp(16px,4vw,32px) clamp(56px,9vw,120px)">
   <div style="position:absolute;inset:0">
-    <img src="assets/gym-hero-1.jpg" alt="Plateau The Famous Gym, Bastos" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" />
+    <img src="assets/gym-hero-1.jpg" alt="Plateau The Famous Gym, Bastos" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" / width="1280" height="854" decoding="async">
     <sc-if value="{{ slidesReady }}" hint-placeholder-val="{{ false }}"><sc-for list="{{ heroSlides }}" as="s" hint-placeholder-count="0">
       <div aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 1.6s ease;opacity:{{ s.opacity }};background-image:{{ s.bg }};background-size:cover;background-position:center"></div>
     </sc-for></sc-if>
@@ -97,7 +97,7 @@
     </div>
     <div class="ia-cascade" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(14px,2vw,20px)">
       <article class="ia-leve ia-apparait" style="position:relative;display:flex;flex-direction:column;min-height:420px;border-radius:14px;overflow:hidden;border:1px solid var(--line-soft);background:#0C0E0A;transform:{{ hvT.k0 }};box-shadow:{{ hvSh.k0 }};transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s ease,border-color .4s ease;will-change:transform" onMouseEnter="{{ hvIn.k0 }}" onMouseLeave="{{ hvOut }}">
-        <img src="assets/muscu-deadlift.jpg" alt="Soulevé de terre sur le plateau" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale({{ hvZ.k0 }});transition:transform 1s cubic-bezier(.2,.8,.2,1)" />
+        <img src="assets/muscu-deadlift.jpg" alt="Soulevé de terre sur le plateau" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale({{ hvZ.k0 }});transition:transform 1s cubic-bezier(.2,.8,.2,1)" / width="640" height="960" decoding="async">
         <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,10,6,.1) 0%,rgba(8,10,6,.55) 45%,rgba(8,10,6,.94) 100%);pointer-events:none"></div>
         <span style="position:relative;align-self:flex-start;margin:16px;padding:6px 12px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#0C0E0A;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),rgba(203,243,74,.9);border:1px solid rgba(255,255,255,.34)">Plateau libre</span>
         <div style="position:relative;margin-top:auto;padding:22px">
@@ -112,7 +112,7 @@
         </div>
       </article>
       <article class="ia-leve ia-apparait" style="position:relative;display:flex;flex-direction:column;min-height:420px;border-radius:14px;overflow:hidden;border:1px solid var(--line-soft);background:#0C0E0A;transform:{{ hvT.k1 }};box-shadow:{{ hvSh.k1 }};transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s ease,border-color .4s ease;will-change:transform" onMouseEnter="{{ hvIn.k1 }}" onMouseLeave="{{ hvOut }}">
-        <img loading="lazy" decoding="async" src="assets/gym-salle.jpg" alt="Espace cardio de la salle" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale({{ hvZ.k1 }});transition:transform 1s cubic-bezier(.2,.8,.2,1)" />
+        <img loading="lazy" decoding="async" src="assets/gym-salle.jpg" alt="Espace cardio de la salle" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale({{ hvZ.k1 }});transition:transform 1s cubic-bezier(.2,.8,.2,1)" / width="498" height="760">
         <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,10,6,.1) 0%,rgba(8,10,6,.55) 45%,rgba(8,10,6,.94) 100%);pointer-events:none"></div>
         <span style="position:relative;align-self:flex-start;margin:16px;padding:6px 12px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#0C0E0A;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),rgba(203,243,74,.9);border:1px solid rgba(255,255,255,.34)">Endurance</span>
         <div style="position:relative;margin-top:auto;padding:22px">
@@ -127,7 +127,7 @@
         </div>
       </article>
       <article class="ia-leve ia-apparait" style="position:relative;display:flex;flex-direction:column;min-height:420px;border-radius:14px;overflow:hidden;border:1px solid var(--line-soft);background:#0C0E0A;transform:{{ hvT.k2 }};box-shadow:{{ hvSh.k2 }};transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s ease,border-color .4s ease;will-change:transform" onMouseEnter="{{ hvIn.k2 }}" onMouseLeave="{{ hvOut }}">
-        <img loading="lazy" decoding="async" src="assets/gym-hero-3.jpg" alt="Coach accompagnant une adhérente sur machine" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale({{ hvZ.k2 }});transition:transform 1s cubic-bezier(.2,.8,.2,1)" />
+        <img loading="lazy" decoding="async" src="assets/gym-hero-3.jpg" alt="Coach accompagnant une adhérente sur machine" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale({{ hvZ.k2 }});transition:transform 1s cubic-bezier(.2,.8,.2,1)" / width="1280" height="844">
         <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,10,6,.1) 0%,rgba(8,10,6,.55) 45%,rgba(8,10,6,.94) 100%);pointer-events:none"></div>
         <span style="position:relative;align-self:flex-start;margin:16px;padding:6px 12px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#0C0E0A;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),rgba(203,243,74,.9);border:1px solid rgba(255,255,255,.34)">1 coach · 60 min</span>
         <div style="position:relative;margin-top:auto;padding:22px">
@@ -142,7 +142,7 @@
         </div>
       </article>
       <article class="ia-leve ia-apparait" style="position:relative;display:flex;flex-direction:column;min-height:420px;border-radius:14px;overflow:hidden;border:1px solid var(--line-soft);background:#0C0E0A;transform:{{ hvT.k3 }};box-shadow:{{ hvSh.k3 }};transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s ease,border-color .4s ease;will-change:transform" onMouseEnter="{{ hvIn.k3 }}" onMouseLeave="{{ hvOut }}">
-        <img loading="lazy" decoding="async" src="assets/cours-cordes.jpg" alt="Cours collectif avec cordes ondulatoires" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale({{ hvZ.k3 }});transition:transform 1s cubic-bezier(.2,.8,.2,1)" />
+        <img loading="lazy" decoding="async" src="assets/cours-cordes.jpg" alt="Cours collectif avec cordes ondulatoires" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale({{ hvZ.k3 }});transition:transform 1s cubic-bezier(.2,.8,.2,1)" / width="640" height="853">
         <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,10,6,.1) 0%,rgba(8,10,6,.55) 45%,rgba(8,10,6,.94) 100%);pointer-events:none"></div>
         <span style="position:relative;align-self:flex-start;margin:16px;padding:6px 12px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#0C0E0A;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),rgba(203,243,74,.9);border:1px solid rgba(255,255,255,.34)">7j/7</span>
         <div style="position:relative;margin-top:auto;padding:22px">
@@ -157,7 +157,7 @@
         </div>
       </article>
       <article class="ia-leve ia-apparait" style="position:relative;display:flex;flex-direction:column;min-height:420px;border-radius:14px;overflow:hidden;border:1px solid var(--line-soft);background:#0C0E0A;transform:{{ hvT.k4 }};box-shadow:{{ hvSh.k4 }};transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s ease,border-color .4s ease;will-change:transform" onMouseEnter="{{ hvIn.k4 }}" onMouseLeave="{{ hvOut }}">
-        <img loading="lazy" decoding="async" src="assets/pilates-3.jpg" alt="Cours de Pilates" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale({{ hvZ.k4 }});transition:transform 1s cubic-bezier(.2,.8,.2,1)" />
+        <img loading="lazy" decoding="async" src="assets/pilates-3.jpg" alt="Cours de Pilates" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale({{ hvZ.k4 }});transition:transform 1s cubic-bezier(.2,.8,.2,1)" / width="640" height="960">
         <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,10,6,.1) 0%,rgba(8,10,6,.55) 45%,rgba(8,10,6,.94) 100%);pointer-events:none"></div>
         <span style="position:relative;align-self:flex-start;margin:16px;padding:6px 12px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#0C0E0A;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),rgba(203,243,74,.9);border:1px solid rgba(255,255,255,.34)">Débutants</span>
         <div style="position:relative;margin-top:auto;padding:22px">
@@ -172,7 +172,7 @@
         </div>
       </article>
       <article class="ia-leve ia-apparait" style="position:relative;display:flex;flex-direction:column;min-height:420px;border-radius:14px;overflow:hidden;border:1px solid var(--line-soft);background:#0C0E0A;transform:{{ hvT.k5 }};box-shadow:{{ hvSh.k5 }};transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s ease,border-color .4s ease;will-change:transform" onMouseEnter="{{ hvIn.k5 }}" onMouseLeave="{{ hvOut }}">
-        <img loading="lazy" decoding="async" src="assets/gym-hero-2.jpg" alt="Squat guidé par un coach" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale({{ hvZ.k5 }});transition:transform 1s cubic-bezier(.2,.8,.2,1)" />
+        <img loading="lazy" decoding="async" src="assets/gym-hero-2.jpg" alt="Squat guidé par un coach" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale({{ hvZ.k5 }});transition:transform 1s cubic-bezier(.2,.8,.2,1)" / width="1280" height="754">
         <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,10,6,.1) 0%,rgba(8,10,6,.55) 45%,rgba(8,10,6,.94) 100%);pointer-events:none"></div>
         <span style="position:relative;align-self:flex-start;margin:16px;padding:6px 12px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#0C0E0A;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),rgba(203,243,74,.9);border:1px solid rgba(255,255,255,.34)">Duo bien-être</span>
         <div style="position:relative;margin-top:auto;padding:22px">
@@ -540,15 +540,15 @@
       <p style="margin:0;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-text,var(--accent))">Musculation · Coaching · Cours collectifs</p>
     </div>
     <x-import component-from-global-scope="fam-coverflow" from="./coverflow.js" accent="#CBF34A" ink="var(--ink)" autoplay="4500" hint-size="100%,520px" style="display:block;margin-top:-10px">
-      <img loading="lazy" decoding="async" src="assets/muscu-deadlift.jpg" alt="Soulevé de terre encadré par un coach" data-title="Force" data-subtitle="Soulevé de terre encadré par un coach" />
-      <img loading="lazy" decoding="async" src="assets/muscu-traction.jpg" alt="Traction à la barre fixe" data-title="Traction" data-subtitle="Traction à la barre fixe" />
-      <img loading="lazy" decoding="async" src="assets/muscu-bench.jpg" alt="Développé couché avec pareur" data-title="Développé couché" data-subtitle="Développé couché avec pareur" />
-      <img loading="lazy" decoding="async" src="assets/coach-machine.jpg" alt="Séance guidée sur machine" data-title="Coaching privé" data-subtitle="Séance guidée sur machine" />
-      <img loading="lazy" decoding="async" src="assets/cours-cordes.jpg" alt="Cours collectif avec cordes ondulatoires" data-title="Tabata · cardio" data-subtitle="Cours collectif avec cordes ondulatoires" />
-      <img loading="lazy" decoding="async" src="assets/pilates-3.jpg" alt="Cours de Pilates sur reformer" data-title="Pilates" data-subtitle="Cours de Pilates sur reformer" />
-      <img loading="lazy" decoding="async" src="assets/cross-snatch.jpg" alt="Arraché de barre en crossfit" data-title="Crossfit" data-subtitle="Arraché de barre en crossfit" />
-      <img loading="lazy" decoding="async" src="assets/coach-bosu.jpg" alt="Travail d'équilibre avec un coach" data-title="Équilibre" data-subtitle="Travail d'équilibre avec un coach" />
-      <img loading="lazy" decoding="async" src="assets/muscu-barre.jpg" alt="Tirage à la barre libre" data-title="Haltères" data-subtitle="Tirage à la barre libre" />
+      <img loading="lazy" decoding="async" src="assets/muscu-deadlift.jpg" alt="Soulevé de terre encadré par un coach" data-title="Force" data-subtitle="Soulevé de terre encadré par un coach" / width="640" height="960">
+      <img loading="lazy" decoding="async" src="assets/muscu-traction.jpg" alt="Traction à la barre fixe" data-title="Traction" data-subtitle="Traction à la barre fixe" / width="736" height="1104">
+      <img loading="lazy" decoding="async" src="assets/muscu-bench.jpg" alt="Développé couché avec pareur" data-title="Développé couché" data-subtitle="Développé couché avec pareur" / width="736" height="1051">
+      <img loading="lazy" decoding="async" src="assets/coach-machine.jpg" alt="Séance guidée sur machine" data-title="Coaching privé" data-subtitle="Séance guidée sur machine" / width="735" height="947">
+      <img loading="lazy" decoding="async" src="assets/cours-cordes.jpg" alt="Cours collectif avec cordes ondulatoires" data-title="Tabata · cardio" data-subtitle="Cours collectif avec cordes ondulatoires" / width="640" height="853">
+      <img loading="lazy" decoding="async" src="assets/pilates-3.jpg" alt="Cours de Pilates sur reformer" data-title="Pilates" data-subtitle="Cours de Pilates sur reformer" / width="640" height="960">
+      <img loading="lazy" decoding="async" src="assets/cross-snatch.jpg" alt="Arraché de barre en crossfit" data-title="Crossfit" data-subtitle="Arraché de barre en crossfit" / width="736" height="979">
+      <img loading="lazy" decoding="async" src="assets/coach-bosu.jpg" alt="Travail d'équilibre avec un coach" data-title="Équilibre" data-subtitle="Travail d'équilibre avec un coach" / width="736" height="1102">
+      <img loading="lazy" decoding="async" src="assets/muscu-barre.jpg" alt="Tirage à la barre libre" data-title="Haltères" data-subtitle="Tirage à la barre libre" / width="638" height="960">
     </x-import>
   </div>
   </div>

@@ -55,7 +55,7 @@
 
     <div onMouseEnter="{{ enterSpa }}" onMouseLeave="{{ leave }}" style="position:relative;display:flex;align-items:center;justify-content:center;flex-basis:300px;flex-shrink:1;flex-grow:{{ spaGrow }};min-height:min(52vh,520px);overflow:hidden;background:var(--spa-bg);transition:flex-grow .6s cubic-bezier(.4,0,.2,1)">
       <div style="position:absolute;inset:0;transition:filter .6s ease,transform .6s cubic-bezier(.4,0,.2,1);filter:{{ spaBgFilter }};transform:scale({{ spaBgScale }})">
-        <img src="assets/massage-duo.jpg" alt="Massage duo en cabine privative" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" />
+        <img src="assets/massage-duo.jpg" alt="Massage duo en cabine privative" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" / width="736" height="883" decoding="async">
         <sc-if value="{{ slidesReady }}" hint-placeholder-val="{{ false }}"><sc-for list="{{ spaSlides }}" as="s" hint-placeholder-count="0">
           <div aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 1.6s ease;opacity:{{ s.opacity }};background-image:{{ s.bg }};background-size:cover;background-position:center"></div>
         </sc-for></sc-if>
@@ -68,7 +68,7 @@
             <div style="position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,rgba(201,162,74,0) 0deg,rgba(201,162,74,0) 200deg,rgba(201,162,74,.55) 280deg,#E4CE92 335deg,#FFF6DE 350deg,rgba(201,162,74,.5) 360deg);animation:famSpin 2.8s linear infinite;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px))"></div>
           </div>
           <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:50%;background:radial-gradient(120% 90% at 30% 15%,rgba(255,255,255,.34),rgba(255,255,255,.08) 55%,rgba(255,255,255,.04));backdrop-filter:blur(14px) saturate(1.7) brightness(1.08);-webkit-backdrop-filter:blur(14px) saturate(1.7) brightness(1.08);border:1px solid rgba(255,255,255,.42);box-shadow:inset 0 1px 1px rgba(255,255,255,.7),inset 0 -14px 30px rgba(255,255,255,.06),inset 0 0 0 1px rgba(255,255,255,.08),0 18px 50px rgba(0,0,0,.35)">
-            <img src="assets/logo-bronze.png" alt="The Famous" style="display:block;filter:drop-shadow(0 2px 10px rgba(0,0,0,.4)) brightness(1.35);width:clamp(160px,20vw,248px);height:auto" />
+            <img src="assets/logo-bronze.png" alt="The Famous" style="display:block;filter:drop-shadow(0 2px 10px rgba(0,0,0,.4)) brightness(1.35);width:clamp(160px,20vw,248px);height:auto" / width="420" height="120" decoding="async">
             <p style="margin:14px 0 0;text-align:center;font-size:clamp(11px,1.1vw,13px);letter-spacing:.42em;text-transform:uppercase;color:#F6EFE2;text-shadow:0 1px 8px rgba(0,0,0,.45)">Beauty · Spa</p>
           </div>
         </div>
@@ -80,7 +80,7 @@
 
     <div onMouseEnter="{{ enterGym }}" onMouseLeave="{{ leave }}" style="position:relative;display:flex;align-items:center;justify-content:center;flex-basis:300px;flex-shrink:1;flex-grow:{{ gymGrow }};min-height:min(52vh,520px);overflow:hidden;background:var(--gym-bg);transition:flex-grow .6s cubic-bezier(.4,0,.2,1)">
       <div style="position:absolute;inset:0;transition:filter .6s ease,transform .6s cubic-bezier(.4,0,.2,1);filter:{{ gymBgFilter }};transform:scale({{ gymBgScale }})">
-        <img src="assets/gym-salle.jpg" alt="Salle de sport The Famous à Bastos" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" />
+        <img src="assets/gym-salle.jpg" alt="Salle de sport The Famous à Bastos" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" / width="498" height="760" loading="lazy" decoding="async">
         <sc-if value="{{ slidesReady }}" hint-placeholder-val="{{ false }}"><sc-for list="{{ gymSlides }}" as="s" hint-placeholder-count="0">
           <div aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 1.6s ease;opacity:{{ s.opacity }};background-image:{{ s.bg }};background-size:cover;background-position:center"></div>
         </sc-for></sc-if>
@@ -93,7 +93,7 @@
             <div style="position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,rgba(203,243,74,0) 0deg,rgba(203,243,74,0) 200deg,rgba(203,243,74,.55) 280deg,#CBF34A 335deg,#F4FFD6 350deg,rgba(203,243,74,.5) 360deg);animation:famSpin 2.8s linear infinite;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px))"></div>
           </div>
           <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:50%;background:radial-gradient(120% 90% at 30% 15%,rgba(255,255,255,.34),rgba(255,255,255,.08) 55%,rgba(255,255,255,.04));backdrop-filter:blur(14px) saturate(1.7) brightness(1.08);-webkit-backdrop-filter:blur(14px) saturate(1.7) brightness(1.08);border:1px solid rgba(255,255,255,.42);box-shadow:inset 0 1px 1px rgba(255,255,255,.7),inset 0 -14px 30px rgba(255,255,255,.06),inset 0 0 0 1px rgba(255,255,255,.08),0 18px 50px rgba(0,0,0,.35)">
-            <img src="assets/logo-gym.png" alt="The Famous" style="display:block;filter:drop-shadow(0 2px 10px rgba(0,0,0,.45));width:clamp(160px,20vw,248px);height:auto" />
+            <img src="assets/logo-gym.png" alt="The Famous" style="display:block;filter:drop-shadow(0 2px 10px rgba(0,0,0,.45));width:clamp(160px,20vw,248px);height:auto" / width="420" height="120" loading="lazy" decoding="async">
             <p style="margin:14px 0 0;text-align:center;font-size:clamp(11px,1.1vw,13px);letter-spacing:.42em;text-transform:uppercase;color:#CBF34A">Gym · Fitness</p>
           </div>
         </div>
