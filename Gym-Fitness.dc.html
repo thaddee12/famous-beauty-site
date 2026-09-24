@@ -663,19 +663,30 @@ class Component extends DCLogic {
     let raw = isAbo ? hours(8, 19, 1).map(h => [h[0], ""]) : s.bType === "cours" ? (PLAN[dow] || []) : s.bType === "prive" ? hours(7, 20, 1) : s.bType === "journee" ? hours(6, 18, 2) : (dow === 0 ? [] : hours(10, 18, 2));
     const hash = str => { let h = 2166136261; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0) / 4294967295; };
     const key = day.toDateString();
+    // Nombre de personnes acceptees en meme temps sur un creneau. A confirmer
+    // avec l'institut : c'est ce chiffre qui decide quand un creneau se grise.
+    const CAPACITE = 8;
+    // L'agenda attend une date ISO ; key sert au calcul de la reference.
+    const iso = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    // Duree d'un creneau, en minutes, selon le type de seance. La page Spa
+    // la deduit de la prestation choisie ; ici elle vient du type. Le Pass
+    // Journee prend le pas des creneaux affiches, soit deux heures.
+    const DUREES = { cours: 60, prive: 60, visite: 30, journee: 120, abo: 30, reabo: 30 };
+    const duree = DUREES[s.bType] || 60;
     const slots = raw.map(([time, cls]) => {
       const past = s.bDay === 0 && parseInt(time, 10) <= now.getHours();
       // Etait laisse a false : le point d'accroche existait mais
       // aucune source ne le remplissait. On lit desormais l'agenda.
-      const finM = m + need;
+      const debutM = parseInt(time.slice(0, 2), 10) * 60 + parseInt(time.slice(3), 10);
+      const finM = debutM + duree;
       const finHHMM = String(Math.floor(finM / 60)).padStart(2, "0") + ":" + String(finM % 60).padStart(2, "0");
       const full = (window.FAMOUS_API && FAMOUS_API.estOccupe)
-        ? FAMOUS_API.estOccupe(time, finHHMM, s.bOccupes) : false;
+        ? FAMOUS_API.estOccupe(time, finHHMM, s.bOccupes, CAPACITE) : false;
       const off = past || full;
       const on = (s.bSlot || []).indexOf(time) >= 0;
       const left = s.bType === "cours" ? Math.max(1, Math.round(hash(time + key) * 12)) : 0;
       return {
-        time, disabled: off,
+        time, end: finHHMM, disabled: off,
         sub: past ? "Passé" : full ? "Complet" : cls ? cls : isAbo ? "Accueil" : "Disponible",
         cursor: off ? "not-allowed" : "pointer",
         bg: on ? "var(--accent)" : "var(--surface)",
@@ -729,7 +740,26 @@ class Component extends DCLogic {
         const line = isAbo ? typeLabel + " — " + period + " · passage le " + dayLong + " à " + heures : ty.label + " — " + dayLong + " à " + heures;
         const intro = s.bType === "reabo" ? "je souhaite renouveler mon abonnement :" : s.bType === "abo" ? "je souhaite m'abonner :" : "je souhaite réserver :";
         const msg = "Bonjour The Famous Gym, " + intro + "\n" + line + "\nTarif : " + priceLabel + (s.bType === "reabo" && s.bMember.trim() ? "\nN° de membre : " + s.bMember.trim() : "") + "\nNom : " + s.bName.trim() + "\nTél : " + s.bPhone.trim() + "\nRéf. " + ref;
-        this.setState({ bError: "", bDone: { name: s.bName.trim().split(" ")[0], ref, line, wa: this.wa(msg) } });
+        const termine = () => this.setState({ bError: "", bDone: { name: s.bName.trim().split(" ")[0], ref, line, wa: this.wa(msg) } });
+
+        // Ecriture dans Google Agenda, en parallele de WhatsApp. WhatsApp
+        // reste le canal qui fait foi : si l'agenda ne repond pas dans le
+        // delai, on affiche quand meme la confirmation plutot que de laisser
+        // le visiteur devant un bouton qui ne fait rien.
+        if (!window.FAMOUS_API || !FAMOUS_API.agendaActif || this._envoi) return termine();
+        this._envoi = true;
+        const socle = { univers: "gym", date: iso(day), nom: s.bName.trim(), telephone: s.bPhone.trim(), prestation: typeLabel, capacite: CAPACITE, note: (s.bType === "reabo" && s.bMember.trim() ? "N° de membre : " + s.bMember.trim() + " · " : "") + "Réf. " + ref };
+        const ecritures = Promise.all(sels.map(x => FAMOUS_API.reserver(Object.assign({ debut: x.time, fin: x.end }, socle))));
+        const delai = new Promise(r => setTimeout(() => r(null), 8000));
+        Promise.race([ecritures, delai]).then(res => {
+          this._envoi = false;
+          if (Array.isArray(res) && res.some(r => r && r.conflit)) {
+            this._occCle = null;            // forcer une relecture de la journee
+            this.chargerOccupes();
+            return this.setState({ bError: "Ce créneau vient d'être complet. Choisissez une autre heure." });
+          }
+          termine();
+        });
       },
       reset: () => this.setState({ bDone: null, bSlot: [] })
     };

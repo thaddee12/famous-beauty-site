@@ -20,10 +20,14 @@
     SUPABASE_ANON: '',
 
     /* ---- Agenda -------------------------------------------------------
-       LIRE  : adresse qui renvoie les plages occupees d'une journee.
-       ECRIRE: webhook Make.com qui cree l'evenement dans Google Calendar. */
+       LIRE  : adresse de la fonction Edge qui renvoie les plages occupees.
+       ECRIRE: la meme adresse, appelee en POST, qui cree l'evenement.
+       JETON : doit valoir le secret JETON_SITE de la fonction Edge. En
+               lecture il part dans l'adresse, en ecriture dans le corps du
+               message : la fonction le verifie dans les deux cas. */
     AGENDA_LIRE: '',
     AGENDA_WEBHOOK: '',
+    AGENDA_JETON: '',
 
     /* Au-dela, on renonce et le site continue sans agenda. */
     DELAI_MS: 7000,
@@ -165,22 +169,33 @@
   function occupes(univers, date) {
     if (!CONFIG.AGENDA_LIRE) return Promise.resolve([]);
     var sep = CONFIG.AGENDA_LIRE.indexOf('?') >= 0 ? '&' : '?';
+    var jeton = CONFIG.AGENDA_JETON && CONFIG.AGENDA_LIRE.indexOf('jeton=') < 0
+              ? '&jeton=' + encodeURIComponent(CONFIG.AGENDA_JETON) : '';
     return requete(CONFIG.AGENDA_LIRE + sep + 'univers=' + encodeURIComponent(univers) +
-                   '&date=' + encodeURIComponent(date))
+                   '&date=' + encodeURIComponent(date) + jeton)
       .then(function (r) {
         if (!r.ok || !r.data) return [];
         var l = r.data.occupes || r.data.busy || r.data;
         return Array.isArray(l) ? l.map(function (p) {
-          return { debut: p.debut || p.start || p.from, fin: p.fin || p.end || p.to };
+          return { debut: p.debut || p.start || p.from, fin: p.fin || p.end || p.to,
+                   ferme: !!p.ferme };
         }).filter(function (p) { return p.debut && p.fin; }) : [];
       });
   }
 
-  function estOccupe(debut, fin, plages) {
+  /* capacite : nombre de personnes que le creneau peut recevoir en meme
+     temps. 1 pour une cabine de spa, davantage pour une salle de sport.
+     Sans ce compte, la premiere reservation fermait le creneau pour tout
+     le monde, ce qui serait faux pour un cours collectif. */
+  function estOccupe(debut, fin, plages, capacite) {
     var d = enMinutes(debut), f = enMinutes(fin);
-    return (plages || []).some(function (p) {
+    var max = Math.max(1, parseInt(capacite, 10) || 1);
+    var chevauchent = (plages || []).filter(function (p) {
       return d < enMinutes(p.fin) && f > enMinutes(p.debut);
     });
+    // Une journee fermee bloque, quel que soit le nombre de places.
+    if (chevauchent.some(function (p) { return p.ferme; })) return true;
+    return chevauchent.length >= max;
   }
 
   /* Envoie la reservation au webhook qui l'inscrit dans Google Calendar.
@@ -188,11 +203,27 @@
      quand meme recu la demande par message. */
   function reserver(donnees) {
     if (!CONFIG.AGENDA_WEBHOOK) return Promise.resolve({ ok: false, horsService: true });
+    var corps = {};
+    for (var k in donnees) if (donnees.hasOwnProperty(k)) corps[k] = donnees[k];
+    if (CONFIG.AGENDA_JETON) corps.jeton = CONFIG.AGENDA_JETON;
+    /* En-tete volontairement en texte simple : evite la requete OPTIONS
+       prealable, un aller-retour de moins sur une connexion lente. */
     return requete(CONFIG.AGENDA_WEBHOOK, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(donnees)
-    }).then(function (r) { return { ok: !!r.ok, statut: r.statut }; });
+      body: JSON.stringify(corps)
+    }).then(function (r) {
+      return {
+        ok: !!r.ok,
+        statut: r.statut,
+        horsService: !!r.horsService,
+        /* 409 : le creneau a ete pris entre l'affichage et la validation.
+           C'est la seule erreur que le visiteur doit voir, les autres ne
+           l'empechent pas de passer par WhatsApp. */
+        conflit: r.statut === 409 || !!(r.data && r.data.conflit),
+        reference: r.data && r.data.reference ? r.data.reference : null
+      };
+    });
   }
 
   window.FAMOUS_API = {

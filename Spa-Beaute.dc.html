@@ -724,6 +724,8 @@ class Component extends DCLogic {
     const now = new Date();
     const days = []; for (let i = 0; i < 14; i++) days.push(new Date(now.getFullYear(), now.getMonth(), now.getDate() + i));
     const day = days[s.sDay], key = day.toDateString();
+    // L'agenda attend une date ISO ; key sert au calcul de la reference.
+    const iso = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
     const slots = [];
     for (let m = 9 * 60; !tooLong && m + need <= 20 * 60; m += 30) {
       const time = String(Math.floor(m / 60)).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0");
@@ -777,7 +779,26 @@ class Component extends DCLogic {
         const heures = sels.map(x => x.time + " – " + x.end).join(" ou ");
            const line = name + " — " + dayLong + ", " + heures;
         const msg = "Bonjour The Famous, je souhaite prendre rendez-vous :\n" + line + "\n" + (s.sGender === "homme" ? "Homme" : "Femme") + " · " + people + " · Durée : " + dur(total) + " · Tarif : " + totalPrice + "\nNom : " + s.sName.trim() + "\nTél : " + s.sPhone.trim() + (s.sNote.trim() ? "\nPrécisions : " + s.sNote.trim() : "") + "\nRéf. " + ref;
-        this.setState({ sError: "", sDone: { name: s.sName.trim().split(" ")[0], ref, line, wa: this.wa(msg) } });
+        const termine = () => this.setState({ sError: "", sDone: { name: s.sName.trim().split(" ")[0], ref, line, wa: this.wa(msg) } });
+
+        // Ecriture dans Google Agenda, en parallele de WhatsApp. WhatsApp
+        // reste le canal qui fait foi : si l'agenda ne repond pas dans le
+        // delai, on affiche quand meme la confirmation plutot que de laisser
+        // le visiteur devant un bouton qui ne fait rien.
+        if (!window.FAMOUS_API || !FAMOUS_API.agendaActif || this._envoi) return termine();
+        this._envoi = true;
+        const socle = { univers: "spa", date: iso(day), nom: s.sName.trim(), telephone: s.sPhone.trim(), prestation: name, note: (s.sNote.trim() ? s.sNote.trim() + " · " : "") + "Réf. " + ref };
+        const ecritures = Promise.all(sels.map(x => FAMOUS_API.reserver(Object.assign({ debut: x.time, fin: x.end }, socle))));
+        const delai = new Promise(r => setTimeout(() => r(null), 8000));
+        Promise.race([ecritures, delai]).then(res => {
+          this._envoi = false;
+          if (Array.isArray(res) && res.some(r => r && r.conflit)) {
+            this._occCle = null;            // forcer une relecture de la journee
+            this.chargerOccupes();
+            return this.setState({ sError: "Ce créneau vient d'être réservé. Choisissez une autre heure." });
+          }
+          termine();
+        });
       },
       sReset: () => this.setState({ sDone: null, sSlot: [] })
     };
