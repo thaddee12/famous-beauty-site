@@ -599,7 +599,7 @@ class Component extends DCLogic {
     };
   }
 
-  state = { heroIdx: 0, hv: null, pPromo: true, pMonthVal: 90000, bType: "cours", bPlan: "mois", bMember: "", bDay: 0, bSlot: null, bName: "", bPhone: "", bError: "", bDone: null };
+  state = { heroIdx: 0, hv: null, pPromo: true, pMonthVal: 90000, bType: "cours", bPlan: "mois", bMember: "", bDay: 0, bSlot: [], bName: "", bPhone: "", bError: "", bDone: null };
   heroList = ["assets/gym-hero-1.jpg", "assets/gym-hero-2.jpg", "assets/gym-hero-3.jpg"];
   componentDidMount() {
     this.heroTimer = setInterval(() => this.setState(s => ({ heroIdx: (s.heroIdx + 1) % this.heroList.length })), 5000);
@@ -644,7 +644,7 @@ class Component extends DCLogic {
       const past = s.bDay === 0 && parseInt(time, 10) <= now.getHours();
       const full = false;
       const off = past || full;
-      const on = s.bSlot === time;
+      const on = (s.bSlot || []).indexOf(time) >= 0;
       const left = s.bType === "cours" ? Math.max(1, Math.round(hash(time + key) * 12)) : 0;
       return {
         time, disabled: off,
@@ -656,12 +656,15 @@ class Component extends DCLogic {
         opacity: off ? .45 : 1,
         strike: full ? "line-through" : "none",
         cls,
-        select: () => { if (!off) this.setState({ bSlot: time, bError: "" }); }
+        select: () => { if (off) return; this.setState(st => { const cur = st.bSlot || [];
+          // plusieurs creneaux possibles : le membre propose, la salle confirme
+          return { bSlot: cur.indexOf(time) >= 0 ? cur.filter(t => t !== time) : cur.concat([time]).sort(), bError: "" }; }); }
       };
     });
     const free = slots.filter(x => !x.disabled).length;
     const ty = TYPES[s.bType];
-    const sel = slots.find(x => x.time === s.bSlot && !x.disabled);
+    const sels = slots.filter(x => (s.bSlot || []).indexOf(x.time) >= 0 && !x.disabled);
+    const sel = sels[0];
     const dayLong = day.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
     const plan = PLANS[s.bPlan];
     const end = new Date(day);
@@ -672,8 +675,8 @@ class Component extends DCLogic {
     const priceLabel = isAbo ? plan.price : ty.price;
     const done = s.bDone;
     return {
-      types: Object.keys(TYPES).map(k => ({ label: TYPES[k].label, meta: TYPES[k].meta, price: TYPES[k].note ? TYPES[k].price + " · " + TYPES[k].note : TYPES[k].price, bg: k === s.bType ? "color-mix(in srgb,var(--accent) 14%,var(--surface))" : "var(--surface)", border: k === s.bType ? "var(--accent)" : "var(--line)", select: () => this.setState({ bType: k, bSlot: null, bError: "", bDone: null }) })),
-      days: days.map((d, i) => ({ dow: i === 0 ? "Auj." : d.toLocaleDateString("fr-FR", { weekday: "short" }).replace(".", ""), num: d.getDate(), mon: d.toLocaleDateString("fr-FR", { month: "short" }).replace(".", ""), bg: i === s.bDay ? "var(--accent)" : "var(--surface)", fg: i === s.bDay ? "var(--btn-ink)" : "var(--ink)", border: i === s.bDay ? "var(--accent)" : "var(--line)", select: () => this.setState({ bDay: i, bSlot: null, bError: "" }) })),
+      types: Object.keys(TYPES).map(k => ({ label: TYPES[k].label, meta: TYPES[k].meta, price: TYPES[k].note ? TYPES[k].price + " · " + TYPES[k].note : TYPES[k].price, bg: k === s.bType ? "color-mix(in srgb,var(--accent) 14%,var(--surface))" : "var(--surface)", border: k === s.bType ? "var(--accent)" : "var(--line)", select: () => this.setState({ bType: k, bSlot: [], bError: "", bDone: null }) })),
+      days: days.map((d, i) => ({ dow: i === 0 ? "Auj." : d.toLocaleDateString("fr-FR", { weekday: "short" }).replace(".", ""), num: d.getDate(), mon: d.toLocaleDateString("fr-FR", { month: "short" }).replace(".", ""), bg: i === s.bDay ? "var(--accent)" : "var(--surface)", fg: i === s.bDay ? "var(--btn-ink)" : "var(--ink)", border: i === s.bDay ? "var(--accent)" : "var(--line)", select: () => this.setState({ bDay: i, bSlot: [], bError: "" }) })),
       slots, noSlots: slots.length === 0,
       isAbo, isReabo: s.bType === "reabo",
       member: s.bMember,
@@ -685,21 +688,22 @@ class Component extends DCLogic {
       name: s.bName, phone: s.bPhone,
       onName: e => this.setState({ bName: e.target.value }),
       ...this.telVals("bPhone"),
-      rType: typeLabel, rDay: dayLong, rSlot: sel ? sel.time + (sel.cls ? " · " + sel.cls : "") : "—", rDurLabel: isAbo ? "Période" : "Durée", rDur: isAbo ? period : ty.dur, rPrice: priceLabel,
+      rType: typeLabel, rDay: dayLong, rSlot: sels.length ? sels.map(x => x.time + (x.cls ? " · " + x.cls : "")).join(" ou ") : "—", rDurLabel: isAbo ? "Période" : "Durée", rDur: isAbo ? period : ty.dur, rPrice: priceLabel,
       error: s.bError,
       notConfirmed: !done, confirmed: !!done,
       cName: done ? done.name : "", cRef: done ? done.ref : "", cLine: done ? done.line : "", cWa: done ? done.wa : "#",
       confirm: () => {
-        if (!sel) return this.setState({ bError: "Choisissez une heure." });
+        if (!sels.length) return this.setState({ bError: "Choisissez au moins une heure." });
         if (s.bName.trim().length < 2) return this.setState({ bError: "Indiquez votre nom." });
         if (!s.bPhone) { const co = this.telCo(), need = co[3].reduce((a, b) => a + b, 0); return this.setState({ bError: "Numéro WhatsApp incomplet : " + need + " chiffres attendus après " + co[2] + "." }); }
         const ref = (isAbo ? "ABO-" : "GYM-") + String(Math.floor(hash(s.bName + s.bPhone + key + sel.time) * 9000) + 1000);
-        const line = isAbo ? typeLabel + " — " + period + " · passage le " + dayLong + " à " + sel.time : ty.label + " — " + dayLong + " à " + sel.time + (sel.cls ? " (" + sel.cls + ")" : "");
+        const heures = sels.map(x => x.time + (x.cls ? " (" + x.cls + ")" : "")).join(" ou ");
+        const line = isAbo ? typeLabel + " — " + period + " · passage le " + dayLong + " à " + heures : ty.label + " — " + dayLong + " à " + heures;
         const intro = s.bType === "reabo" ? "je souhaite renouveler mon abonnement :" : s.bType === "abo" ? "je souhaite m'abonner :" : "je souhaite réserver :";
         const msg = "Bonjour The Famous Gym, " + intro + "\n" + line + "\nTarif : " + priceLabel + (s.bType === "reabo" && s.bMember.trim() ? "\nN° de membre : " + s.bMember.trim() : "") + "\nNom : " + s.bName.trim() + "\nTél : " + s.bPhone.trim() + "\nRéf. " + ref;
         this.setState({ bError: "", bDone: { name: s.bName.trim().split(" ")[0], ref, line, wa: this.wa(msg) } });
       },
-      reset: () => this.setState({ bDone: null, bSlot: null })
+      reset: () => this.setState({ bDone: null, bSlot: [] })
     };
   }
   wa(msg) {

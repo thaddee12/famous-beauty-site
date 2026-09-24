@@ -654,7 +654,7 @@ class Component extends DCLogic {
     };
   }
 
-  state = { heroIdx: 0, pv: "tous", pOpen: {}, sGender: "femme", sCat: "massages", sSvc: 0, sPicks: [], sDay: 0, sSlot: null, sName: "", sPhone: "", sNote: "", sError: "", sDone: null };
+  state = { heroIdx: 0, pv: "tous", pOpen: {}, sGender: "femme", sCat: "massages", sSvc: 0, sPicks: [], sDay: 0, sSlot: [], sName: "", sPhone: "", sNote: "", sError: "", sDone: null };
   heroList = ["assets/massage-duo.jpg","assets/spa-pierres.jpg","assets/soin-visage.jpg","assets/capillaire-1.jpg","assets/onglerie-2.jpg","assets/pedicure.jpg"];
   componentDidMount() {
     this.heroTimer = setInterval(() => this.setState(s => ({ heroIdx: (s.heroIdx + 1) % this.heroList.length })), 5000);
@@ -705,15 +705,18 @@ class Component extends DCLogic {
       const time = String(Math.floor(m / 60)).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0");
       const past = s.sDay === 0 && m <= now.getHours() * 60 + now.getMinutes();
       const full = false;
-      const off = past || full, on = s.sSlot === time;
+      const off = past || full, on = (s.sSlot || []).indexOf(time) >= 0;
       const endM = m + need;
       slots.push({ time, end: String(Math.floor(endM / 60)).padStart(2, "0") + ":" + String(endM % 60).padStart(2, "0"), disabled: off,
         sub: past ? "Passé" : "À confirmer", cursor: off ? "not-allowed" : "pointer",
         bg: on ? "var(--accent)" : "var(--surface)", fg: on ? "var(--btn-ink)" : "var(--ink)", border: on ? "var(--accent)" : "var(--line)",
         opacity: off ? .45 : 1, strike: full ? "line-through" : "none",
-        select: () => { if (!off) this.setState({ sSlot: time, sError: "" }); } });
+        select: () => { if (off) return; this.setState(st => { const cur = st.sSlot || [];
+             // plusieurs creneaux possibles : le client propose, l institut confirme
+             return { sSlot: cur.indexOf(time) >= 0 ? cur.filter(t => t !== time) : cur.concat([time]).sort(), sError: "" }; }); } });
     }
-    const sel = slots.find(x => x.time === s.sSlot && !x.disabled);
+    const sels = slots.filter(x => (s.sSlot || []).indexOf(x.time) >= 0 && !x.disabled);
+      const sel = sels[0];
     const free = slots.filter(x => !x.disabled).length;
     const dayLong = day.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
     const people = svc[3] === 2 ? "2 personnes" : "1 personne";
@@ -721,10 +724,10 @@ class Component extends DCLogic {
     const done = s.sDone;
     return {
       sCats: CATS.map(c => ({ label: c[1], bg: c[0] === s.sCat ? "var(--accent)" : "transparent", fg: c[0] === s.sCat ? "var(--btn-ink)" : "var(--ink-3)", border: c[0] === s.sCat ? "var(--accent)" : "var(--line)", count: picks.filter(x => x.c[0] === c[0]).length, hasPick: picks.some(x => x.c[0] === c[0]), badgeBg: c[0] === s.sCat ? "var(--btn-ink)" : "var(--accent)", badgeFg: c[0] === s.sCat ? "var(--accent)" : "var(--btn-ink)", select: () => this.setState({ sCat: c[0], sError: "", sDone: null }) })),
-      sServices: cat[2].map((v, i) => { const k = cat[0] + "|" + i, on = pickSet.has(k); return { name: v[0], meta: dur(v[1]) + (v[3] === 2 ? " · pour 2" : ""), price: fmtP(v), on: on ? "true" : "false", bg: on ? "color-mix(in srgb,var(--accent) 14%,var(--surface))" : "var(--surface)", border: on ? "var(--accent)" : "var(--line)", checkBg: on ? "var(--accent)" : "transparent", checkO: on ? 1 : 0, select: () => this.setState(st => { const cur = st.sPicks || []; const has = cur.some(p => p.c === cat[0] && p.i === i); return { sPicks: has ? cur.filter(p => !(p.c === cat[0] && p.i === i)) : cur.concat([{ c: cat[0], i }]), sSlot: null, sError: "" }; }) }; }),
-      sDays: days.map((d, i) => ({ dow: i === 0 ? "Auj." : d.toLocaleDateString("fr-FR", { weekday: "short" }).replace(".", ""), num: d.getDate(), mon: d.toLocaleDateString("fr-FR", { month: "short" }).replace(".", ""), bg: i === s.sDay ? "var(--accent)" : "var(--surface)", fg: i === s.sDay ? "var(--btn-ink)" : "var(--ink)", border: i === s.sDay ? "var(--accent)" : "var(--line)", select: () => this.setState({ sDay: i, sSlot: null, sError: "" }) })),
-      sSlots: slots, sFreeLabel: tooLong ? "durée totale trop longue pour une journée (11 h max)" : ("heure de début souhaitée" + (total ? " pour " + dur(total) : "")),
-      sRPicks: picks.map(x => ({ name: x.v[0], meta: dur(x.v[1]) + " · " + fmtP(x.v), remove: () => this.setState(st => ({ sPicks: (st.sPicks || []).filter(p => !(p.c === x.p.c && p.i === x.p.i)), sSlot: null })) })),
+      sServices: cat[2].map((v, i) => { const k = cat[0] + "|" + i, on = pickSet.has(k); return { name: v[0], meta: dur(v[1]) + (v[3] === 2 ? " · pour 2" : ""), price: fmtP(v), on: on ? "true" : "false", bg: on ? "color-mix(in srgb,var(--accent) 14%,var(--surface))" : "var(--surface)", border: on ? "var(--accent)" : "var(--line)", checkBg: on ? "var(--accent)" : "transparent", checkO: on ? 1 : 0, select: () => this.setState(st => { const cur = st.sPicks || []; const has = cur.some(p => p.c === cat[0] && p.i === i); return { sPicks: has ? cur.filter(p => !(p.c === cat[0] && p.i === i)) : cur.concat([{ c: cat[0], i }]), sSlot: [], sError: "" }; }) }; }),
+      sDays: days.map((d, i) => ({ dow: i === 0 ? "Auj." : d.toLocaleDateString("fr-FR", { weekday: "short" }).replace(".", ""), num: d.getDate(), mon: d.toLocaleDateString("fr-FR", { month: "short" }).replace(".", ""), bg: i === s.sDay ? "var(--accent)" : "var(--surface)", fg: i === s.sDay ? "var(--btn-ink)" : "var(--ink)", border: i === s.sDay ? "var(--accent)" : "var(--line)", select: () => this.setState({ sDay: i, sSlot: [], sError: "" }) })),
+      sSlots: slots, sFreeLabel: tooLong ? "durée totale trop longue pour une journée (11 h max)" : ("heures souhaitées, plusieurs possibles" + (total ? " pour " + dur(total) : "")),
+      sRPicks: picks.map(x => ({ name: x.v[0], meta: dur(x.v[1]) + " · " + fmtP(x.v), remove: () => this.setState(st => ({ sPicks: (st.sPicks || []).filter(p => !(p.c === x.p.c && p.i === x.p.i)), sSlot: [] })) })),
       sRNone: !picks.length, sRCount: picks.length, sRDur: total ? dur(total) : "—",
       sName: s.sName, sPhone: s.sPhone, sNote: s.sNote,
       sOnName: e => this.setState({ sName: e.target.value }),
@@ -732,21 +735,22 @@ class Component extends DCLogic {
       sOnNote: e => this.setState({ sNote: e.target.value }),
       sRName: name, sRDay: dayLong, sRSlot: sel ? sel.time + " – " + sel.end : "—", sRPeople: people, sRPrice: totalPrice, sRGender: s.sGender === "homme" ? "Homme" : "Femme",
       sGenderKnob: s.sGender === "homme" ? "calc(5px + (100% - 10px) / 2)" : "5px",
-      sGenders: [["femme", "Femme"], ["homme", "Homme"]].map(g => ({ label: g[1], on: g[0] === s.sGender, bg: g[0] === s.sGender ? "var(--accent)" : "transparent", fg: g[0] === s.sGender ? "#1B1008" : "var(--ink-3)", select: () => this.setState({ sGender: g[0], sCat: g[0] === "homme" ? "barber" : "hair", sPicks: [], sSlot: null, sError: "", sDone: null }) })),
+      sGenders: [["femme", "Femme"], ["homme", "Homme"]].map(g => ({ label: g[1], on: g[0] === s.sGender, bg: g[0] === s.sGender ? "var(--accent)" : "transparent", fg: g[0] === s.sGender ? "#1B1008" : "var(--ink-3)", select: () => this.setState({ sGender: g[0], sCat: g[0] === "homme" ? "barber" : "hair", sPicks: [], sSlot: [], sError: "", sDone: null }) })),
       sError: s.sError, sNotDone: !done, sDone: !!done,
       sCName: done ? done.name : "", sCRef: done ? done.ref : "", sCLine: done ? done.line : "", sCWa: done ? done.wa : "#",
       sConfirm: () => {
         if (!picks.length) return this.setState({ sError: "Choisissez au moins une prestation." });
         if (tooLong) return this.setState({ sError: "La durée totale dépasse une journée. Retirez une prestation." });
-        if (!sel) return this.setState({ sError: "Choisissez une heure." });
+        if (!sels.length) return this.setState({ sError: "Choisissez au moins une heure." });
         if (s.sName.trim().length < 2) return this.setState({ sError: "Indiquez votre nom." });
         if (!s.sPhone) { const co = this.telCo(), need = co[3].reduce((a, b) => a + b, 0); return this.setState({ sError: "Numéro WhatsApp incomplet : " + need + " chiffres attendus après " + co[2] + "." }); }
         const ref = "SPA-" + String(Math.floor(hash(s.sName + s.sPhone + key + sel.time) * 9000) + 1000);
-        const line = name + " — " + dayLong + ", " + sel.time + " – " + sel.end;
+        const heures = sels.map(x => x.time + " – " + x.end).join(" ou ");
+           const line = name + " — " + dayLong + ", " + heures;
         const msg = "Bonjour The Famous, je souhaite prendre rendez-vous :\n" + line + "\n" + (s.sGender === "homme" ? "Homme" : "Femme") + " · " + people + " · Durée : " + dur(total) + " · Tarif : " + totalPrice + "\nNom : " + s.sName.trim() + "\nTél : " + s.sPhone.trim() + (s.sNote.trim() ? "\nPrécisions : " + s.sNote.trim() : "") + "\nRéf. " + ref;
         this.setState({ sError: "", sDone: { name: s.sName.trim().split(" ")[0], ref, line, wa: this.wa(msg) } });
       },
-      sReset: () => this.setState({ sDone: null, sSlot: null })
+      sReset: () => this.setState({ sDone: null, sSlot: [] })
     };
   }
   wa(msg) {
