@@ -54,21 +54,57 @@
      Deux colonnes, l'image domine, seuls le nom et le prix restent sous la
      vignette. Le reste, description, couleurs et bouton, part dans la fiche
      qui s'ouvre au toucher. La version ordinateur n'est pas touchee. */
+
+  /* ---- Carrousel des best-sellers ---------------------------------------
+     Une piste qui defile horizontalement, avec calage sur chaque carte. Sur
+     ordinateur les fleches font avancer d'une carte ; sur telephone, la
+     carte suivante depasse volontairement du bord pour signaler qu'on peut
+     faire glisser. */
+  .fam-carrousel {
+    display: flex; gap: clamp(12px, 2vw, 18px);
+    overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory; scroll-behavior: smooth;
+    padding: 2px 2px 10px; margin: 0 -2px;
+    scrollbar-width: none; -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .fam-carrousel::-webkit-scrollbar { display: none; }
+  .fam-carrousel > article {
+    flex: 0 0 clamp(230px, 26vw, 320px);
+    scroll-snap-align: start;
+  }
+  .fam-fleche {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 38px; height: 38px; border-radius: 50%; cursor: pointer;
+    border: 1px solid var(--line); background: var(--surface-2);
+    color: var(--ink); transition: border-color .25s ease, color .25s ease,
+                                    background .25s ease, transform .25s ease;
+  }
+  .fam-fleche:hover { border-color: var(--accent); color: var(--accent);
+                      background: var(--surface-3); }
+  .fam-fleche:active { transform: scale(.94); }
+  .fam-fleche:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   @media (max-width: 700px) {
-    .ia-cascade { grid-template-columns: 1fr 1fr !important; gap: 10px 8px !important; }
-    .ia-cascade > article { background: transparent !important; border: 0 !important;
-                            border-radius: 0 !important; box-shadow: none !important; }
-    .ia-cascade .fam-vignette { cursor: pointer; }
-    .ia-cascade > article > div:last-child { padding: 9px 2px 4px !important; }
-    .ia-cascade .fam-cat,
-    .ia-cascade .fam-desc,
-    .ia-cascade .fam-couleurs,
-    .ia-cascade .fam-add { display: none !important; }
-    .ia-cascade > article h3 { margin: 0 !important; font-family: 'Jost', sans-serif !important;
-                               font-size: 13px !important; font-weight: 400 !important;
-                               line-height: 1.35 !important; }
-    .ia-cascade > article > div:last-child > span:last-of-type {
-      margin: 5px 0 0 !important; font-size: 11px !important; letter-spacing: .06em !important; }
+    /* La carte suivante depasse : l'invitation a glisser est visible. */
+    .fam-carrousel > article { flex: 0 0 76%; }
+    .fam-fleche { width: 34px; height: 34px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .fam-carrousel { scroll-behavior: auto; } }
+  @media (max-width: 700px) {
+    /* La carte garde son fond, sa bordure et ses angles : seul son contenu
+       est allege. La description, les couleurs et le bouton partent dans la
+       fiche qui s'ouvre au toucher. */
+    #catalogue .ia-cascade { grid-template-columns: 1fr 1fr !important; gap: 12px 10px !important; }
+    #catalogue .fam-vignette { cursor: pointer; }
+    #catalogue .ia-cascade > article > div:last-child { padding: 12px 12px 14px !important; }
+    #catalogue .fam-cat,
+    #catalogue .fam-desc,
+    #catalogue .fam-couleurs,
+    #catalogue .fam-add { display: none !important; }
+    #catalogue .ia-cascade > article h3 { margin: 0 !important;
+                               font-size: 16px !important; line-height: 1.2 !important; }
+    #catalogue .ia-cascade > article > div:last-child > span:last-of-type {
+      margin: 7px 0 0 !important; font-size: 10px !important; letter-spacing: .08em !important; }
   }
 </style>
 <script>try{var t=localStorage.getItem('famous_theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
@@ -97,9 +133,21 @@
   <div style="max-width:1240px;margin:0 auto">
     <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:clamp(20px,3vw,28px)">
       <h2 style="margin:0;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(26px,3.6vw,40px);line-height:1.1;white-space:nowrap;color:var(--ink)">Best-sellers</h2>
-      <p style="margin:0;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-dim)">Les plus commandés à Bastos</p>
+      <div style="display:flex;align-items:center;gap:14px">
+        <p style="margin:0;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-dim)">Les plus commandés à Bastos</p>
+        <sc-if value="{{ carrouselDefilable }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;gap:8px">
+          <button type="button" class="fam-fleche" onClick="{{ carrouselPrec }}" aria-label="Article précédent">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"></path></svg>
+          </button>
+          <button type="button" class="fam-fleche" onClick="{{ carrouselSuiv }}" aria-label="Article suivant">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"></path></svg>
+          </button>
+        </div>
+        </sc-if>
+      </div>
     </div>
-    <div class="ia-cascade" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,236px),1fr));gap:clamp(12px,2vw,18px)">
+    <div class="fam-carrousel" ref="{{ carrouselRef }}" role="region" aria-label="Best-sellers, faites defiler">
       <sc-for list="{{ bestsellers }}" as="p" hint-placeholder-count="4">
         <article class="ia-leve ia-apparait" style="display:flex;flex-direction:column;background:linear-gradient(170deg,var(--surface-3),var(--surface-2));border:1px solid rgba(201,162,74,.45);border-radius:8px;overflow:hidden;position:relative">
           <div style="position:absolute;top:12px;left:12px;z-index:2;padding:5px 11px;border-radius:999px;background:var(--accent);color:var(--btn-ink);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase">Best-seller</div>
@@ -361,11 +409,37 @@ const CATALOG = [
 ];
 
 class Component extends DCLogic {
-  state = { cat: "all", cart: [], cartOpen: false, colors: {}, fiche: null };
+  state = { cat: "all", cart: [], cartOpen: false, colors: {}, fiche: null, carrouselDefilable: false };
+  carrouselRef = React.createRef();
+
+  /* Avance ou recule d'une carte, en mesurant la carte reelle plutot
+     qu'en supposant sa largeur : elle change selon la taille d'ecran. */
+  defiler(sens) {
+    const el = this.carrouselRef.current; if (!el) return;
+    const carte = el.querySelector('article');
+    const ecart = carte ? carte.getBoundingClientRect().width + 16
+                        : el.clientWidth * 0.8;
+    el.scrollBy({ left: sens * ecart, behavior: 'smooth' });
+  }
   colorOf(id) { const list = HAIR_COLORS[id]; return list ? (this.state.colors[id] || list[0]) : null; }
   pickColor(id, key) { this.setState(s => ({ colors: Object.assign({}, s.colors, { [id]: key }) })); }
 
+  /* Les fleches n'apparaissent que s'il y a vraiment de quoi defiler. Avec
+     quatre best-sellers sur un grand ecran, tout peut tenir : afficher des
+     fleches qui ne font rien serait pire que ne pas en mettre. */
+  majCarrousel() {
+    const el = this.carrouselRef.current; if (!el) return;
+    const d = el.scrollWidth > el.clientWidth + 4;
+    if (d !== this.state.carrouselDefilable) this.setState({ carrouselDefilable: d });
+  }
+
+  componentDidUpdate() { this.majCarrousel(); }
+  componentWillUnmount() { window.removeEventListener('resize', this._majC); }
+
   componentDidMount() {
+    this._majC = () => this.majCarrousel();
+    window.addEventListener('resize', this._majC);
+    setTimeout(this._majC, 300);
     try {
       const raw = localStorage.getItem("famous_cart");
       if (raw) {
@@ -470,6 +544,10 @@ class Component extends DCLogic {
     msg += "Merci de me confirmer le prix des articles et la disponibilité.";
 
     return {
+      carrouselRef: this.carrouselRef,
+      carrouselDefilable: this.state.carrouselDefilable,
+      carrouselPrec: () => this.defiler(-1),
+      carrouselSuiv: () => this.defiler(1),
       ficheOuverte: !!f, ficheFermee: !f,
       ficheNom: f ? f.name : "", ficheDesc: f ? f.desc : "",
       ficheCat: f ? f.catLabel : "", fichePrix: f ? f.priceLabel : "",
