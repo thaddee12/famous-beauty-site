@@ -169,8 +169,22 @@
   let loaded = false;
   let loadP = null;
 
+  // Le fichier d'etat ne sert qu'a l'edition : il memorise le cadrage des
+  // images pendant qu'on travaille en local. En production il n'existe pas,
+  // et le demander produisait un 404 a chaque visite, sur deux pages. On ne
+  // le demande donc que depuis une adresse locale ou un fichier ouvert
+  // directement, c'est-a-dire pendant l'edition.
+  const EN_EDITION = (function () {
+    try {
+      var h = location.hostname;
+      return location.protocol === 'file:' || h === 'localhost' ||
+             h === '127.0.0.1' || h === '::1' || /\.local$/.test(h);
+    } catch (e) { return false; }
+  })();
+
   function load() {
     if (loadP) return loadP;
+    if (!EN_EDITION) { loaded = true; return (loadP = Promise.resolve(null)); }
     loadP = fetch(STATE_FILE)
       .then((r) => (r.ok ? r.json() : null))
       .then((j) => {
@@ -1099,7 +1113,11 @@
       // (Claude wrote it into the HTML) so it passes through unchanged.
       let stored = this.id ? getSlot(this.id) : this._local;
       if (stored && stored.u && !/^data:image\//i.test(stored.u)) stored = null;
-      const srcAttr = this.getAttribute('src') || '';
+      const srcBrut = this.getAttribute('src') || '';
+      // Pendant l'affichage du squelette, l'attribut porte encore
+      // l'expression du gabarit. Sans ce filtre, le navigateur demande
+      // une image litteralement nommee {{ ... }}.webp et recolte un 404.
+      const srcAttr = srcBrut.indexOf('{{') >= 0 ? '' : srcBrut;
       this._userUrl = (stored && stored.u) || null;
       const url = this._userUrl || srcAttr;
       // Don't clobber an in-flight reframe with a store-triggered re-render.

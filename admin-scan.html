@@ -87,7 +87,11 @@
      un client curieux, pas une securite. La vraie protection est en base :
      les politiques RLS interdisent toute modification directe, le compteur
      ne bouge que par la fonction SQL. */
-  var CODE_ACCES = '2468';
+  var CODE_ACCES = '930639';
+  // Ce code est lisible par quiconque ouvre le source de la page. Il
+  // arrete un client curieux, pas quelqu'un qui sait regarder. Pour une
+  // vraie protection il faudrait un compte et une verification cote
+  // serveur, ce qui reste a faire avant un usage reel.
   var CLE_SESSION = 'famous_scan_ouvert';
 
   var $ = function (id) { return document.getElementById(id); };

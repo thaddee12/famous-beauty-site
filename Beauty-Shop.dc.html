@@ -49,6 +49,27 @@
   @keyframes famRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   @keyframes famSlide { from { transform: translateX(100%); } to { transform: none; } }
   @keyframes famFade { from { opacity: 0; } to { opacity: 1; } }
+
+  /* ---- Boutique sur telephone -------------------------------------------
+     Deux colonnes, l'image domine, seuls le nom et le prix restent sous la
+     vignette. Le reste, description, couleurs et bouton, part dans la fiche
+     qui s'ouvre au toucher. La version ordinateur n'est pas touchee. */
+  @media (max-width: 700px) {
+    .ia-cascade { grid-template-columns: 1fr 1fr !important; gap: 10px 8px !important; }
+    .ia-cascade > article { background: transparent !important; border: 0 !important;
+                            border-radius: 0 !important; box-shadow: none !important; }
+    .ia-cascade .fam-vignette { cursor: pointer; }
+    .ia-cascade > article > div:last-child { padding: 9px 2px 4px !important; }
+    .ia-cascade .fam-cat,
+    .ia-cascade .fam-desc,
+    .ia-cascade .fam-couleurs,
+    .ia-cascade .fam-add { display: none !important; }
+    .ia-cascade > article h3 { margin: 0 !important; font-family: 'Jost', sans-serif !important;
+                               font-size: 13px !important; font-weight: 400 !important;
+                               line-height: 1.35 !important; }
+    .ia-cascade > article > div:last-child > span:last-of-type {
+      margin: 5px 0 0 !important; font-size: 11px !important; letter-spacing: .06em !important; }
+  }
 </style>
 <script>try{var t=localStorage.getItem('famous_theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
 <link rel="stylesheet" href="couche-innova.css" />
@@ -82,13 +103,13 @@
       <sc-for list="{{ bestsellers }}" as="p" hint-placeholder-count="4">
         <article class="ia-leve ia-apparait" style="display:flex;flex-direction:column;background:linear-gradient(170deg,var(--surface-3),var(--surface-2));border:1px solid rgba(201,162,74,.45);border-radius:8px;overflow:hidden;position:relative">
           <div style="position:absolute;top:12px;left:12px;z-index:2;padding:5px 11px;border-radius:999px;background:var(--accent);color:var(--btn-ink);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase">Best-seller</div>
-          <div style="aspect-ratio:1/1;background:var(--surface-3)"><image-slot id="{{ p.slotId }}" src="assets/slots/{{ p.slotId }}.webp" shape="rect" fit="cover" placeholder="{{ p.slotLabel }}"></image-slot></div>
+          <div class="fam-vignette" onClick="{{ p.ouvrir }}" style="aspect-ratio:1/1;background:var(--surface-3)"><image-slot id="{{ p.slotId }}" src="assets/slots/{{ p.slotId }}.webp" shape="rect" fit="cover" placeholder="{{ p.slotLabel }}"></image-slot></div>
           <div style="padding:18px;display:flex;flex-direction:column;flex:1">
-            <span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-dim)">{{ p.catLabel }}</span>
+            <span class="fam-cat" style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-dim)">{{ p.catLabel }}</span>
             <h3 style="margin:8px 0 0;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:20px;line-height:1.2;color:var(--ink)">{{ p.name }}</h3>
-            <p style="margin:7px 0 14px;font-size:13px;line-height:1.5;font-weight:300;color:var(--ink-3);flex:1">{{ p.desc }}</p>
+            <p style="margin:7px 0 14px;font-size:13px;line-height:1.5;font-weight:300;color:var(--ink-3);flex:1" class="fam-desc">{{ p.desc }}</p>
             <sc-if value="{{ p.hasColors }}" hint-placeholder-val="{{ false }}">
-              <div style="margin:0 0 14px">
+              <div class="fam-couleurs" style="margin:0 0 14px">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:8px">
                   <span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-4)">Couleur</span>
                   <span style="font-size:12px;font-weight:400;color:var(--ink-2);text-align:right">{{ p.colorLabel }}</span>
@@ -100,7 +121,7 @@
                 </div>
               </div>
             </sc-if>
-            <button type="button" onClick="{{ p.add }}" style="padding:12px;border:1px solid rgba(255,255,255,.34);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),color-mix(in srgb,var(--accent) 86%,transparent);color:var(--btn-ink);font-family:'Jost',sans-serif;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),inset 0 -6px 14px rgba(255,255,255,.07),0 6px 18px rgba(0,0,0,.18);backdrop-filter:blur(12px) saturate(1.7);-webkit-backdrop-filter:blur(12px) saturate(1.7)" style-hover="filter:brightness(1.08)">{{ p.cta }}</button>
+            <button type="button" class="fam-add" onClick="{{ p.add }}" style="padding:12px;border:1px solid rgba(255,255,255,.34);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),color-mix(in srgb,var(--accent) 86%,transparent);color:var(--btn-ink);font-family:'Jost',sans-serif;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),inset 0 -6px 14px rgba(255,255,255,.07),0 6px 18px rgba(0,0,0,.18);backdrop-filter:blur(12px) saturate(1.7);-webkit-backdrop-filter:blur(12px) saturate(1.7)" style-hover="filter:brightness(1.08)">{{ p.cta }}</button>
           </div>
         </article>
       </sc-for>
@@ -137,13 +158,13 @@
     <div class="ia-cascade" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,236px),1fr));gap:clamp(12px,2vw,18px)">
       <sc-for list="{{ products }}" as="p" hint-placeholder-count="8">
         <article class="ia-leve" style="animation:famFade .5s ease both;display:flex;flex-direction:column;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;overflow:hidden" style-hover="border-color:rgba(201,162,74,.6)">
-          <div style="aspect-ratio:1/1;background:var(--surface-3)"><image-slot id="{{ p.slotId }}" src="assets/slots/{{ p.slotId }}.webp" shape="rect" fit="cover" placeholder="{{ p.slotLabel }}"></image-slot></div>
+          <div class="fam-vignette" onClick="{{ p.ouvrir }}" style="aspect-ratio:1/1;background:var(--surface-3)"><image-slot id="{{ p.slotId }}" src="assets/slots/{{ p.slotId }}.webp" shape="rect" fit="cover" placeholder="{{ p.slotLabel }}"></image-slot></div>
           <div style="padding:18px;display:flex;flex-direction:column;flex:1">
-            <span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-dim)">{{ p.catLabel }}</span>
+            <span class="fam-cat" style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-dim)">{{ p.catLabel }}</span>
             <h3 style="margin:8px 0 0;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:20px;line-height:1.2;color:var(--ink)">{{ p.name }}</h3>
-            <p style="margin:7px 0 14px;font-size:13px;line-height:1.5;font-weight:300;color:var(--ink-3);flex:1">{{ p.desc }}</p>
+            <p style="margin:7px 0 14px;font-size:13px;line-height:1.5;font-weight:300;color:var(--ink-3);flex:1" class="fam-desc">{{ p.desc }}</p>
             <sc-if value="{{ p.hasColors }}" hint-placeholder-val="{{ false }}">
-              <div style="margin:0 0 14px">
+              <div class="fam-couleurs" style="margin:0 0 14px">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:8px">
                   <span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-4)">Couleur</span>
                   <span style="font-size:12px;font-weight:400;color:var(--ink-2);text-align:right">{{ p.colorLabel }}</span>
@@ -156,7 +177,7 @@
               </div>
             </sc-if>
             <span style="margin-bottom:12px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-4)">{{ p.priceLabel }}</span>
-            <button type="button" onClick="{{ p.add }}" style="padding:12px;border:1px solid var(--accent);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),rgba(255,255,255,.07);color:var(--accent);font-family:'Jost',sans-serif;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),inset 0 -6px 14px rgba(255,255,255,.07),0 6px 18px rgba(0,0,0,.18);backdrop-filter:blur(12px) saturate(1.7);-webkit-backdrop-filter:blur(12px) saturate(1.7)" style-hover="background:var(--accent);color:var(--btn-ink)">{{ p.cta }}</button>
+            <button type="button" class="fam-add" onClick="{{ p.add }}" style="padding:12px;border:1px solid var(--accent);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),rgba(255,255,255,.07);color:var(--accent);font-family:'Jost',sans-serif;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),inset 0 -6px 14px rgba(255,255,255,.07),0 6px 18px rgba(0,0,0,.18);backdrop-filter:blur(12px) saturate(1.7);-webkit-backdrop-filter:blur(12px) saturate(1.7)" style-hover="background:var(--accent);color:var(--btn-ink)">{{ p.cta }}</button>
           </div>
         </article>
       </sc-for>
@@ -178,6 +199,44 @@
     </div>
   </div>
 </section>
+
+<sc-if value="{{ ficheOuverte }}" hint-placeholder-val="{{ false }}">
+  <div role="dialog" aria-modal="true" aria-label="Fiche produit" style="position:fixed;inset:0;z-index:90;display:flex;flex-direction:column;background:var(--surface);overflow-y:auto;-webkit-overflow-scrolling:touch">
+    <div style="position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:var(--nav-bg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line-soft)">
+      <button type="button" onClick="{{ fermerFiche }}" aria-label="Fermer la fiche" style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:transparent;color:var(--ink);cursor:pointer">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+      </button>
+      <span style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-dim)">{{ ficheCat }}</span>
+      <button type="button" onClick="{{ openCart }}" aria-label="Ouvrir le panier" style="display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--ink);font-family:'Jost',sans-serif;font-size:12px;cursor:pointer">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 8h14l-1.2 11a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8Z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg>
+        {{ cartCount }}
+      </button>
+    </div>
+    <!-- Image en fond et non en <img> : le navigateur va chercher un src des
+         l'analyse du document, donc avant que le moteur n'ait retire ce bloc
+         ferme, et reclamait une image litteralement nommee {{ ficheImg }}. -->
+    <div role="img" aria-label="{{ ficheAlt }}" style="display:block;width:100%;aspect-ratio:1/1;background-color:var(--surface-3);background-image:url({{ ficheImg }});background-size:cover;background-position:center"></div>
+    <div style="padding:22px 18px 34px;display:flex;flex-direction:column">
+      <h2 style="margin:0;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:28px;line-height:1.15;color:var(--ink)">{{ ficheNom }}</h2>
+      <p style="margin:10px 0 0;font-size:14px;line-height:1.6;font-weight:300;color:var(--ink-3)">{{ ficheDesc }}</p>
+      <sc-if value="{{ ficheHasColors }}" hint-placeholder-val="{{ false }}">
+        <div style="margin:20px 0 0">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:10px">
+            <span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-4)">Couleur</span>
+            <span style="font-size:13px;color:var(--ink-2)">{{ ficheColorLabel }}</span>
+          </div>
+          <div role="radiogroup" aria-label="Couleur" style="display:flex;flex-wrap:wrap;gap:10px">
+            <sc-for list="{{ ficheColors }}" as="c" hint-placeholder-count="3">
+              <button type="button" role="radio" aria-checked="{{ c.on }}" aria-label="{{ c.label }}" onClick="{{ c.select }}" style="width:34px;height:34px;border-radius:50%;border:1px solid {{ c.ring }};background:{{ c.bg }};cursor:pointer;box-shadow:0 0 0 {{ c.halo }} var(--accent)"></button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+      <span style="margin:22px 0 14px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-4)">{{ fichePrix }}</span>
+      <button type="button" onClick="{{ ficheAdd }}" style="padding:15px;border:1px solid var(--accent);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),linear-gradient(100deg,var(--accent-light),var(--accent));color:var(--btn-ink);font-family:'Jost',sans-serif;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">{{ ficheCta }}</button>
+    </div>
+  </div>
+</sc-if>
 
 <sc-if value="{{ cartOpen }}" hint-placeholder-val="{{ false }}">
   <div style="position:fixed;inset:0;z-index:90;display:flex;justify-content:flex-end">
@@ -302,7 +361,7 @@ const CATALOG = [
 ];
 
 class Component extends DCLogic {
-  state = { cat: "all", cart: [], cartOpen: false, colors: {} };
+  state = { cat: "all", cart: [], cartOpen: false, colors: {}, fiche: null };
   colorOf(id) { const list = HAIR_COLORS[id]; return list ? (this.state.colors[id] || list[0]) : null; }
   pickColor(id, key) { this.setState(s => ({ colors: Object.assign({}, s.colors, { [id]: key }) })); }
 
@@ -364,11 +423,19 @@ class Component extends DCLogic {
       slotLabel: "Photo " + p.name + (sel ? " — " + COLORS[sel].label : ""),
       priceLabel: "Prix sur demande",
       cta: inCart ? "Dans le panier ✓" : "Ajouter au panier",
-      add: () => this.add(p.id)
+      add: () => this.add(p.id),
+      // La fiche detaillee n'existe que sur telephone : sur ordinateur la
+      // carte montre deja tout, et on ne touche pas a cette version.
+      ouvrir: () => { if (window.innerWidth > 700) return; this.setState({ fiche: p.id }); }
     };
   }
 
   renderVals() {
+    // Grille facon boutique sur telephone : deux colonnes, l'image domine,
+    // le detail s'ouvre au toucher. Les valeurs de la fiche sont reprises
+    // de decorate pour rester coherentes avec la carte.
+    const brutF = this.state.fiche ? CATALOG.find(x => x.id === this.state.fiche) : null;
+    const f = brutF ? this.decorate(brutF, 'shop') : null;
     const pp = this.posePrice();
     const active = this.state.cat;
     const list = CATALOG.filter(p => active === "all" || p.cat === active);
@@ -403,6 +470,17 @@ class Component extends DCLogic {
     msg += "Merci de me confirmer le prix des articles et la disponibilité.";
 
     return {
+      ficheOuverte: !!f, ficheFermee: !f,
+      ficheNom: f ? f.name : "", ficheDesc: f ? f.desc : "",
+      ficheCat: f ? f.catLabel : "", fichePrix: f ? f.priceLabel : "",
+      ficheImg: f ? "assets/slots/" + f.slotId + ".webp" : "",
+      ficheAlt: f ? f.slotLabel : "",
+      ficheHasColors: f ? f.hasColors : false,
+      ficheColorLabel: f ? f.colorLabel : "",
+      ficheColors: f ? f.colors : [],
+      ficheCta: f ? f.cta : "",
+      ficheAdd: f ? f.add : (() => {}),
+      fermerFiche: () => this.setState({ fiche: null }),
       categories: CATS.map(c => ({
         label: c.label,
         select: () => this.setState({ cat: c.id }),
