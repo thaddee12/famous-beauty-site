@@ -4,18 +4,215 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>The Famous — Beauty · Spa · Gym</title>
-<link rel="canonical" href="Bienvenue.dc.html">
-<meta http-equiv="refresh" content="0; url=Bienvenue.dc.html">
-<style>
-  html,body{height:100%;margin:0;background:#0A0703;color:#F4EBDC;
-            font-family:system-ui,-apple-system,sans-serif}
-  main{height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px}
-  a{color:#C9A24A}
-</style>
+<script src="./support.js"></script>
 </head>
 <body>
-<main><p>Chargement de la maquette…<br><a href="Bienvenue.dc.html">Entrer sur le site</a></p></main>
-<script>location.replace('Bienvenue.dc.html');</script>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="ia-sans-wa" content="1" />
+<title>The Famous — Beauty · Spa · Gym | Bastos, Yaoundé</title>
+<meta name="description" content="The Famous, Bastos Yaoundé : institut de beauté, spa, coiffure, onglerie, barbershop et salle de sport Gym & Fitness. Réservez en ligne sur WhatsApp." />
+<meta name="theme-color" content="#1a1511" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="The Famous" />
+<meta property="og:title" content="The Famous — Beauty · Spa · Gym | Bastos, Yaoundé" />
+<meta property="og:description" content="The Famous, Bastos Yaoundé : institut de beauté, spa, coiffure, onglerie, barbershop et salle de sport Gym & Fitness. Réservez en ligne sur WhatsApp." />
+<meta property="og:image" content="assets/institut-salle.jpg" />
+<meta property="og:locale" content="fr_FR" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" type="image/png" href="assets/logo-bronze.png" />
+<link rel="apple-touch-icon" href="assets/logo-bronze.png" />
+<link rel="manifest" href="manifest.json" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="The Famous" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":["BeautySalon","HealthClub"],"name":"The Famous","description":"Institut de beauté, spa et salle de sport","image":"assets/institut-salle.jpg","logo":"assets/logo.png","address":{"@type":"PostalAddress","streetAddress":"Immeuble Bastos Building, rue de l'Ambassade du Japon","addressLocality":"Yaoundé","addressRegion":"Centre","addressCountry":"CM"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Anton&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{--bg:#08060A;--plate:#F6EFE2;--plate-ink:#6B4E12;--ink-4:#9C8467;--accent:#C9A24A;--accent-strong:#E4CE92;--spa-bg:#1B1008;--gym-bg:#0C0E0A;--medallion:#0A0C08;color-scheme:dark;}
+  :root[data-theme="light"]{--bg:#FAF5EC;--plate:#FFFFFF;--plate-ink:#6B4E12;--ink-4:#6F5B43;--accent:#7A5A12;--accent-strong:#6B4E12;--spa-bg:#F1E8D8;--gym-bg:#EAF0DC;--medallion:#0E1209;color-scheme:light;}
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink-4); font-family: 'Jost', system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: var(--accent); text-decoration: none; transition: color .2s ease, opacity .2s ease; }
+  a:hover { color: var(--accent-strong); }
+  ::selection { background: var(--accent); color: var(--plate); }
+  @keyframes famFade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes famSpin { to { transform: rotate(360deg); } }
+  @keyframes famSheen { 0%,15% { transform: translateX(-120%); } 60%,100% { transform: translateX(320%); } }
+  @keyframes famBarIn { from { opacity: 0; transform: translateY(24px) scale(.96); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+
+  /* MOBILE UNIQUEMENT. La version ordinateur n'est pas modifiee.
+     Sur telephone, l'accueil ne sert qu'a choisir un univers : la barre
+     de liens et le pied de page sont masques. */
+  @media (max-width: 700px) {
+    .fam-barre, .fam-pied { display: none !important; }
+
+    /* La barre masquee, il faut reprendre deux valeurs qui la
+       presupposaient, sinon il reste 54 px de defilement :
+       - les 130 px de marge basse qui reservaient sa place,
+       - le min-height de 52vh par moitie, soit 104 % de l'ecran a deux. */
+    .fam-split > div > a { padding-bottom: clamp(20px,4vw,40px) !important; }
+    .fam-split { min-height: 100vh; min-height: 100dvh; }
+    .fam-split > div {
+      flex-basis: 100% !important;
+      min-height: calc((100vh - 18px) / 2) !important;
+      min-height: calc((100dvh - 18px) / 2) !important;
+    }
+    /* dvh et non vh : sur mobile, vh inclut la barre du navigateur.
+       Sur ecran court, deux cercles de 250 px ne tiennent pas non plus. */
+    .fam-split > div > a > div:first-child {
+      width:  min(clamp(250px,31vw,380px), 34vh) !important;
+      height: min(clamp(250px,31vw,380px), 34vh) !important;
+      width:  min(clamp(250px,31vw,380px), 34dvh) !important;
+      height: min(clamp(250px,31vw,380px), 34dvh) !important;
+    }
+  }
+</style>
+<script>try{var t=localStorage.getItem('famous_theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
+<link rel="stylesheet" href="couche-innova.css" />
+<script src="./couche-innova.js"></script>
+</helmet>
+<h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:-1px">The Famous — Institut de beauté, Spa et Gym à Bastos, Yaoundé</h1>
+
+<div style="min-height:100vh;display:flex;flex-direction:column;background:var(--bg)">
+
+  <div class="fam-split" style="flex:1;display:flex;flex-wrap:wrap;gap:6px;padding:6px;background:#0A0703;animation:famFade .8s ease both">
+
+    <div onMouseEnter="{{ enterSpa }}" onMouseLeave="{{ leave }}" style="position:relative;display:flex;align-items:center;justify-content:center;flex-basis:300px;flex-shrink:1;flex-grow:{{ spaGrow }};min-height:min(52vh,520px);overflow:hidden;background:var(--spa-bg);transition:flex-grow .6s cubic-bezier(.4,0,.2,1)">
+      <div style="position:absolute;inset:0;transition:filter .6s ease,transform .6s cubic-bezier(.4,0,.2,1);filter:{{ spaBgFilter }};transform:scale({{ spaBgScale }})">
+        <img src="assets/massage-duo.jpg" alt="Massage duo en cabine privative" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" width="736" height="883" decoding="async" />
+        <sc-if value="{{ slidesReady }}" hint-placeholder-val="{{ false }}"><sc-for list="{{ spaSlides }}" as="s" hint-placeholder-count="0">
+          <div aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 1.6s ease;opacity:{{ s.opacity }};background-image:{{ s.bg }};background-size:cover;background-position:center"></div>
+        </sc-for></sc-if>
+      </div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(24,14,6,.42),rgba(24,14,6,.8));pointer-events:none"></div>
+      <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;transition:opacity .8s ease;opacity:{{ spaFx }}"><x-import component-from-global-scope="fam-spa-particles" from="./spa-particles.js" color="#E4CE92" density="1.1" hint-size="100%,100%" style="position:absolute;top:0;left:0;width:100%;height:100%"></x-import></div>
+      <a href="Spa-Beaute.dc.html" onClick="{{ goSpa }}" onPointerDown="{{ downSpa }}" onPointerUp="{{ up }}" onPointerLeave="{{ up }}" onFocus="{{ enterSpa }}" onBlur="{{ leave }}" style="position:relative;display:flex;flex-direction:column;align-items:center;gap:22px;padding:clamp(20px,4vw,40px) clamp(20px,4vw,40px) 130px;color:inherit;transition:opacity .6s ease,transform .6s cubic-bezier(.4,0,.2,1);opacity:{{ spaOpacity }};transform:scale({{ spaScale }})" style-hover="color:inherit">
+          <div style="position:relative;width:clamp(250px,31vw,380px);height:clamp(250px,31vw,380px);transition:transform .22s cubic-bezier(.3,1.5,.5,1),filter .22s ease;transform:scale({{ spaPress }});filter:brightness({{ spaPressB }})">
+          <div style="position:absolute;inset:-9px;border-radius:50%;opacity:{{ spaRing }};transition:opacity .45s ease;filter:blur(1px)">
+            <div style="position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,rgba(201,162,74,0) 0deg,rgba(201,162,74,0) 200deg,rgba(201,162,74,.55) 280deg,#E4CE92 335deg,#FFF6DE 350deg,rgba(201,162,74,.5) 360deg);animation:famSpin 2.8s linear infinite;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px))"></div>
+          </div>
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:50%;background:radial-gradient(120% 90% at 30% 15%,rgba(255,255,255,.34),rgba(255,255,255,.08) 55%,rgba(255,255,255,.04));backdrop-filter:blur(14px) saturate(1.7) brightness(1.08);-webkit-backdrop-filter:blur(14px) saturate(1.7) brightness(1.08);border:1px solid rgba(255,255,255,.42);box-shadow:inset 0 1px 1px rgba(255,255,255,.7),inset 0 -14px 30px rgba(255,255,255,.06),inset 0 0 0 1px rgba(255,255,255,.08),0 18px 50px rgba(0,0,0,.35)">
+            <img src="assets/logo-bronze.png" alt="The Famous" style="display:block;filter:drop-shadow(0 2px 10px rgba(0,0,0,.4)) brightness(1.35);width:clamp(160px,20vw,248px);height:auto" width="420" height="120" decoding="async" />
+            <p style="margin:14px 0 0;text-align:center;font-size:clamp(11px,1.1vw,13px);letter-spacing:.42em;text-transform:uppercase;color:#F6EFE2;text-shadow:0 1px 8px rgba(0,0,0,.45)">Beauty · Spa</p>
+          </div>
+        </div>
+        <span style="display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#F6EFE2">Entrer
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h15"></path><path d="M13 6l6 6-6 6"></path></svg>
+        </span>
+      </a>
+    </div>
+
+    <div onMouseEnter="{{ enterGym }}" onMouseLeave="{{ leave }}" style="position:relative;display:flex;align-items:center;justify-content:center;flex-basis:300px;flex-shrink:1;flex-grow:{{ gymGrow }};min-height:min(52vh,520px);overflow:hidden;background:var(--gym-bg);transition:flex-grow .6s cubic-bezier(.4,0,.2,1)">
+      <div style="position:absolute;inset:0;transition:filter .6s ease,transform .6s cubic-bezier(.4,0,.2,1);filter:{{ gymBgFilter }};transform:scale({{ gymBgScale }})">
+        <img src="assets/gym-salle.jpg" alt="Salle de sport The Famous à Bastos" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" width="498" height="760" loading="lazy" decoding="async" />
+        <sc-if value="{{ slidesReady }}" hint-placeholder-val="{{ false }}"><sc-for list="{{ gymSlides }}" as="s" hint-placeholder-count="0">
+          <div aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 1.6s ease;opacity:{{ s.opacity }};background-image:{{ s.bg }};background-size:cover;background-position:center"></div>
+        </sc-for></sc-if>
+      </div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,10,6,.48),rgba(8,10,6,.82));pointer-events:none"></div>
+      <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;transition:opacity .8s ease;opacity:{{ gymFx }}"><x-import component-from-global-scope="fam-particles" from="./particles.js" color="#CBF34A" density="1" hint-size="100%,100%" style="position:absolute;top:0;left:0;width:100%;height:100%"></x-import></div>
+      <a href="Gym-Fitness.dc.html" onClick="{{ goGym }}" onPointerDown="{{ downGym }}" onPointerUp="{{ up }}" onPointerLeave="{{ up }}" onFocus="{{ enterGym }}" onBlur="{{ leave }}" style="position:relative;display:flex;flex-direction:column;align-items:center;gap:22px;padding:clamp(20px,4vw,40px) clamp(20px,4vw,40px) 130px;color:inherit;transition:opacity .6s ease,transform .6s cubic-bezier(.4,0,.2,1);opacity:{{ gymOpacity }};transform:scale({{ gymScale }})" style-hover="color:inherit">
+          <div style="position:relative;width:clamp(250px,31vw,380px);height:clamp(250px,31vw,380px);transition:transform .22s cubic-bezier(.3,1.5,.5,1),filter .22s ease;transform:scale({{ gymPress }});filter:brightness({{ gymPressB }})">
+          <div style="position:absolute;inset:-9px;border-radius:50%;opacity:{{ gymRing }};transition:opacity .45s ease;filter:blur(1px)">
+            <div style="position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,rgba(203,243,74,0) 0deg,rgba(203,243,74,0) 200deg,rgba(203,243,74,.55) 280deg,#CBF34A 335deg,#F4FFD6 350deg,rgba(203,243,74,.5) 360deg);animation:famSpin 2.8s linear infinite;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px))"></div>
+          </div>
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:50%;background:radial-gradient(120% 90% at 30% 15%,rgba(255,255,255,.34),rgba(255,255,255,.08) 55%,rgba(255,255,255,.04));backdrop-filter:blur(14px) saturate(1.7) brightness(1.08);-webkit-backdrop-filter:blur(14px) saturate(1.7) brightness(1.08);border:1px solid rgba(255,255,255,.42);box-shadow:inset 0 1px 1px rgba(255,255,255,.7),inset 0 -14px 30px rgba(255,255,255,.06),inset 0 0 0 1px rgba(255,255,255,.08),0 18px 50px rgba(0,0,0,.35)">
+            <img src="assets/logo-gym.png" alt="The Famous" style="display:block;filter:drop-shadow(0 2px 10px rgba(0,0,0,.45));width:clamp(160px,20vw,248px);height:auto" width="420" height="120" loading="lazy" decoding="async" />
+            <p style="margin:14px 0 0;text-align:center;font-size:clamp(11px,1.1vw,13px);letter-spacing:.42em;text-transform:uppercase;color:#CBF34A">Gym · Fitness</p>
+          </div>
+        </div>
+        <span style="display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#F2F5EC">Entrer
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h15"></path><path d="M13 6l6 6-6 6"></path></svg>
+        </span>
+      </a>
+    </div>
+
+  </div>
+
+    <div class="fam-barre" style="position:relative;z-index:5;margin-top:-86px;padding:0 12px 18px;display:flex;justify-content:center;pointer-events:none;animation:famBarIn .9s cubic-bezier(.2,.9,.3,1) .3s both">
+    <nav class="fam-liens" aria-label="Liens rapides" style="pointer-events:auto;position:relative;max-width:100%;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:4px;padding:6px;border-radius:999px;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.06)),rgba(14,10,6,.38);backdrop-filter:blur(18px) saturate(1.8) brightness(1.05);-webkit-backdrop-filter:blur(18px) saturate(1.8) brightness(1.05);border:1px solid rgba(255,255,255,.4);box-shadow:inset 0 1px 1px rgba(255,255,255,.75),inset 0 -8px 18px rgba(255,255,255,.06),0 14px 40px rgba(0,0,0,.35)">
+      <span aria-hidden="true" style="position:absolute;top:0;bottom:0;left:0;width:40%;background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.34),rgba(255,255,255,0));filter:blur(6px);pointer-events:none;animation:famSheen 6s ease-in-out infinite"></span>
+      <a href="Beauty-Shop.dc.html" style="position:relative;display:inline-flex;align-items:center;padding:10px 16px;border-radius:999px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:#FFFFFF;text-shadow:0 1px 6px rgba(0,0,0,.45);transition:background .3s ease,box-shadow .3s ease,transform .3s cubic-bezier(.3,1.4,.5,1)" style-hover="color:#FFFFFF;background:rgba(255,255,255,.2);box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 4px 14px rgba(0,0,0,.2);transform:translateY(-2px)">Beauty Shop</a>
+      <a href="Fidelite.dc.html" style="position:relative;display:inline-flex;align-items:center;padding:10px 16px;border-radius:999px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:#FFFFFF;text-shadow:0 1px 6px rgba(0,0,0,.45);transition:background .3s ease,box-shadow .3s ease,transform .3s cubic-bezier(.3,1.4,.5,1)" style-hover="color:#FFFFFF;background:rgba(255,255,255,.2);box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 4px 14px rgba(0,0,0,.2);transform:translateY(-2px)">Carte Fidélité</a>
+      <a href="A-propos.dc.html" style="position:relative;display:inline-flex;align-items:center;padding:10px 16px;border-radius:999px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:#FFFFFF;text-shadow:0 1px 6px rgba(0,0,0,.45);transition:background .3s ease,box-shadow .3s ease,transform .3s cubic-bezier(.3,1.4,.5,1)" style-hover="color:#FFFFFF;background:rgba(255,255,255,.2);box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 4px 14px rgba(0,0,0,.2);transform:translateY(-2px)">À propos</a>
+      <a href="Contact.dc.html" style="position:relative;display:inline-flex;align-items:center;padding:10px 16px;border-radius:999px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:#FFFFFF;text-shadow:0 1px 6px rgba(0,0,0,.45);transition:background .3s ease,box-shadow .3s ease,transform .3s cubic-bezier(.3,1.4,.5,1)" style-hover="color:#FFFFFF;background:rgba(255,255,255,.2);box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 4px 14px rgba(0,0,0,.2);transform:translateY(-2px)">Contact</a>
+    </nav>
+  </div>
+  <footer class="fam-pied" style="display:flex;align-items:center;justify-content:center;min-height:56px;padding:18px clamp(16px,4vw,32px);background:var(--bg)">
+    <p class="ia-pied__credits" style="margin:0;text-align:center;font-size:12px;font-weight:300;color:var(--ink-4)">Immeuble Bastos Building · Rue de l'Ambassade du Japon · Yaoundé — © 2026 The Famous Beauty · Spa · Gym</p>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const SPA_SLIDES = ["assets/massage-duo.jpg","assets/spa-pierres.jpg","assets/capillaire-1.jpg","assets/soin-visage.jpg","assets/onglerie-2.jpg","assets/pedicure.jpg"];
+const GYM_SLIDES = ["assets/gym-salle.jpg","assets/muscu-deadlift.jpg","assets/cours-cordes.jpg","assets/pilates-3.jpg","assets/cross-snatch.jpg","assets/gym-coach.jpg"];
+
+class Component extends DCLogic {
+  state = { hover: null, spaIdx: 0, gymIdx: 0 };
+
+  componentDidMount() {
+    this.t1 = setInterval(() => this.setState(s => ({ spaIdx: (s.spaIdx + 1) % SPA_SLIDES.length })), 5200);
+    this.t2 = setTimeout(() => {
+      this.setState(s => ({ gymIdx: (s.gymIdx + 1) % GYM_SLIDES.length }));
+      this.t3 = setInterval(() => this.setState(s => ({ gymIdx: (s.gymIdx + 1) % GYM_SLIDES.length })), 5200);
+    }, 2600);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.t1); clearTimeout(this.t2); clearInterval(this.t3); this.navigating = false;
+  }
+
+  set(h) { this.setState({ hover: h }); }
+
+  go(e, href, key) {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+    e.preventDefault(); this.navigating = true;
+    this.setState({ press: key });
+    setTimeout(() => this.setState({ press: null }), 180);
+    setTimeout(() => { window.location.href = href; }, 380);
+  }
+
+  renderVals() {
+    const h = this.state.hover;
+    const side = key => {
+      const on = h === key, off = h && !on;
+      return {
+      slidesReady: true,
+        grow: on ? 2.2 : (off ? 0.4 : 1),
+        bgFilter: off ? "blur(6px) brightness(.5) saturate(.75)" : "none",
+        bgScale: on ? 1.06 : 1,
+        opacity: off ? 0.45 : 1,
+        scale: on ? 1.04 : (off ? 0.94 : 1),
+        ring: on ? 1 : 0
+      };
+    };
+    const spa = side("spa"), gym = side("gym");
+    return {
+      // slidesReady n'etait defini que dans side() et jamais remonte ici :
+      // <sc-if value="{{ slidesReady }}"> restait faux, les 12 diapositives
+      // n'etaient jamais creees et les deux diaporamas ne tournaient pas.
+      slidesReady: true,
+      spaPress: this.state.press === "spa" ? 0.92 : 1, gymPress: this.state.press === "gym" ? 0.92 : 1,
+      spaPressB: this.state.press === "spa" ? 0.88 : 1, gymPressB: this.state.press === "gym" ? 0.88 : 1,
+      downSpa: () => this.setState({ press: "spa" }), downGym: () => this.setState({ press: "gym" }),
+      up: () => { if (!this.navigating) this.setState({ press: null }); },
+      goSpa: e => this.go(e, "Spa-Beaute.dc.html", "spa"), goGym: e => this.go(e, "Gym-Fitness.dc.html", "gym"),
+      spaFx: h === "spa" ? 1 : 0, gymFx: h === "gym" ? 1 : 0,
+      enterSpa: () => this.set("spa"),
+      enterGym: () => this.set("gym"),
+      leave: () => this.set(null),
+      spaSlides: SPA_SLIDES.map((src, k) => ({ src, bg: "url(" + src + ")", opacity: k === this.state.spaIdx ? 1 : 0 })),
+      gymSlides: GYM_SLIDES.map((src, k) => ({ src, bg: "url(" + src + ")", opacity: k === this.state.gymIdx ? 1 : 0 })),
+      spaGrow: spa.grow, spaBgFilter: spa.bgFilter, spaBgScale: spa.bgScale, spaOpacity: spa.opacity, spaScale: spa.scale, spaRing: spa.ring,
+      gymGrow: gym.grow, gymBgFilter: gym.bgFilter, gymBgScale: gym.bgScale, gymOpacity: gym.opacity, gymScale: gym.scale, gymRing: gym.ring
+    };
+  }
+}
+
+</script>
 </body>
 </html>
