@@ -134,7 +134,7 @@
         <div id="fam-carte-capture" style="width:100%;container-type:inline-size;perspective:1200px">
           <div ref="{{ tiltRef }}" onPointerMove="{{ tiltMove }}" onPointerEnter="{{ tiltEnter }}" onPointerLeave="{{ tiltLeave }}" style="position:relative;transform-style:preserve-3d;-webkit-transform-style:preserve-3d;transition:transform 420ms cubic-bezier(.22,1,.36,1)">
           <div onClick="{{ cFlip }}" title="Cliquer pour retourner la carte" style="position:relative;width:100%;aspect-ratio:85/55;cursor:pointer;transform-style:preserve-3d;-webkit-transform-style:preserve-3d;will-change:transform;transition:transform .9s cubic-bezier(.3,.9,.3,1);transform:rotateY({{ cDeg }});--c1:{{ c.c1 }};--c2:{{ c.c2 }};--ci:{{ c.ci }};--ci2:{{ c.ci2 }};--cm:{{ c.cm }};--ca:{{ c.ca }};--cas:{{ c.cas }};--cl:{{ c.cl }};--cls:{{ c.cls }};--clsoft:{{ c.clsoft }}">
-        <div style="position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:grid;grid-template-rows:auto 1fr auto;padding:6.5cqw 7cqw 5.5cqw;border-radius:4.5cqw;overflow:hidden;background:linear-gradient(150deg,var(--c1),var(--c2) 65%);border:1px solid var(--cls);box-shadow:0 24px 60px rgba(0,0,0,.35),inset 0 1px 1px rgba(255,255,255,.18)">
+        <div data-face="recto" style="position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;opacity:{{ cRectoOp }};transition:opacity 0s linear 450ms;display:grid;grid-template-rows:auto 1fr auto;padding:6.5cqw 7cqw 5.5cqw;border-radius:4.5cqw;overflow:hidden;background:linear-gradient(150deg,var(--c1),var(--c2) 65%);border:1px solid var(--cls);box-shadow:0 24px 60px rgba(0,0,0,.35),inset 0 1px 1px rgba(255,255,255,.18)">
           <div aria-hidden="true" style="position:absolute;inset:0;border-radius:inherit;overflow:hidden;opacity:.6;pointer-events:none"><x-import component-from-global-scope="fam-dither" from="./fam-dither.js" back="{{ c.c2 }}" front="{{ c.c1 }}" speed="0.35" px="0.6" scale="1.6" hint-size="100%,100%" style="position:absolute;top:0;left:0;width:100%;height:100%"></x-import></div>
           <div aria-hidden="true" style="position:absolute;top:-22cqw;right:-18cqw;width:62cqw;height:62cqw;background:radial-gradient(circle,var(--clsoft),transparent 70%);pointer-events:none"></div>
           <div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.08) 45%,transparent 60%);pointer-events:none"></div>
@@ -160,7 +160,7 @@
             <span style="font-size:max(9px,1.9cqw);letter-spacing:.14em;text-transform:uppercase;color:var(--cm);white-space:nowrap">Bastos · Yaoundé</span>
           </div>
         </div>
-          <div data-face="dos" aria-hidden="{{ cBackHidden }}" style="position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:rotateY(180deg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.6cqw;padding:6cqw;border-radius:4.5cqw;overflow:hidden;background:radial-gradient(120% 90% at 50% 0%,var(--c1),var(--c2) 70%);border:1px solid var(--cls);box-shadow:0 24px 60px rgba(0,0,0,.35),inset 0 1px 1px rgba(255,255,255,.18)">
+          <div data-face="dos" aria-hidden="{{ cBackHidden }}" style="position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;opacity:{{ cDosOp }};transition:opacity 0s linear 450ms;transform:rotateY(180deg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.6cqw;padding:6cqw;border-radius:4.5cqw;overflow:hidden;background:radial-gradient(120% 90% at 50% 0%,var(--c1),var(--c2) 70%);border:1px solid var(--cls);box-shadow:0 24px 60px rgba(0,0,0,.35),inset 0 1px 1px rgba(255,255,255,.18)">
           <div aria-hidden="true" style="position:absolute;inset:0;border-radius:inherit;overflow:hidden;opacity:.55;pointer-events:none"><x-import component-from-global-scope="fam-dither" from="./fam-dither.js" back="{{ c.c2 }}" front="{{ c.c1 }}" speed="0.35" px="0.6" scale="1.6" hint-size="100%,100%" style="position:absolute;top:0;left:0;width:100%;height:100%"></x-import></div>
             <div aria-hidden="true" style="position:absolute;inset:4cqw;border:1px solid var(--clsoft);border-radius:3cqw;pointer-events:none"></div>
             <div aria-hidden="true" style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0 2.4cqw,rgba(255,255,255,.025) 2.4cqw 2.8cqw);pointer-events:none"></div>
@@ -385,7 +385,10 @@ class Component extends DCLogic {
       '  backface-visibility:visible !important;' +
       '  -webkit-backface-visibility:visible !important;' +
       '  transition:none !important;animation:none !important}' +
-      '#fam-carte-capture [data-face="dos"]{display:none !important}';
+      '#fam-carte-capture [data-face="dos"]{display:none !important}' +
+      // Le recto peut etre eteint si la carte est sur le dos : on le
+      // rallume, sinon la capture serait transparente.
+      '#fam-carte-capture [data-face="recto"]{opacity:1 !important;transition:none !important}';
     document.head.appendChild(style);
 
     const finir = toile => { style.remove(); return toile; };
@@ -539,6 +542,13 @@ class Component extends DCLogic {
           c: th, cThemeLabel: th.label,
           cLogoDark: th.dark ? "block" : "none", cLogoLight: th.dark ? "none" : "block",
           cDeg: back ? "180deg" : "0deg", cBackHidden: back ? "false" : "true",
+          // Safari iOS n'honore pas backface-visibility quand la carte
+          // tourne : les deux faces se peignaient en meme temps, le dos
+          // en miroir par-dessus le recto. On ne compte donc plus sur le
+          // moteur 3D, on eteint la face cachee nous-memes. La bascule
+          // est retardee a 450 ms, la moitie des 900 ms de rotation,
+          // c'est-a-dire au moment ou la carte est vue par la tranche.
+          cRectoOp: back ? 0 : 1, cDosOp: back ? 1 : 0,
           cFlip: () => this.setState(s => ({ cBack: !s.cBack })),
           cShowFront: () => this.setState({ cBack: false }), cShowBack: () => this.setState({ cBack: true }),
           cFrontOn: !back, cBackOn: back,
