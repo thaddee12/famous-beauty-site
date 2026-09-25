@@ -71,7 +71,36 @@
   .fam-carrousel::-webkit-scrollbar { display: none; }
   .fam-carrousel > article {
     flex: 0 0 clamp(230px, 26vw, 320px);
-    scroll-snap-align: start;
+    /* Calage au centre et non au bord : la carte mise en avant se place au
+       milieu de la piste, comme dans le modele demande. */
+    scroll-snap-align: center;
+    transition: transform .45s cubic-bezier(.22,1,.36,1),
+                opacity .45s ease, box-shadow .45s ease, border-color .45s ease;
+  }
+  /* De quoi laisser la premiere et la derniere carte atteindre le centre. */
+  .fam-carrousel { scroll-padding-inline: 50%; }
+  .fam-carrousel::before,
+  .fam-carrousel::after { content: ''; flex: 0 0 max(0px, calc(50% - clamp(230px, 26vw, 320px) / 2 - 18px)); }
+
+  .fam-carrousel__cadre { position: relative; }
+  .fam-fleche--gauche, .fam-fleche--droite {
+    position: absolute; top: calc(50% - 26px); z-index: 3;
+    width: 44px; height: 44px;
+    box-shadow: 0 10px 26px rgba(0,0,0,.45);
+  }
+  .fam-fleche--gauche { left: -6px; }
+  .fam-fleche--droite { right: -6px; }
+
+  .fam-points { display: flex; align-items: center; justify-content: center;
+                gap: 8px; margin-top: 18px; }
+  .fam-point { height: 8px; border: 0; border-radius: 999px; padding: 0;
+               cursor: pointer; transition: width .35s ease, background .35s ease; }
+  .fam-point:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  @media (max-width: 700px) {
+    .fam-fleche--gauche { left: -4px; }
+    .fam-fleche--droite { right: -4px; }
+    .fam-fleche--gauche, .fam-fleche--droite { width: 38px; height: 38px; top: calc(50% - 40px); }
   }
   .fam-fleche {
     display: inline-flex; align-items: center; justify-content: center;
@@ -86,7 +115,9 @@
   .fam-fleche:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   @media (max-width: 700px) {
     /* La carte suivante depasse : l'invitation a glisser est visible. */
-    .fam-carrousel > article { flex: 0 0 76%; }
+    .fam-carrousel > article { flex: 0 0 74%; }
+    .fam-carrousel::before,
+    .fam-carrousel::after { flex: 0 0 max(0px, calc(50% - 37% - 9px)); }
     .fam-fleche { width: 34px; height: 34px; }
   }
   @media (prefers-reduced-motion: reduce) { .fam-carrousel { scroll-behavior: auto; } }
@@ -135,21 +166,20 @@
       <h2 style="margin:0;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(26px,3.6vw,40px);line-height:1.1;white-space:nowrap;color:var(--ink)">Best-sellers</h2>
       <div style="display:flex;align-items:center;gap:14px">
         <p style="margin:0;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-dim)">Les plus commandés à Bastos</p>
-        <sc-if value="{{ carrouselDefilable }}" hint-placeholder-val="{{ true }}">
-        <div style="display:flex;gap:8px">
-          <button type="button" class="fam-fleche" onClick="{{ carrouselPrec }}" aria-label="Article précédent">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"></path></svg>
-          </button>
-          <button type="button" class="fam-fleche" onClick="{{ carrouselSuiv }}" aria-label="Article suivant">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"></path></svg>
-          </button>
-        </div>
-        </sc-if>
       </div>
     </div>
+    <div class="fam-carrousel__cadre">
+      <sc-if value="{{ carrouselDefilable }}" hint-placeholder-val="{{ true }}">
+        <button type="button" class="fam-fleche fam-fleche--gauche" onClick="{{ carrouselPrec }}" aria-label="Article précédent">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"></path></svg>
+        </button>
+        <button type="button" class="fam-fleche fam-fleche--droite" onClick="{{ carrouselSuiv }}" aria-label="Article suivant">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"></path></svg>
+        </button>
+      </sc-if>
     <div class="fam-carrousel" ref="{{ carrouselRef }}" role="region" aria-label="Best-sellers, faites defiler">
       <sc-for list="{{ bestsellers }}" as="p" hint-placeholder-count="4">
-        <article class="ia-leve ia-apparait" style="display:flex;flex-direction:column;background:linear-gradient(170deg,var(--surface-3),var(--surface-2));border:1px solid rgba(201,162,74,.45);border-radius:8px;overflow:hidden;position:relative">
+        <article class="ia-leve fam-carte-best" style="display:flex;flex-direction:column;background:linear-gradient(170deg,var(--surface-3),var(--surface-2));border:1px solid {{ p.bordure }};border-radius:8px;overflow:hidden;position:relative;transform:scale({{ p.echelle }});opacity:{{ p.opacite }};box-shadow:{{ p.relief }}">
           <div style="position:absolute;top:12px;left:12px;z-index:2;padding:5px 11px;border-radius:999px;background:var(--accent);color:var(--btn-ink);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase">Best-seller</div>
           <div class="fam-vignette" onClick="{{ p.ouvrir }}" style="aspect-ratio:1/1;background:var(--surface-3)"><image-slot id="{{ p.slotId }}" src="assets/slots/{{ p.slotId }}.webp" shape="rect" fit="cover" placeholder="{{ p.slotLabel }}"></image-slot></div>
           <div style="padding:18px;display:flex;flex-direction:column;flex:1">
@@ -173,6 +203,12 @@
           </div>
         </article>
       </sc-for>
+    </div>
+      <div class="fam-points" aria-label="Position dans le carrousel">
+        <sc-for list="{{ carrouselPoints }}" as="pt" hint-placeholder-count="4">
+          <button type="button" class="fam-point" onClick="{{ pt.aller }}" aria-label="{{ pt.titre }}" style="width:{{ pt.largeur }};background:{{ pt.fond }}"></button>
+        </sc-for>
+      </div>
     </div>
   </div>
 </section>
@@ -409,7 +445,7 @@ const CATALOG = [
 ];
 
 class Component extends DCLogic {
-  state = { cat: "all", cart: [], cartOpen: false, colors: {}, fiche: null, carrouselDefilable: false };
+  state = { cat: "all", cart: [], cartOpen: false, colors: {}, fiche: null, carrouselDefilable: false, actifIdx: 0 };
   carrouselRef = React.createRef();
 
   /* Avance ou recule d'une carte, en mesurant la carte reelle plutot
@@ -433,13 +469,52 @@ class Component extends DCLogic {
     if (d !== this.state.carrouselDefilable) this.setState({ carrouselDefilable: d });
   }
 
+  /* Repere la carte la plus proche du centre de la piste : c'est elle qui
+     est mise en avant. On ne met l'etat a jour que si l'indice change,
+     sinon chaque pixel de defilement declencherait un rendu. */
+  majActif() {
+    const el = this.carrouselRef.current; if (!el) return;
+    const centre = el.scrollLeft + el.clientWidth / 2;
+    let meilleur = 0, ecartMin = Infinity;
+    Array.prototype.forEach.call(el.children, (c, i) => {
+      const d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - centre);
+      if (d < ecartMin) { ecartMin = d; meilleur = i; }
+    });
+    if (meilleur !== this.state.actifIdx) this.setState({ actifIdx: meilleur });
+  }
+
+  allerA(i, direct) {
+    const el = this.carrouselRef.current; if (!el) return;
+    const c = el.children[i]; if (!c) return;
+    el.scrollTo({ left: c.offsetLeft - (el.clientWidth - c.offsetWidth) / 2,
+                  behavior: direct ? 'auto' : 'smooth' });
+  }
+
   componentDidUpdate() { this.majCarrousel(); }
-  componentWillUnmount() { window.removeEventListener('resize', this._majC); }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._majC);
+    const el = this.carrouselRef.current;
+    if (el && this._surDefilement) el.removeEventListener('scroll', this._surDefilement);
+  }
 
   componentDidMount() {
-    this._majC = () => this.majCarrousel();
+    this._majC = () => { this.majCarrousel(); this.majActif(); };
     window.addEventListener('resize', this._majC);
-    setTimeout(this._majC, 300);
+    setTimeout(() => {
+      this._majC();
+      const el = this.carrouselRef.current;
+      // On ouvre sur la deuxieme carte plutot que sur la premiere : centrer
+      // la premiere laisse un grand vide a sa gauche sur un large ecran.
+      // Ici la vue est remplie des deux cotes des l'arrivee.
+      if (el && el.children.length > 2 && el.scrollWidth > el.clientWidth + 4) {
+        this.allerA(1, true);
+        this.majActif();
+      }
+      if (el) el.addEventListener('scroll', this._surDefilement = () => {
+        if (this._rafC) return;
+        this._rafC = requestAnimationFrame(() => { this._rafC = 0; this.majActif(); });
+      }, { passive: true });
+    }, 300);
     try {
       const raw = localStorage.getItem("famous_cart");
       if (raw) {
@@ -569,7 +644,21 @@ class Component extends DCLogic {
       })),
       catKnob: "calc(5px + (100% - 10px) * " + Math.max(0, CATS.findIndex(c => c.id === active)) + " / " + CATS.length + ")",
       products: list.map(p => this.decorate(p)),
-      bestsellers: CATALOG.filter(p => p.best).map(p => this.decorate(p, "best")),
+      bestsellers: CATALOG.filter(p => p.best).map((p, i) => Object.assign(
+        this.decorate(p, "best"), {
+          echelle: i === this.state.actifIdx ? "1" : ".93",
+          opacite: i === this.state.actifIdx ? "1" : ".58",
+          bordure: i === this.state.actifIdx ? "var(--accent)" : "rgba(201,162,74,.28)",
+          relief:  i === this.state.actifIdx
+                     ? "0 22px 48px rgba(0,0,0,.45), 0 0 0 1px rgba(201,162,74,.25)"
+                     : "none"
+        })),
+      carrouselPoints: CATALOG.filter(p => p.best).map((p, i) => ({
+        titre: "Aller a " + p.name,
+        largeur: i === this.state.actifIdx ? "24px" : "8px",
+        fond: i === this.state.actifIdx ? "var(--accent)" : "rgba(201,162,74,.35)",
+        aller: () => this.allerA(i)
+      })),
       activeLabel: activeCat.title,
       resultLabel: list.length + (list.length > 1 ? " articles" : " article"),
       cartCount: count,
