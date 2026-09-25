@@ -747,7 +747,7 @@ class Component extends DCLogic {
       const off = past || full, on = (s.sSlot || []).indexOf(time) >= 0;
       const endM = m + need;
       slots.push({ time, end: String(Math.floor(endM / 60)).padStart(2, "0") + ":" + String(endM % 60).padStart(2, "0"), disabled: off,
-        sub: past ? "Passé" : "À confirmer", cursor: off ? "not-allowed" : "pointer",
+        sub: past ? "Passé" : full ? "Complet" : "À confirmer", cursor: off ? "not-allowed" : "pointer",
         bg: on ? "var(--accent)" : "var(--surface)", fg: on ? "var(--btn-ink)" : "var(--ink)", border: on ? "var(--accent)" : "var(--line)",
         opacity: off ? .45 : 1, strike: full ? "line-through" : "none",
         select: () => { if (off) return; this.setState(st => { const cur = st.sSlot || [];
