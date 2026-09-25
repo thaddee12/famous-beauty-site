@@ -71,22 +71,6 @@
   </div>
 </section>
 
-<div style="position:sticky;top:64px;z-index:40;background:var(--nav-bg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)">
-  <div style="max-width:1240px;margin:0 auto;padding:12px clamp(16px,4vw,32px);display:flex;flex-wrap:wrap;align-items:center;gap:12px">
-    <div style="flex:1 1 620px;min-width:0;padding:2px">
-      <div role="radiogroup" aria-label="Catégories" style="position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));width:100%;padding:5px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.03)),var(--surface-2);border:1px solid var(--line);box-shadow:inset 0 1px 1px rgba(255,255,255,.35)">
-        <span aria-hidden="true" style="position:absolute;top:5px;bottom:5px;left:{{ catKnob }};width:calc((100% - 10px) / 5);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0) 58%),linear-gradient(100deg,#E4CE92,#C9A24A);box-shadow:0 6px 18px rgba(201,162,74,.4);transition:left .45s cubic-bezier(.3,1.35,.5,1)"></span>
-        <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="5">
-          <button type="button" role="radio" aria-checked="{{ cat.on }}" onClick="{{ cat.select }}" style="position:relative;z-index:1;min-width:0;display:flex;align-items:center;justify-content:center;min-height:42px;padding:8px 6px;border:none;border-radius:999px;background:transparent;cursor:pointer;font-family:'Jost',sans-serif;font-size:clamp(10px,1.05vw,12px);font-weight:600;letter-spacing:.1em;line-height:1.2;text-align:center;text-transform:uppercase;text-wrap:balance;color:{{ cat.fg }};transition:color .3s ease">{{ cat.label }}</button>
-        </sc-for>
-      </div>
-    </div>
-    <button type="button" onClick="{{ openCart }}" style="flex:0 0 auto;display:inline-flex;align-items:center;gap:10px;padding:11px 20px;border:1px solid rgba(255,255,255,.34);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),linear-gradient(100deg,var(--accent-light),var(--accent));color:var(--btn-ink);font-family:'Jost',sans-serif;font-size:13px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),inset 0 -6px 14px rgba(255,255,255,.07),0 6px 18px rgba(0,0,0,.18);backdrop-filter:blur(12px) saturate(1.7);-webkit-backdrop-filter:blur(12px) saturate(1.7)" style-hover="filter:brightness(1.08)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 8h14l-1.2 11a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8Z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg>
-      Panier · {{ cartCount }}
-    </button>
-  </div>
-</div>
 
 <section style="background:var(--surface);padding:clamp(40px,6vw,72px) clamp(16px,4vw,32px) clamp(20px,3vw,32px)">
   <div style="max-width:1240px;margin:0 auto">
@@ -123,6 +107,26 @@
     </div>
   </div>
 </section>
+
+<!-- Barre de filtres : placee apres les best-sellers, juste au-dessus du
+     catalogue qu'elle commande. Plus haut, on choisissait une categorie
+     avant de voir une selection que ce choix ne filtrait pas. -->
+<div style="position:sticky;top:64px;z-index:40;background:var(--nav-bg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)">
+  <div style="max-width:1240px;margin:0 auto;padding:12px clamp(16px,4vw,32px);display:flex;flex-wrap:wrap;align-items:center;gap:12px">
+    <div style="flex:1 1 620px;min-width:0;padding:2px">
+      <div role="radiogroup" aria-label="Catégories" style="position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));width:100%;padding:5px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.03)),var(--surface-2);border:1px solid var(--line);box-shadow:inset 0 1px 1px rgba(255,255,255,.35)">
+        <span aria-hidden="true" style="position:absolute;top:5px;bottom:5px;left:{{ catKnob }};width:calc((100% - 10px) / 5);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0) 58%),linear-gradient(100deg,#E4CE92,#C9A24A);box-shadow:0 6px 18px rgba(201,162,74,.4);transition:left .45s cubic-bezier(.3,1.35,.5,1)"></span>
+        <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="5">
+          <button type="button" role="radio" aria-checked="{{ cat.on }}" onClick="{{ cat.select }}" style="position:relative;z-index:1;min-width:0;display:flex;align-items:center;justify-content:center;min-height:42px;padding:8px 6px;border:none;border-radius:999px;background:transparent;cursor:pointer;font-family:'Jost',sans-serif;font-size:clamp(10px,1.05vw,12px);font-weight:600;letter-spacing:.1em;line-height:1.2;text-align:center;text-transform:uppercase;text-wrap:balance;color:{{ cat.fg }};transition:color .3s ease">{{ cat.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+    <button type="button" onClick="{{ openCart }}" style="flex:0 0 auto;display:inline-flex;align-items:center;gap:10px;padding:11px 20px;border:1px solid rgba(255,255,255,.34);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,0) 58%),linear-gradient(100deg,var(--accent-light),var(--accent));color:var(--btn-ink);font-family:'Jost',sans-serif;font-size:13px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),inset 0 -6px 14px rgba(255,255,255,.07),0 6px 18px rgba(0,0,0,.18);backdrop-filter:blur(12px) saturate(1.7);-webkit-backdrop-filter:blur(12px) saturate(1.7)" style-hover="filter:brightness(1.08)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 8h14l-1.2 11a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8Z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg>
+      Panier · {{ cartCount }}
+    </button>
+  </div>
+</div>
 
 <section id="catalogue" style="background:var(--surface);padding:clamp(28px,4vw,44px) clamp(16px,4vw,32px) clamp(48px,7vw,88px);scroll-margin-top:130px">
   <div style="max-width:1240px;margin:0 auto">
