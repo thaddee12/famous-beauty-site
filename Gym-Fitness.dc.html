@@ -578,7 +578,17 @@
       </div>
     </div>
     <div class="ia-apparait" style="min-width:0;border:1px solid var(--line-soft);border-radius:8px;overflow:hidden;background:var(--surface-2)">
-      <iframe title="Carte — Bastos Building, Yaoundé" src="https://maps.google.com/maps?q=The%20Famous%20Beauty%20Spa%20Gym%2C%20Bastos%20Building%2C%20Rue%20de%20l'Ambassade%20du%20Japon%2C%20Yaound%C3%A9&amp;z=17&amp;hl=fr&amp;output=embed" style="display:block;width:100%;height:clamp(280px,38vw,400px);border:0;filter:none"></iframe>
+      <sc-if value="{{ carteFermee }}" hint-placeholder-val="{{ true }}">
+        <button type="button" onClick="{{ ouvrirCarte }}" aria-label="Afficher le plan d'acces" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;width:100%;height:clamp(280px,38vw,400px);padding:24px;border:0;cursor:pointer;text-align:center;background:linear-gradient(160deg,var(--surface-2),var(--surface-3));font-family:'Jost',sans-serif">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"></path><circle cx="12" cy="10" r="2.6"></circle></svg>
+          <span style="font-size:15px;line-height:1.5;color:var(--ink)">Bastos Building, rue de l&rsquo;Ambassade du Japon<br>Yaound&eacute;</span>
+          <span style="font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)">Afficher le plan</span>
+          <span style="font-size:11px;line-height:1.5;color:var(--ink-4)">La carte se charge au clic, pour economiser vos donnees</span>
+        </button>
+      </sc-if>
+      <sc-if value="{{ carteOuverte }}" hint-placeholder-val="{{ false }}">
+        <iframe title="Carte — Bastos Building, Yaoundé" src="https://maps.google.com/maps?q=The%20Famous%20Beauty%20Spa%20Gym%2C%20Bastos%20Building%2C%20Rue%20de%20l'Ambassade%20du%20Japon%2C%20Yaound%C3%A9&amp;z=17&amp;hl=fr&amp;output=embed" style="display:block;width:100%;height:clamp(280px,38vw,400px);border:0;filter:none"></iframe>
+      </sc-if>
     </div>
   </div>
 </section>
@@ -608,7 +618,7 @@ class Component extends DCLogic {
     };
   }
 
-  state = { heroIdx: 0, hv: null, pPromo: true, pMonthVal: 90000, bType: "cours", bPlan: "mois", bMember: "", bDay: 0, bOccupes: [], bOccupesCle: "", bSlot: [], bName: "", bPhone: "", bError: "", bDone: null };
+  state = { carteOuverte: false, heroIdx: 0, hv: null, pPromo: true, pMonthVal: 90000, bType: "cours", bPlan: "mois", bMember: "", bDay: 0, bOccupes: [], bOccupesCle: "", bSlot: [], bName: "", bPhone: "", bError: "", bDone: null };
   heroList = ["assets/gym-hero-1.jpg", "assets/gym-hero-2.jpg", "assets/gym-hero-3.jpg"];
   componentDidMount() {
     this.chargerOccupes();
@@ -778,6 +788,13 @@ class Component extends DCLogic {
   }
   renderVals() {
     return {
+      // La carte Google pese environ 1,5 Mo de scripts, plus que toutes les
+      // photos de la page reunies. On ne la charge qu'au clic : sur une
+      // connexion lente, c'est une trentaine de secondes economisees pour
+      // un visiteur qui ne cherchait pas l'itineraire.
+      carteOuverte: this.state.carteOuverte,
+      carteFermee: !this.state.carteOuverte,
+      ouvrirCarte: () => this.setState({ carteOuverte: true }),
       slidesReady: true,
       ...(() => {
         const K = [["k0","a"],["k1","a"],["k2","a"],["k3","a"],["k4","a"],["k5","a"],["k6","b"],["k7","b"],["k8","b"]];
