@@ -16,8 +16,8 @@
        Tableau de bord Supabase > Project Settings > API
        La cle « anon » est faite pour etre publique. Elle n'est sure que si
        la Row Level Security est activee sur la table : voir supabase.sql. */
-    SUPABASE_URL: '',
-    SUPABASE_ANON: '',
+    SUPABASE_URL: 'https://ctznfolcbwobfxsfotcx.supabase.co',
+    SUPABASE_ANON: 'sb_publishable_a9gsD0awvlZpGJ7eSeZ_ng_fdwliVI2',
 
     /* ---- Agenda -------------------------------------------------------
        LIRE  : adresse de la fonction Edge qui renvoie les plages occupees.
@@ -25,9 +25,9 @@
        JETON : doit valoir le secret JETON_SITE de la fonction Edge. En
                lecture il part dans l'adresse, en ecriture dans le corps du
                message : la fonction le verifie dans les deux cas. */
-    AGENDA_LIRE: '',
-    AGENDA_WEBHOOK: '',
-    AGENDA_JETON: '',
+    AGENDA_LIRE: 'https://ctznfolcbwobfxsfotcx.supabase.co/functions/v1/agenda',
+    AGENDA_WEBHOOK: 'https://ctznfolcbwobfxsfotcx.supabase.co/functions/v1/agenda',
+    AGENDA_JETON: 'Vi-3SR4dek2jrnncMp3YtJj0xWrNnQQF',
 
     /* Au-dela, on renonce et le site continue sans agenda. */
     DELAI_MS: 7000,
