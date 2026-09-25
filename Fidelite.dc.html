@@ -395,16 +395,64 @@ class Component extends DCLogic {
     return "pass-vip-the-famous-" + base + "." + ext;
   }
 
+  /* Transforme la toile en Blob. On evite toDataURL pour la livraison :
+     une URL data: d'un megaoctet est ignoree en silence par Safari iOS. */
+  toileEnBlob(toile, type) {
+    return new Promise(res => {
+      if (toile.toBlob) toile.toBlob(res, type, 1);
+      else res(null);
+    });
+  }
+
+  /* Livre le fichier au visiteur. Sur iPhone, un lien <a download> echoue
+     sans rien afficher ; la feuille de partage est le seul chemin qui
+     permette vraiment d'enregistrer dans les Photos, ce que promet le
+     bouton. On garde le telechargement classique pour les ordinateurs, et
+     l'ouverture dans un onglet en dernier recours, ou un appui long
+     permet d'enregistrer. */
+  livrer(blob, nom, type) {
+    const parLien = () => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = nom; a.rel = "noopener";
+      // Safari n'honore un clic simule que si le lien est dans le document.
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        if (a.parentNode) a.parentNode.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 5000);
+      return "telecharge";
+    };
+    // La feuille de partage est reservee a iOS, seul systeme ou le
+    // telechargement direct echoue. Partout ailleurs le lien fonctionne et
+    // reste plus direct : l'imposer a tout le monde cassait l'export sur
+    // ordinateur, ou navigator.share existe sans toujours aboutir.
+    const estIOS = /iP(hone|ad|od)/.test(navigator.userAgent) ||
+                   (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    if (estIOS) {
+      try {
+        const fichier = new File([blob], nom, { type });
+        if (navigator.canShare && navigator.canShare({ files: [fichier] })) {
+          return navigator.share({ files: [fichier], title: "Pass VIP The Famous" })
+            .then(() => "partage")
+            .catch(e => (e && e.name === "AbortError") ? "annule" : parLien());
+        }
+      } catch (e) {}
+    }
+    return Promise.resolve(parLien());
+  }
+
   exportPNG = () => {
     this.setState({ cExport: "png" });
     this.captureCarte().then(toile => {
-      this.setState({ cExport: "" });
-      if (!toile) return this.setState({ formError: "L'export n'a pas pu se faire. Réessayez." });
-      const a = document.createElement("a");
-      a.href = toile.toDataURL("image/png");
-      a.download = this.nomFichier("png");
-      a.click();
-    });
+      if (!toile) { this.setState({ cExport: "", formError: "L'export n'a pas pu se faire. Réessayez." }); return; }
+      return this.toileEnBlob(toile, "image/png").then(blob => {
+        this.setState({ cExport: "" });
+        if (!blob) return this.setState({ formError: "L'export n'a pas pu se faire. Réessayez." });
+        return this.livrer(blob, this.nomFichier("png"), "image/png");
+      });
+    }).catch(() => this.setState({ cExport: "", formError: "L'export n'a pas pu se faire. Réessayez." }));
   };
 
   exportPDF = () => {
@@ -417,8 +465,10 @@ class Component extends DCLogic {
       // vraie carte, pretes a imprimer si le client le souhaite.
       const doc = new jsPDFCtor({ orientation: "landscape", unit: "mm", format: [85.6, 54] });
       doc.addImage(toile.toDataURL("image/png"), "PNG", 0, 0, 85.6, 54, undefined, "FAST");
-      doc.save(this.nomFichier("pdf"));
-    });
+      // doc.save() retombe sur le meme lien <a download> qui echoue sur
+      // iPhone : on recupere le PDF en Blob et on le livre nous-memes.
+      this.livrer(doc.output("blob"), this.nomFichier("pdf"), "application/pdf");
+    }).catch(() => this.setState({ cExport: "", formError: "L'export PDF n'a pas pu se faire. Réessayez." }));
   };
 
   resetPass = () => {
