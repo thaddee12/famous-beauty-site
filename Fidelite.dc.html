@@ -529,9 +529,15 @@ class Component extends DCLogic {
       // illisible sur une carte de luxe. On affiche son premier segment,
       // assez distinctif pour que le personnel identifie une carte a l'oeil.
       // Le QR, lui, porte toujours l'identifiant entier.
-      memberId: m ? (String(m.id).indexOf("-") > 0
-                      ? "N° " + String(m.id).split("-")[0].toUpperCase()
-                      : m.id)
+      // Numero lisible au format FAM-0001, attribue par la base et donc
+      // unique et sequentiel. Le QR, lui, porte toujours l'identifiant
+      // technique : un code devinable permettrait de crediter la carte
+      // d'un autre.
+      memberId: m ? (m.numero != null
+                      ? "FAM-" + String(m.numero).padStart(4, "0")
+                      : String(m.id).indexOf("-") > 0
+                          ? "N° " + String(m.id).split("-")[0].toUpperCase()
+                          : m.id)
                   : "FAM-0000",
       memberStatus: m ? "Membre depuis " + m.since : "Pass non activé",
       ...(() => {
